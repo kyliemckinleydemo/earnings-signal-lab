@@ -672,13 +672,6 @@ def run_backtest():
     # ============================================================
 
     # Only use the 16 known features (ignore any extras hallucinated by the model)
-    KNOWN_FEATURES = [
-        "mgmt_hedging", "mgmt_deflection", "mgmt_specificity", "mgmt_confidence_shift",
-        "analyst_skepticism", "analyst_surprise", "analyst_focus_cluster",
-        "guidance_revision_dir", "guidance_qualifiers",
-        "new_risk_mention", "macro_blame", "capex_language", "hiring_language",
-        "competitive_mentions", "customer_language", "pricing_power",
-    ]
     feature_cols = [f"feat_{f}" for f in KNOWN_FEATURES if f"feat_{f}" in df.columns]
     return_cols = [c for c in df.columns if c.startswith("return_") and c != "return_earnings_day"]
 
@@ -1653,6 +1646,324 @@ def generate_basic_summary(pkg: dict) -> dict:
 
 
 # ============================================================
+# SCORING MODEL — Train, Save, Score
+# ============================================================
+
+MODEL_FILE = DATA_DIR / "scoring_model.json"
+
+KNOWN_FEATURES = [
+    "mgmt_hedging", "mgmt_deflection", "mgmt_specificity", "mgmt_confidence_shift",
+    "analyst_skepticism", "analyst_surprise", "analyst_focus_cluster",
+    "guidance_revision_dir", "guidance_qualifiers",
+    "new_risk_mention", "macro_blame", "capex_language", "hiring_language",
+    "competitive_mentions", "customer_language", "pricing_power",
+]
+
+
+def train_scoring_model():
+    """Train a scoring model from backtest data and save to disk.
+
+    Fits a Lasso regression on standardized features at the 1D horizon,
+    then saves weights, scaler parameters, and feature percentiles so that
+    new transcripts can be scored without re-running the full backtest.
+    """
+    print("\n" + "=" * 60)
+    print("TRAINING SCORING MODEL")
+    print("=" * 60)
+
+    # --- Build the same dataset as run_backtest() ---
+    price_file = DATA_DIR / "price_data.json"
+    if not price_file.exists():
+        print("No price data found. Run --step prices first.")
+        return
+
+    price_data = json.loads(price_file.read_text())
+    rows = []
+
+    for key, pdata in price_data.items():
+        symbol = pdata["symbol"]
+        quarter = pdata["quarter"]
+        year = pdata["year"]
+        returns = pdata["returns"]
+
+        analysis_file = ANALYSIS_DIR / f"{symbol}_Q{quarter}_{year}_analysis.json"
+        if not analysis_file.exists():
+            continue
+        analysis = json.loads(analysis_file.read_text())
+        features = analysis.get("features", {})
+
+        row = {"symbol": symbol, "quarter": quarter, "year": year,
+               "earnings_date": pdata["earnings_date"]}
+        for feat_name in KNOWN_FEATURES:
+            feat_data = features.get(feat_name, {})
+            if isinstance(feat_data, dict):
+                row[f"feat_{feat_name}"] = feat_data.get("score", None)
+        for period, ret in returns.items():
+            row[f"return_{period}"] = ret
+        rows.append(row)
+
+    if not rows:
+        print("No matched data. Run the full pipeline first.")
+        return
+
+    df = pd.DataFrame(rows)
+    feature_cols = [f"feat_{f}" for f in KNOWN_FEATURES if f"feat_{f}" in df.columns]
+    target_col = "return_1D"
+
+    valid = df[feature_cols + [target_col]].dropna()
+    print(f"  Training samples: {len(valid)}")
+
+    X = valid[feature_cols].values
+    y = valid[target_col].values
+    feature_names = [c.replace("feat_", "") for c in feature_cols]
+
+    # Standardise
+    means = X.mean(axis=0).tolist()
+    stds = X.std(axis=0).tolist()
+    stds = [s if s > 1e-9 else 1.0 for s in stds]  # guard div-by-zero
+    X_scaled = (X - np.array(means)) / np.array(stds)
+
+    # Compute percentiles for each feature (for signal thresholds)
+    percentiles = {}
+    for i, fname in enumerate(feature_names):
+        col = X[:, i]
+        percentiles[fname] = {
+            "p25": float(np.percentile(col, 25)),
+            "p50": float(np.percentile(col, 50)),
+            "p75": float(np.percentile(col, 75)),
+            "mean": float(col.mean()),
+            "std": float(col.std()),
+        }
+
+    # Fit Lasso (best interpretable model from backtest)
+    from sklearn.linear_model import Lasso
+    from sklearn.model_selection import TimeSeriesSplit, cross_val_score
+
+    valid_sorted = valid.copy()
+    valid_sorted["_date"] = df.loc[valid.index, "earnings_date"]
+    valid_sorted = valid_sorted.sort_values("_date")
+    X_sorted = (valid_sorted[feature_cols].values - np.array(means)) / np.array(stds)
+    y_sorted = valid_sorted[target_col].values
+
+    best_alpha, best_score = 0.1, -np.inf
+    tscv = TimeSeriesSplit(n_splits=5)
+    for alpha in [0.01, 0.05, 0.1, 0.25, 0.5, 1.0]:
+        lasso = Lasso(alpha=alpha, max_iter=5000)
+        scores = cross_val_score(lasso, X_sorted, y_sorted, cv=tscv, scoring="r2")
+        if scores.mean() > best_score:
+            best_alpha, best_score = alpha, scores.mean()
+
+    # Refit on full data with best alpha
+    lasso = Lasso(alpha=best_alpha, max_iter=5000)
+    lasso.fit(X_scaled, y)
+
+    weights = {fname: round(float(w), 6) for fname, w in zip(feature_names, lasso.coef_)}
+    intercept = float(lasso.intercept_)
+    selected = {k: v for k, v in weights.items() if abs(v) > 1e-6}
+
+    print(f"  Best alpha: {best_alpha}")
+    print(f"  CV R²: {best_score:.4f}")
+    print(f"  Features selected: {len(selected)}/{len(feature_names)}")
+    print(f"\n  Weights (non-zero):")
+    for fname, w in sorted(selected.items(), key=lambda x: abs(x[1]), reverse=True):
+        direction = "+" if w > 0 else ""
+        print(f"    {fname:<35} {direction}{w:.4f}")
+
+    # Compute score distribution on training data for signal thresholds
+    train_scores = X_scaled @ lasso.coef_ + intercept
+    score_percentiles = {
+        "p10": float(np.percentile(train_scores, 10)),
+        "p25": float(np.percentile(train_scores, 25)),
+        "p50": float(np.percentile(train_scores, 50)),
+        "p75": float(np.percentile(train_scores, 75)),
+        "p90": float(np.percentile(train_scores, 90)),
+        "mean": float(train_scores.mean()),
+        "std": float(train_scores.std()),
+    }
+
+    # Save model
+    model = {
+        "version": 1,
+        "trained_at": datetime.now().isoformat(),
+        "horizon": "1D",
+        "n_training_samples": len(valid),
+        "cv_r2": round(best_score, 4),
+        "lasso_alpha": best_alpha,
+        "features": feature_names,
+        "weights": weights,
+        "intercept": round(intercept, 6),
+        "scaler_means": {fname: round(m, 6) for fname, m in zip(feature_names, means)},
+        "scaler_stds": {fname: round(s, 6) for fname, s in zip(feature_names, stds)},
+        "feature_percentiles": percentiles,
+        "score_percentiles": score_percentiles,
+    }
+
+    MODEL_FILE.write_text(json.dumps(model, indent=2))
+    print(f"\n  Model saved to {MODEL_FILE}")
+    return model
+
+
+def load_scoring_model() -> dict | None:
+    """Load the trained scoring model from disk."""
+    if not MODEL_FILE.exists():
+        return None
+    return json.loads(MODEL_FILE.read_text())
+
+
+def score_analysis(model: dict, analysis: dict) -> dict:
+    """Score a single analysis using the trained model.
+
+    Returns a dict with:
+      - raw_score: the model's predicted 1D return (%)
+      - signal: LONG / SHORT / NEUTRAL
+      - confidence: low / medium / high
+      - feature_contributions: per-feature contribution to the score
+      - percentile: where this score falls in the training distribution
+    """
+    features = analysis.get("features", {})
+    weights = model["weights"]
+    means = model["scaler_means"]
+    stds = model["scaler_stds"]
+    intercept = model["intercept"]
+    sp = model["score_percentiles"]
+
+    # Extract and standardise feature scores
+    contributions = {}
+    raw_score = intercept
+
+    for fname in model["features"]:
+        feat_data = features.get(fname, {})
+        if isinstance(feat_data, dict):
+            val = feat_data.get("score")
+        else:
+            val = None
+
+        w = weights.get(fname, 0.0)
+        if val is not None and abs(w) > 1e-9:
+            z = (val - means[fname]) / stds[fname]
+            contrib = z * w
+            raw_score += contrib
+            contributions[fname] = round(contrib, 4)
+
+    # Determine percentile rank in training distribution
+    if raw_score >= sp["p90"]:
+        pct_label = ">90th"
+    elif raw_score >= sp["p75"]:
+        pct_label = "75-90th"
+    elif raw_score >= sp["p50"]:
+        pct_label = "50-75th"
+    elif raw_score >= sp["p25"]:
+        pct_label = "25-50th"
+    elif raw_score >= sp["p10"]:
+        pct_label = "10-25th"
+    else:
+        pct_label = "<10th"
+
+    # Signal thresholds based on training score distribution
+    # LONG: top quartile, SHORT: bottom quartile, else NEUTRAL
+    if raw_score >= sp["p75"]:
+        signal = "LONG"
+        confidence = "high" if raw_score >= sp["p90"] else "medium"
+    elif raw_score <= sp["p25"]:
+        signal = "SHORT"
+        confidence = "high" if raw_score <= sp["p10"] else "medium"
+    else:
+        signal = "NEUTRAL"
+        confidence = "low"
+
+    # Sort contributions by |magnitude|
+    sorted_contribs = dict(sorted(contributions.items(), key=lambda x: abs(x[1]), reverse=True))
+
+    return {
+        "raw_score": round(raw_score, 4),
+        "expected_return_pct": round(raw_score, 2),
+        "signal": signal,
+        "confidence": confidence,
+        "percentile": pct_label,
+        "feature_contributions": sorted_contribs,
+    }
+
+
+def score_all():
+    """Score all analysed transcripts and print a ranked table."""
+    model = load_scoring_model()
+    if model is None:
+        print("No scoring model found. Run --step train-model first.")
+        return
+
+    print("\n" + "=" * 60)
+    print("SCORING ALL ANALYSED TRANSCRIPTS")
+    print(f"  Model: Lasso (1D horizon, CV R²={model['cv_r2']:.4f})")
+    print(f"  Trained: {model['trained_at'][:10]}")
+    print("=" * 60)
+
+    scored = []
+    for analysis_file in sorted(ANALYSIS_DIR.glob("*_analysis.json")):
+        analysis = json.loads(analysis_file.read_text())
+        symbol = analysis.get("symbol", analysis_file.stem.split("_")[0])
+        quarter = analysis.get("quarter", "?")
+        year = analysis.get("year", "?")
+
+        # Apply year range filter
+        if YEAR_RANGE and year != "?" and not (YEAR_RANGE[0] <= int(year) <= YEAR_RANGE[1]):
+            continue
+
+        result = score_analysis(model, analysis)
+        result["symbol"] = symbol
+        result["quarter"] = quarter
+        result["year"] = year
+        scored.append(result)
+
+    if not scored:
+        print("  No analyses found to score.")
+        return
+
+    # Sort by raw_score descending (most bullish first)
+    scored.sort(key=lambda x: x["raw_score"], reverse=True)
+
+    # Print table
+    n_long = sum(1 for s in scored if s["signal"] == "LONG")
+    n_short = sum(1 for s in scored if s["signal"] == "SHORT")
+    n_neutral = sum(1 for s in scored if s["signal"] == "NEUTRAL")
+
+    print(f"\n  Scored: {len(scored)} transcripts")
+    print(f"  Signals: {n_long} LONG | {n_neutral} NEUTRAL | {n_short} SHORT")
+
+    # Top longs
+    print(f"\n  --- TOP 20 LONG SIGNALS ---")
+    print(f"  {'Rank':<5} {'Symbol':<8} {'Q':>2} {'Year':>5} {'Score':>7} {'Signal':<8} {'Conf':<7} {'Top Driver':<30}")
+    print("  " + "-" * 82)
+    for i, s in enumerate(scored[:20], 1):
+        top_driver = ""
+        if s["feature_contributions"]:
+            top_feat = next(iter(s["feature_contributions"]))
+            top_val = s["feature_contributions"][top_feat]
+            direction = "+" if top_val > 0 else ""
+            top_driver = f"{top_feat} ({direction}{top_val:.3f})"
+        print(f"  {i:<5} {s['symbol']:<8} Q{s['quarter']:>1} {s['year']:>5} {s['raw_score']:>+7.3f} {s['signal']:<8} {s['confidence']:<7} {top_driver:<30}")
+
+    # Top shorts
+    print(f"\n  --- TOP 20 SHORT SIGNALS ---")
+    print(f"  {'Rank':<5} {'Symbol':<8} {'Q':>2} {'Year':>5} {'Score':>7} {'Signal':<8} {'Conf':<7} {'Top Driver':<30}")
+    print("  " + "-" * 82)
+    for i, s in enumerate(reversed(scored[-20:]), 1):
+        top_driver = ""
+        if s["feature_contributions"]:
+            top_feat = next(iter(s["feature_contributions"]))
+            top_val = s["feature_contributions"][top_feat]
+            direction = "+" if top_val > 0 else ""
+            top_driver = f"{top_feat} ({direction}{top_val:.3f})"
+        print(f"  {i:<5} {s['symbol']:<8} Q{s['quarter']:>1} {s['year']:>5} {s['raw_score']:>+7.3f} {s['signal']:<8} {s['confidence']:<7} {top_driver:<30}")
+
+    # Save scored results
+    scores_file = DATA_DIR / "scores.json"
+    scores_file.write_text(json.dumps(scored, indent=2))
+    print(f"\n  All scores saved to {scores_file}")
+
+    return scored
+
+
+# ============================================================
 # BATCH ANALYSIS (Message Batches API — 50% cheaper)
 # ============================================================
 
@@ -1870,6 +2181,8 @@ Run modes:
   python earnings_signal_pipeline.py --step batch-results  Retrieve batch results
   python earnings_signal_pipeline.py --step prices    Run only price fetching
   python earnings_signal_pipeline.py --step backtest  Run only backtest (on existing data)
+  python earnings_signal_pipeline.py --step train-model  Train scoring model from backtest data
+  python earnings_signal_pipeline.py --step score     Score all transcripts with trained model
   python earnings_signal_pipeline.py --status         Show cache status without running anything
         """
     )
@@ -1877,8 +2190,8 @@ Run modes:
                         help="Refresh price data for events with incomplete returns or recent earnings, then re-run backtest")
     parser.add_argument("--refresh-all", action="store_true",
                         help="Re-fetch ALL price data from Yahoo Finance and re-run backtest")
-    parser.add_argument("--step", choices=["pull", "analyze", "batch", "batch-results", "prices", "backtest"],
-                        help="Run only a specific pipeline step (batch/batch-results use the 50%% cheaper Batches API)")
+    parser.add_argument("--step", choices=["pull", "analyze", "batch", "batch-results", "prices", "backtest", "train-model", "score"],
+                        help="Run only a specific pipeline step")
     parser.add_argument("--status", action="store_true",
                         help="Show cache status: how many transcripts, analyses, price records exist")
     parser.add_argument("--years", type=str, default=None,
@@ -2051,6 +2364,14 @@ def main():
             except ImportError:
                 os.system("pip install scipy")
             run_backtest()
+        elif args.step == "train-model":
+            try:
+                from sklearn.linear_model import Lasso
+            except ImportError:
+                os.system("pip install scikit-learn --break-system-packages 2>/dev/null || pip install scikit-learn")
+            train_scoring_model()
+        elif args.step == "score":
+            score_all()
         return
 
     # ---- Full pipeline ----
