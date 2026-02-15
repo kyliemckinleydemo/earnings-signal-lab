@@ -4,6 +4,7 @@ Earnings Signal Lab — Web Server
 FastAPI app that serves:
   - Public dashboard at /
   - JSON API for predictions and model results
+  - Multi-source support: earnings, sec, combined
   - Cron-triggered pipeline runs
 
 Does NOT expose: raw transcripts, Claude analysis details, or API keys.
@@ -14,7 +15,7 @@ import json
 from pathlib import Path
 from collections import Counter
 from datetime import datetime
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
 from contextlib import asynccontextmanager
@@ -25,36 +26,63 @@ import asyncio
 # Config
 # ============================================================
 
-DATA_DIR = Path(os.environ.get("DATA_DIR", "earnings_signal_data"))
-RESULTS_FILE = DATA_DIR / "backtest_results.json"
-SCORES_FILE = DATA_DIR / "scores.json"
-MODEL_FILE = DATA_DIR / "scoring_model.json"
-SUMMARY_FILE = DATA_DIR / "SUMMARY.md"
+# Data directories for each source
+SOURCE_DIRS = {
+    "earnings": Path(os.environ.get("DATA_DIR", "earnings_signal_data")),
+    "sec": Path("sec_filing_data"),
+    "combined": Path("combined_data"),
+}
+
 PIPELINE_SCRIPT = Path("earnings_signal_pipeline.py")
 
-# Cache the results in memory for fast serving
-_cached_results = None
-_cached_at = None
-
-_cached_scores = None
-_cached_scores_at = None
-
-_cached_model = None
-_cached_model_at = None
+# Per-source cache: { source: { file_type: (data, mtime) } }
+_cache = {}
 
 
-def load_results():
-    """Load and cache backtest results, stripping sensitive data."""
-    global _cached_results, _cached_at
+def _get_dir(source: str) -> Path:
+    """Get the data directory for a source."""
+    if source not in SOURCE_DIRS:
+        raise HTTPException(status_code=400, detail=f"Unknown source: {source}. Use: {list(SOURCE_DIRS.keys())}")
+    return SOURCE_DIRS[source]
 
-    if not RESULTS_FILE.exists():
+
+def _load_json(filepath: Path, source: str, cache_key: str):
+    """Load and cache a JSON file with mtime checking."""
+    global _cache
+    if source not in _cache:
+        _cache[source] = {}
+
+    if not filepath.exists():
         return None
 
-    mtime = RESULTS_FILE.stat().st_mtime
-    if _cached_results and _cached_at == mtime:
-        return _cached_results
+    mtime = filepath.stat().st_mtime
+    cached = _cache[source].get(cache_key)
+    if cached and cached[1] == mtime:
+        return cached[0]
 
-    raw = json.loads(RESULTS_FILE.read_text())
+    data = json.loads(filepath.read_text())
+    _cache[source][cache_key] = (data, mtime)
+    return data
+
+
+def load_results(source: str = "earnings"):
+    """Load and cache backtest results, stripping sensitive data."""
+    data_dir = _get_dir(source)
+    filepath = data_dir / "backtest_results.json"
+
+    if not filepath.exists():
+        return None
+
+    mtime = filepath.stat().st_mtime
+
+    # Check processed cache
+    cache_key = "results_public"
+    if source in _cache and cache_key in _cache[source]:
+        cached = _cache[source][cache_key]
+        if cached[1] == mtime:
+            return cached[0]
+
+    raw = json.loads(filepath.read_text())
 
     # Build public-safe version — no raw evidence/transcripts
     public = {
@@ -63,7 +91,7 @@ def load_results():
         "combinations": raw.get("combinations", []),
         "correlation_matrix": raw.get("correlation_matrix", {}),
         "regression": {},
-        "summary": raw.get("summary", {}).get("markdown", ""),
+        "summary": raw.get("summary", {}).get("markdown", "") if isinstance(raw.get("summary"), dict) else raw.get("summary", ""),
         "last_updated": datetime.fromtimestamp(mtime).isoformat(),
     }
 
@@ -75,19 +103,11 @@ def load_results():
     public["sample_extractions"] = {}
     for feat_name, samples in raw.get("sample_extractions", {}).items():
         public["sample_extractions"][feat_name] = [
-            {
-                "symbol": s.get("symbol"),
-                "quarter": s.get("quarter"),
-                "score": s.get("score"),
-                "return_5D": s.get("return_5D"),
-                "return_10D": s.get("return_10D"),
-                # Deliberately omit "evidence" — that's derived from transcripts
-            }
+            {k: v for k, v in s.items() if k != "evidence"}
             for s in samples
         ]
 
     # Regression — include model comparisons, weights, importances
-    # but not raw data
     for period, pdata in raw.get("regression", {}).items():
         public_period = {}
         for key in ["n_observations", "y_mean", "y_std", "model_comparison",
@@ -115,41 +135,22 @@ def load_results():
 
         public["regression"][period] = public_period
 
-    _cached_results = public
-    _cached_at = mtime
+    if source not in _cache:
+        _cache[source] = {}
+    _cache[source][cache_key] = (public, mtime)
     return public
 
 
-def load_scores():
-    """Load and cache scored transcripts from scores.json."""
-    global _cached_scores, _cached_scores_at
-
-    if not SCORES_FILE.exists():
-        return None
-
-    mtime = SCORES_FILE.stat().st_mtime
-    if _cached_scores and _cached_scores_at == mtime:
-        return _cached_scores
-
-    _cached_scores = json.loads(SCORES_FILE.read_text())
-    _cached_scores_at = mtime
-    return _cached_scores
+def load_scores(source: str = "earnings"):
+    """Load and cache scored items."""
+    data_dir = _get_dir(source)
+    return _load_json(data_dir / "scores.json", source, "scores")
 
 
-def load_model():
-    """Load and cache scoring model from scoring_model.json."""
-    global _cached_model, _cached_model_at
-
-    if not MODEL_FILE.exists():
-        return None
-
-    mtime = MODEL_FILE.stat().st_mtime
-    if _cached_model and _cached_model_at == mtime:
-        return _cached_model
-
-    _cached_model = json.loads(MODEL_FILE.read_text())
-    _cached_model_at = mtime
-    return _cached_model
+def load_model(source: str = "earnings"):
+    """Load and cache scoring model."""
+    data_dir = _get_dir(source)
+    return _load_json(data_dir / "scoring_model.json", source, "model")
 
 
 # ============================================================
@@ -158,16 +159,16 @@ def load_model():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: preload all data
-    load_results()
-    load_scores()
-    load_model()
+    # Startup: preload earnings data
+    load_results("earnings")
+    load_scores("earnings")
+    load_model("earnings")
     yield
 
 app = FastAPI(
     title="Earnings Signal Lab",
-    description="Granular NLP feature extraction from earnings transcripts → forward return predictions",
-    version="1.0.0",
+    description="Multi-source signal analysis: earnings transcripts, SEC filings, and combined",
+    version="2.0.0",
     lifespan=lifespan,
 )
 
@@ -177,18 +178,18 @@ app = FastAPI(
 # ============================================================
 
 @app.get("/api/results")
-async def get_results():
+async def get_results(source: str = Query("earnings", description="Data source: earnings, sec, combined")):
     """Full public results — features, regression, combinations, correlations."""
-    results = load_results()
+    results = load_results(source)
     if not results:
-        raise HTTPException(status_code=503, detail="No results available yet. Pipeline hasn't run.")
+        raise HTTPException(status_code=503, detail=f"No results available for source '{source}'. Pipeline hasn't run.")
     return results
 
 
 @app.get("/api/predictions")
-async def get_predictions():
+async def get_predictions(source: str = Query("earnings")):
     """Just the prediction model weights and expected performance."""
-    results = load_results()
+    results = load_results(source)
     if not results:
         raise HTTPException(status_code=503, detail="No results available yet.")
 
@@ -215,9 +216,9 @@ async def get_predictions():
 
 
 @app.get("/api/features")
-async def get_features():
+async def get_features(source: str = Query("earnings")):
     """Individual feature signal strength across holding periods."""
-    results = load_results()
+    results = load_results(source)
     if not results:
         raise HTTPException(status_code=503, detail="No results available yet.")
     return {
@@ -227,11 +228,12 @@ async def get_features():
 
 
 @app.get("/api/scores")
-async def get_scores(signal: str = None, confidence: str = None, limit: int = 50, offset: int = 0):
-    """Scored transcripts with LONG/SHORT/NEUTRAL signals."""
-    scores = load_scores()
+async def get_scores(source: str = Query("earnings"), signal: str = None,
+                     confidence: str = None, limit: int = 50, offset: int = 0):
+    """Scored transcripts/filings with LONG/SHORT/NEUTRAL signals."""
+    scores = load_scores(source)
     if not scores:
-        raise HTTPException(status_code=503, detail="No scores available. Run the scoring pipeline first.")
+        raise HTTPException(status_code=503, detail=f"No scores available for source '{source}'.")
 
     # Summary stats (always from full dataset)
     signal_counts = Counter(s["signal"] for s in scores)
@@ -261,52 +263,90 @@ async def get_scores(signal: str = None, confidence: str = None, limit: int = 50
 
 
 @app.get("/api/model")
-async def get_model():
+async def get_model(source: str = Query("earnings")):
     """Scoring model weights and training metadata."""
-    model = load_model()
+    model = load_model(source)
     if not model:
-        raise HTTPException(status_code=503, detail="No scoring model available.")
+        raise HTTPException(status_code=503, detail=f"No scoring model available for source '{source}'.")
     return model
 
 
 @app.get("/api/summary")
-async def get_summary():
+async def get_summary(source: str = Query("earnings")):
     """Markdown summary of learnings."""
-    results = load_results()
+    results = load_results(source)
     if not results:
-        # Try loading from file directly
-        if SUMMARY_FILE.exists():
-            return {"summary": SUMMARY_FILE.read_text()}
+        data_dir = _get_dir(source)
+        summary_file = data_dir / "SUMMARY.md"
+        if summary_file.exists():
+            return {"summary": summary_file.read_text()}
         raise HTTPException(status_code=503, detail="No summary available yet.")
     return {"summary": results.get("summary", "")}
 
 
+@app.get("/api/sources")
+async def get_sources():
+    """List available data sources and their status."""
+    sources = {}
+    for name, data_dir in SOURCE_DIRS.items():
+        results_file = data_dir / "backtest_results.json"
+        scores_file = data_dir / "scores.json"
+        model_file = data_dir / "scoring_model.json"
+
+        info = {
+            "available": results_file.exists(),
+            "has_scores": scores_file.exists(),
+            "has_model": model_file.exists(),
+        }
+
+        if results_file.exists():
+            try:
+                results = load_results(name)
+                meta = results.get("metadata", {})
+                info["total_events"] = meta.get("total_events", 0)
+                info["companies"] = len(meta.get("companies", []))
+                info["last_updated"] = results.get("last_updated", "")
+            except Exception:
+                pass
+
+        sources[name] = info
+
+    return sources
+
+
 @app.get("/api/status")
-async def get_status():
+async def get_status(source: str = Query("earnings")):
     """Pipeline health and data freshness."""
+    data_dir = _get_dir(source)
+    results_file = data_dir / "backtest_results.json"
+
     status = {
-        "results_exist": RESULTS_FILE.exists(),
-        "data_dir_exists": DATA_DIR.exists(),
+        "source": source,
+        "results_exist": results_file.exists(),
+        "data_dir_exists": data_dir.exists(),
     }
 
-    if RESULTS_FILE.exists():
-        results = load_results()
+    if results_file.exists():
+        results = load_results(source)
         status["last_updated"] = results.get("last_updated", "")
         status["total_events"] = results.get("metadata", {}).get("total_events", 0)
         status["companies"] = len(results.get("metadata", {}).get("companies", []))
         status["periods_modeled"] = list(results.get("regression", {}).keys())
 
-    # Check sub-directories
-    transcripts_dir = DATA_DIR / "transcripts"
-    analysis_dir = DATA_DIR / "analysis"
-
-    if transcripts_dir.exists():
-        status["transcripts_cached"] = sum(
-            len(json.loads(f.read_text()))
-            for f in transcripts_dir.glob("*_transcripts.json")
-        )
-    if analysis_dir.exists():
-        status["analyses_cached"] = len(list(analysis_dir.glob("*_analysis.json")))
+    # Source-specific checks
+    if source == "earnings":
+        transcripts_dir = data_dir / "transcripts"
+        analysis_dir = data_dir / "analysis"
+        if transcripts_dir.exists():
+            status["transcripts_cached"] = sum(
+                len(json.loads(f.read_text()))
+                for f in transcripts_dir.glob("*_transcripts.json")
+            )
+        if analysis_dir.exists():
+            status["analyses_cached"] = len(list(analysis_dir.glob("*_analysis.json")))
+    elif source == "sec":
+        csv_file = data_dir / "raw" / "ml_dataset_with_concern.csv"
+        status["csv_exists"] = csv_file.exists()
 
     return status
 
@@ -315,8 +355,6 @@ async def get_status():
 async def trigger_pipeline(mode: str = "refresh"):
     """Trigger a pipeline run. Protected by ADMIN_KEY env var."""
     admin_key = os.environ.get("ADMIN_KEY", "")
-    # In production, you'd check an auth header here
-    # For now, this endpoint exists for Railway cron to call
 
     if mode not in ["refresh", "refresh-all", "full"]:
         raise HTTPException(status_code=400, detail="mode must be refresh, refresh-all, or full")
@@ -326,16 +364,13 @@ async def trigger_pipeline(mode: str = "refresh"):
         cmd.append("--refresh")
     elif mode == "refresh-all":
         cmd.append("--refresh-all")
-    # "full" = no extra flags, runs everything
 
-    # Run async so we don't block the server
     process = await asyncio.create_subprocess_exec(
         *cmd,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
 
-    # Don't wait for completion — return immediately
     return {
         "status": "started",
         "mode": mode,
@@ -348,7 +383,6 @@ async def trigger_pipeline(mode: str = "refresh"):
 # Serve Static Dashboard
 # ============================================================
 
-# Mount static files (CSS, JS, images)
 static_dir = Path("static")
 if static_dir.exists():
     app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -361,7 +395,6 @@ async def serve_dashboard():
     if index_file.exists():
         return HTMLResponse(content=index_file.read_text())
 
-    # Fallback: return a minimal page that loads from API
     return HTMLResponse(content="""<!DOCTYPE html>
 <html><head><title>Earnings Signal Lab</title></head>
 <body style="background:#070714;color:#e5e7eb;font-family:monospace;padding:40px;text-align:center">

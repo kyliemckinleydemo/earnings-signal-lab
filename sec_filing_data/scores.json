@@ -1,0 +1,4930 @@
+[
+  {
+    "raw_score": 4.0583,
+    "expected_return_pct": 4.06,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 4.5807,
+      "forward_pe": -0.3881
+    },
+    "symbol": "WDC",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 3.828,
+    "expected_return_pct": 3.83,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "forward_pe": 2.9925,
+      "price_to_low": 0.9697
+    },
+    "symbol": "TSLA",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 3.828,
+    "expected_return_pct": 3.83,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "forward_pe": 2.9925,
+      "price_to_low": 0.9697
+    },
+    "symbol": "TSLA",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 3.828,
+    "expected_return_pct": 3.83,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "forward_pe": 2.9925,
+      "price_to_low": 0.9697
+    },
+    "symbol": "TSLA",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": 3.828,
+    "expected_return_pct": 3.83,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "forward_pe": 2.9925,
+      "price_to_low": 0.9697
+    },
+    "symbol": "TSLA",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": 3.828,
+    "expected_return_pct": 3.83,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "forward_pe": 2.9925,
+      "price_to_low": 0.9697
+    },
+    "symbol": "TSLA",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": 3.828,
+    "expected_return_pct": 3.83,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "forward_pe": 2.9925,
+      "price_to_low": 0.9697
+    },
+    "symbol": "TSLA",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": 3.828,
+    "expected_return_pct": 3.83,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "forward_pe": 2.9925,
+      "price_to_low": 0.9697
+    },
+    "symbol": "TSLA",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": 2.8131,
+    "expected_return_pct": 2.81,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 2.4792,
+      "forward_pe": 0.4682
+    },
+    "symbol": "AMD",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 2.8131,
+    "expected_return_pct": 2.81,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 2.4792,
+      "forward_pe": 0.4682
+    },
+    "symbol": "AMD",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.8131,
+    "expected_return_pct": 2.81,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 2.4792,
+      "forward_pe": 0.4682
+    },
+    "symbol": "AMD",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.8131,
+    "expected_return_pct": 2.81,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 2.4792,
+      "forward_pe": 0.4682
+    },
+    "symbol": "AMD",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.8131,
+    "expected_return_pct": 2.81,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 2.4792,
+      "forward_pe": 0.4682
+    },
+    "symbol": "AMD",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": 2.8131,
+    "expected_return_pct": 2.81,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 2.4792,
+      "forward_pe": 0.4682
+    },
+    "symbol": "AMD",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": 2.3192,
+    "expected_return_pct": 2.32,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.6752,
+      "forward_pe": 0.7783
+    },
+    "symbol": "AVGO",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 2.3192,
+    "expected_return_pct": 2.32,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.6752,
+      "forward_pe": 0.7783
+    },
+    "symbol": "AVGO",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.3192,
+    "expected_return_pct": 2.32,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.6752,
+      "forward_pe": 0.7783
+    },
+    "symbol": "AVGO",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.3192,
+    "expected_return_pct": 2.32,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.6752,
+      "forward_pe": 0.7783
+    },
+    "symbol": "AVGO",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.3192,
+    "expected_return_pct": 2.32,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.6752,
+      "forward_pe": 0.7783
+    },
+    "symbol": "AVGO",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.3192,
+    "expected_return_pct": 2.32,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.6752,
+      "forward_pe": 0.7783
+    },
+    "symbol": "AVGO",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": 2.3192,
+    "expected_return_pct": 2.32,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.6752,
+      "forward_pe": 0.7783
+    },
+    "symbol": "AVGO",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 2.3192,
+    "expected_return_pct": 2.32,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.6752,
+      "forward_pe": 0.7783
+    },
+    "symbol": "AVGO",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 2.2377,
+    "expected_return_pct": 2.24,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 2.7304,
+      "forward_pe": -0.3584
+    },
+    "symbol": "MU",
+    "quarter": 4,
+    "year": 2025
+  },
+  {
+    "raw_score": 2.1744,
+    "expected_return_pct": 2.17,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.8757,
+      "forward_pe": 0.433
+    },
+    "symbol": "ORCL",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 2.1744,
+    "expected_return_pct": 2.17,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.8757,
+      "forward_pe": 0.433
+    },
+    "symbol": "ORCL",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.1744,
+    "expected_return_pct": 2.17,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.8757,
+      "forward_pe": 0.433
+    },
+    "symbol": "ORCL",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.1744,
+    "expected_return_pct": 2.17,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.8757,
+      "forward_pe": 0.433
+    },
+    "symbol": "ORCL",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.1744,
+    "expected_return_pct": 2.17,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.8757,
+      "forward_pe": 0.433
+    },
+    "symbol": "ORCL",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": 2.1744,
+    "expected_return_pct": 2.17,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.8757,
+      "forward_pe": 0.433
+    },
+    "symbol": "ORCL",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": 2.1744,
+    "expected_return_pct": 2.17,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.8757,
+      "forward_pe": 0.433
+    },
+    "symbol": "ORCL",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": 2.1744,
+    "expected_return_pct": 2.17,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.8757,
+      "forward_pe": 0.433
+    },
+    "symbol": "ORCL",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 2.1744,
+    "expected_return_pct": 2.17,
+    "signal": "LONG",
+    "confidence": "high",
+    "percentile": ">90th",
+    "feature_contributions": {
+      "price_to_low": 1.8757,
+      "forward_pe": 0.433
+    },
+    "symbol": "ORCL",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 1.66,
+    "expected_return_pct": 1.66,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 1.2577,
+      "forward_pe": 0.5367
+    },
+    "symbol": "NVDA",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 1.66,
+    "expected_return_pct": 1.66,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 1.2577,
+      "forward_pe": 0.5367
+    },
+    "symbol": "NVDA",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 1.66,
+    "expected_return_pct": 1.66,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 1.2577,
+      "forward_pe": 0.5367
+    },
+    "symbol": "NVDA",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": 1.66,
+    "expected_return_pct": 1.66,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 1.2577,
+      "forward_pe": 0.5367
+    },
+    "symbol": "NVDA",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": 1.66,
+    "expected_return_pct": 1.66,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 1.2577,
+      "forward_pe": 0.5367
+    },
+    "symbol": "NVDA",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": 1.66,
+    "expected_return_pct": 1.66,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 1.2577,
+      "forward_pe": 0.5367
+    },
+    "symbol": "NVDA",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": 1.66,
+    "expected_return_pct": 1.66,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 1.2577,
+      "forward_pe": 0.5367
+    },
+    "symbol": "NVDA",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": 1.66,
+    "expected_return_pct": 1.66,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 1.2577,
+      "forward_pe": 0.5367
+    },
+    "symbol": "NVDA",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 1.66,
+    "expected_return_pct": 1.66,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 1.2577,
+      "forward_pe": 0.5367
+    },
+    "symbol": "NVDA",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 1.6423,
+    "expected_return_pct": 1.64,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 1.6433,
+      "forward_pe": 0.1333
+    },
+    "symbol": "LRCX",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 1.3122,
+    "expected_return_pct": 1.31,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.7397,
+      "price_to_low": 0.7068
+    },
+    "symbol": "NFLX",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 1.3122,
+    "expected_return_pct": 1.31,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.7397,
+      "price_to_low": 0.7068
+    },
+    "symbol": "NFLX",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 1.3122,
+    "expected_return_pct": 1.31,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.7397,
+      "price_to_low": 0.7068
+    },
+    "symbol": "NFLX",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": 1.3122,
+    "expected_return_pct": 1.31,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.7397,
+      "price_to_low": 0.7068
+    },
+    "symbol": "NFLX",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": 1.3122,
+    "expected_return_pct": 1.31,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.7397,
+      "price_to_low": 0.7068
+    },
+    "symbol": "NFLX",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 1.3122,
+    "expected_return_pct": 1.31,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.7397,
+      "price_to_low": 0.7068
+    },
+    "symbol": "NFLX",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.6511,
+    "expected_return_pct": 0.65,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.6763,
+      "forward_pe": 0.1091
+    },
+    "symbol": "KLAC",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.6373,
+    "expected_return_pct": 0.64,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.6343,
+      "price_to_low": 0.1373
+    },
+    "symbol": "CDNS",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.5195,
+    "expected_return_pct": 0.52,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.7739,
+      "forward_pe": -0.1201
+    },
+    "symbol": "CAT",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.5066,
+    "expected_return_pct": 0.51,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.7961,
+      "price_to_low": -0.1552
+    },
+    "symbol": "NOW",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.4674,
+    "expected_return_pct": 0.47,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.6676,
+      "forward_pe": -0.0659
+    },
+    "symbol": "ULTA",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.3724,
+    "expected_return_pct": 0.37,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.5021,
+      "forward_pe": 0.0045
+    },
+    "symbol": "GOOG",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 0.3724,
+    "expected_return_pct": 0.37,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.5021,
+      "forward_pe": 0.0045
+    },
+    "symbol": "GOOG",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.3724,
+    "expected_return_pct": 0.37,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.5021,
+      "forward_pe": 0.0045
+    },
+    "symbol": "GOOG",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.3724,
+    "expected_return_pct": 0.37,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.5021,
+      "forward_pe": 0.0045
+    },
+    "symbol": "GOOG",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.3724,
+    "expected_return_pct": 0.37,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.5021,
+      "forward_pe": 0.0045
+    },
+    "symbol": "GOOG",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.3362,
+    "expected_return_pct": 0.34,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.3412,
+      "forward_pe": 0.1293
+    },
+    "symbol": "ETN",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.2501,
+    "expected_return_pct": 0.25,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.5477,
+      "forward_pe": -0.1633
+    },
+    "symbol": "GNRC",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.2477,
+    "expected_return_pct": 0.25,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.2341,
+      "price_to_low": 0.1479
+    },
+    "symbol": "MSFT",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 0.2477,
+    "expected_return_pct": 0.25,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.2341,
+      "price_to_low": 0.1479
+    },
+    "symbol": "MSFT",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.2477,
+    "expected_return_pct": 0.25,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.2341,
+      "price_to_low": 0.1479
+    },
+    "symbol": "MSFT",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.2477,
+    "expected_return_pct": 0.25,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.2341,
+      "price_to_low": 0.1479
+    },
+    "symbol": "MSFT",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.2477,
+    "expected_return_pct": 0.25,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.2341,
+      "price_to_low": 0.1479
+    },
+    "symbol": "MSFT",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.2477,
+    "expected_return_pct": 0.25,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.2341,
+      "price_to_low": 0.1479
+    },
+    "symbol": "MSFT",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.2477,
+    "expected_return_pct": 0.25,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.2341,
+      "price_to_low": 0.1479
+    },
+    "symbol": "MSFT",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.2347,
+    "expected_return_pct": 0.23,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.6009,
+      "forward_pe": -0.232
+    },
+    "symbol": "GS",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.2267,
+    "expected_return_pct": 0.23,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.2717,
+      "forward_pe": 0.0894
+    },
+    "symbol": "ROK",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.2079,
+    "expected_return_pct": 0.21,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.5476,
+      "price_to_low": -0.2054
+    },
+    "symbol": "FICO",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.0684,
+    "expected_return_pct": 0.07,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.3109,
+      "price_to_low": -0.1083
+    },
+    "symbol": "LLY",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 0.0684,
+    "expected_return_pct": 0.07,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.3109,
+      "price_to_low": -0.1083
+    },
+    "symbol": "LLY",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.0684,
+    "expected_return_pct": 0.07,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.3109,
+      "price_to_low": -0.1083
+    },
+    "symbol": "LLY",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.0684,
+    "expected_return_pct": 0.07,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.3109,
+      "price_to_low": -0.1083
+    },
+    "symbol": "LLY",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.0684,
+    "expected_return_pct": 0.07,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.3109,
+      "price_to_low": -0.1083
+    },
+    "symbol": "LLY",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.0684,
+    "expected_return_pct": 0.07,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.3109,
+      "price_to_low": -0.1083
+    },
+    "symbol": "LLY",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.0684,
+    "expected_return_pct": 0.07,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.3109,
+      "price_to_low": -0.1083
+    },
+    "symbol": "LLY",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.0684,
+    "expected_return_pct": 0.07,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.3109,
+      "price_to_low": -0.1083
+    },
+    "symbol": "LLY",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.0591,
+    "expected_return_pct": 0.06,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "price_to_low": 0.1379,
+      "forward_pe": 0.0555
+    },
+    "symbol": "PTC",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.053,
+    "expected_return_pct": 0.05,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.0964,
+      "price_to_low": 0.0909
+    },
+    "symbol": "AAPL",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 0.053,
+    "expected_return_pct": 0.05,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.0964,
+      "price_to_low": 0.0909
+    },
+    "symbol": "AAPL",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.053,
+    "expected_return_pct": 0.05,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.0964,
+      "price_to_low": 0.0909
+    },
+    "symbol": "AAPL",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.053,
+    "expected_return_pct": 0.05,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.0964,
+      "price_to_low": 0.0909
+    },
+    "symbol": "AAPL",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.053,
+    "expected_return_pct": 0.05,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.0964,
+      "price_to_low": 0.0909
+    },
+    "symbol": "AAPL",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.053,
+    "expected_return_pct": 0.05,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.0964,
+      "price_to_low": 0.0909
+    },
+    "symbol": "AAPL",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.053,
+    "expected_return_pct": 0.05,
+    "signal": "LONG",
+    "confidence": "medium",
+    "percentile": "75-90th",
+    "feature_contributions": {
+      "forward_pe": 0.0964,
+      "price_to_low": 0.0909
+    },
+    "symbol": "AAPL",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.0407,
+    "expected_return_pct": 0.04,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": 0.1269,
+      "forward_pe": 0.0481
+    },
+    "symbol": "META",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.0407,
+    "expected_return_pct": 0.04,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": 0.1269,
+      "forward_pe": 0.0481
+    },
+    "symbol": "META",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.0407,
+    "expected_return_pct": 0.04,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": 0.1269,
+      "forward_pe": 0.0481
+    },
+    "symbol": "META",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.0407,
+    "expected_return_pct": 0.04,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": 0.1269,
+      "forward_pe": 0.0481
+    },
+    "symbol": "META",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.0407,
+    "expected_return_pct": 0.04,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": 0.1269,
+      "forward_pe": 0.0481
+    },
+    "symbol": "META",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.0291,
+    "expected_return_pct": 0.03,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.2637,
+      "price_to_low": -0.1003
+    },
+    "symbol": "AMZN",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": 0.0291,
+    "expected_return_pct": 0.03,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.2637,
+      "price_to_low": -0.1003
+    },
+    "symbol": "AMZN",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.0291,
+    "expected_return_pct": 0.03,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.2637,
+      "price_to_low": -0.1003
+    },
+    "symbol": "AMZN",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": 0.0291,
+    "expected_return_pct": 0.03,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.2637,
+      "price_to_low": -0.1003
+    },
+    "symbol": "AMZN",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.0291,
+    "expected_return_pct": 0.03,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.2637,
+      "price_to_low": -0.1003
+    },
+    "symbol": "AMZN",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.0291,
+    "expected_return_pct": 0.03,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.2637,
+      "price_to_low": -0.1003
+    },
+    "symbol": "AMZN",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": 0.0239,
+    "expected_return_pct": 0.02,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.8386,
+      "price_to_low": -0.6803
+    },
+    "symbol": "ISRG",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.0166,
+    "expected_return_pct": -0.02,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.3304,
+      "price_to_low": -0.2126
+    },
+    "symbol": "WMT",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.0166,
+    "expected_return_pct": -0.02,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.3304,
+      "price_to_low": -0.2126
+    },
+    "symbol": "WMT",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.0166,
+    "expected_return_pct": -0.02,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.3304,
+      "price_to_low": -0.2126
+    },
+    "symbol": "WMT",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.0685,
+    "expected_return_pct": -0.07,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": 0.122,
+      "forward_pe": -0.0563
+    },
+    "symbol": "PH",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.0864,
+    "expected_return_pct": -0.09,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.6201,
+      "price_to_low": -0.5723
+    },
+    "symbol": "COST",
+    "quarter": 4,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.0864,
+    "expected_return_pct": -0.09,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": 0.6201,
+      "price_to_low": -0.5723
+    },
+    "symbol": "COST",
+    "quarter": 4,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.09,
+    "expected_return_pct": -0.09,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": 0.3868,
+      "forward_pe": -0.3425
+    },
+    "symbol": "EXPE",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.0964,
+    "expected_return_pct": -0.1,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": 0.1561,
+      "forward_pe": -0.1182
+    },
+    "symbol": "ALLE",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.1129,
+    "expected_return_pct": -0.11,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": 0.1155,
+      "forward_pe": -0.0941
+    },
+    "symbol": "BLK",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.139,
+    "expected_return_pct": -0.14,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.119,
+      "price_to_low": 0.1142
+    },
+    "symbol": "NOC",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.1614,
+    "expected_return_pct": -0.16,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2437,
+      "price_to_low": 0.2167
+    },
+    "symbol": "LDOS",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.162,
+    "expected_return_pct": -0.16,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.0611,
+      "price_to_low": 0.0334
+    },
+    "symbol": "A",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.1936,
+    "expected_return_pct": -0.19,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.0574,
+      "forward_pe": -0.0019
+    },
+    "symbol": "IBM",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.1982,
+    "expected_return_pct": -0.2,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.0605,
+      "price_to_low": -0.0034
+    },
+    "symbol": "SCHW",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.2051,
+    "expected_return_pct": -0.21,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.0765,
+      "forward_pe": 0.0057
+    },
+    "symbol": "TDY",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.2193,
+    "expected_return_pct": -0.22,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2443,
+      "price_to_low": 0.1592
+    },
+    "symbol": "JPM",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.2568,
+    "expected_return_pct": -0.26,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3523,
+      "forward_pe": 0.2298
+    },
+    "symbol": "MA",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.2568,
+    "expected_return_pct": -0.26,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3523,
+      "forward_pe": 0.2298
+    },
+    "symbol": "MA",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.2568,
+    "expected_return_pct": -0.26,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3523,
+      "forward_pe": 0.2298
+    },
+    "symbol": "MA",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.2568,
+    "expected_return_pct": -0.26,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3523,
+      "forward_pe": 0.2298
+    },
+    "symbol": "MA",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.2568,
+    "expected_return_pct": -0.26,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3523,
+      "forward_pe": 0.2298
+    },
+    "symbol": "MA",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.2568,
+    "expected_return_pct": -0.26,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3523,
+      "forward_pe": 0.2298
+    },
+    "symbol": "MA",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.2568,
+    "expected_return_pct": -0.26,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3523,
+      "forward_pe": 0.2298
+    },
+    "symbol": "MA",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.2568,
+    "expected_return_pct": -0.26,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3523,
+      "forward_pe": 0.2298
+    },
+    "symbol": "MA",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.2568,
+    "expected_return_pct": -0.26,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.2485,
+      "forward_pe": 0.126
+    },
+    "symbol": "TJX",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.2672,
+    "expected_return_pct": -0.27,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.6127,
+      "forward_pe": 0.4798
+    },
+    "symbol": "ESS",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.277,
+    "expected_return_pct": -0.28,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3773,
+      "forward_pe": 0.2346
+    },
+    "symbol": "BSX",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.2917,
+    "expected_return_pct": -0.29,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.2669,
+      "forward_pe": 0.1094
+    },
+    "symbol": "WMB",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3135,
+    "expected_return_pct": -0.31,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.1154,
+      "price_to_low": -0.0638
+    },
+    "symbol": "TMO",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.3135,
+    "expected_return_pct": -0.31,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.1154,
+      "price_to_low": -0.0638
+    },
+    "symbol": "TMO",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3135,
+    "expected_return_pct": -0.31,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.1154,
+      "price_to_low": -0.0638
+    },
+    "symbol": "TMO",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3135,
+    "expected_return_pct": -0.31,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.1154,
+      "price_to_low": -0.0638
+    },
+    "symbol": "TMO",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3135,
+    "expected_return_pct": -0.31,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.1154,
+      "price_to_low": -0.0638
+    },
+    "symbol": "TMO",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3135,
+    "expected_return_pct": -0.31,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.1154,
+      "price_to_low": -0.0638
+    },
+    "symbol": "TMO",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3135,
+    "expected_return_pct": -0.31,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.1154,
+      "price_to_low": -0.0638
+    },
+    "symbol": "TMO",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3135,
+    "expected_return_pct": -0.31,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.1154,
+      "price_to_low": -0.0638
+    },
+    "symbol": "TMO",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3135,
+    "expected_return_pct": -0.31,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.1154,
+      "price_to_low": -0.0638
+    },
+    "symbol": "TMO",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3318,
+    "expected_return_pct": -0.33,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2139,
+      "price_to_low": 0.0164
+    },
+    "symbol": "ABBV",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3318,
+    "expected_return_pct": -0.33,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2139,
+      "price_to_low": 0.0164
+    },
+    "symbol": "ABBV",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3318,
+    "expected_return_pct": -0.33,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2139,
+      "price_to_low": 0.0164
+    },
+    "symbol": "ABBV",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3318,
+    "expected_return_pct": -0.33,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2139,
+      "price_to_low": 0.0164
+    },
+    "symbol": "ABBV",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3318,
+    "expected_return_pct": -0.33,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2139,
+      "price_to_low": 0.0164
+    },
+    "symbol": "ABBV",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3318,
+    "expected_return_pct": -0.33,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2139,
+      "price_to_low": 0.0164
+    },
+    "symbol": "ABBV",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3318,
+    "expected_return_pct": -0.33,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2139,
+      "price_to_low": 0.0164
+    },
+    "symbol": "ABBV",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3442,
+    "expected_return_pct": -0.34,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.149,
+      "price_to_low": -0.0609
+    },
+    "symbol": "DIS",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.3442,
+    "expected_return_pct": -0.34,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.149,
+      "price_to_low": -0.0609
+    },
+    "symbol": "DIS",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3442,
+    "expected_return_pct": -0.34,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.149,
+      "price_to_low": -0.0609
+    },
+    "symbol": "DIS",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3442,
+    "expected_return_pct": -0.34,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.149,
+      "price_to_low": -0.0609
+    },
+    "symbol": "DIS",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3442,
+    "expected_return_pct": -0.34,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.149,
+      "price_to_low": -0.0609
+    },
+    "symbol": "DIS",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3442,
+    "expected_return_pct": -0.34,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.149,
+      "price_to_low": -0.0609
+    },
+    "symbol": "DIS",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3442,
+    "expected_return_pct": -0.34,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.149,
+      "price_to_low": -0.0609
+    },
+    "symbol": "DIS",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3442,
+    "expected_return_pct": -0.34,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.149,
+      "price_to_low": -0.0609
+    },
+    "symbol": "DIS",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3476,
+    "expected_return_pct": -0.35,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3005,
+      "forward_pe": 0.0871
+    },
+    "symbol": "TXN",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3505,
+    "expected_return_pct": -0.35,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2757,
+      "price_to_low": 0.0595
+    },
+    "symbol": "HCA",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3531,
+    "expected_return_pct": -0.35,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.6295,
+      "forward_pe": 0.4107
+    },
+    "symbol": "CTAS",
+    "quarter": 4,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.36,
+    "expected_return_pct": -0.36,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.4249,
+      "price_to_low": 0.1992
+    },
+    "symbol": "UNH",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.36,
+    "expected_return_pct": -0.36,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.4249,
+      "price_to_low": 0.1992
+    },
+    "symbol": "UNH",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.36,
+    "expected_return_pct": -0.36,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.4249,
+      "price_to_low": 0.1992
+    },
+    "symbol": "UNH",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.36,
+    "expected_return_pct": -0.36,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.4249,
+      "price_to_low": 0.1992
+    },
+    "symbol": "UNH",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.36,
+    "expected_return_pct": -0.36,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.4249,
+      "price_to_low": 0.1992
+    },
+    "symbol": "UNH",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.382,
+    "expected_return_pct": -0.38,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.1483,
+      "forward_pe": -0.0994
+    },
+    "symbol": "KEYS",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3874,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.4542,
+      "forward_pe": 0.2011
+    },
+    "symbol": "RSG",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3879,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.3825,
+      "price_to_low": 0.1289
+    },
+    "symbol": "BAC",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3879,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.3825,
+      "price_to_low": 0.1289
+    },
+    "symbol": "BAC",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3879,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.3825,
+      "price_to_low": 0.1289
+    },
+    "symbol": "BAC",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3879,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.3825,
+      "price_to_low": 0.1289
+    },
+    "symbol": "BAC",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3919,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.2841,
+      "forward_pe": 0.0264
+    },
+    "symbol": "V",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.3919,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.2841,
+      "forward_pe": 0.0264
+    },
+    "symbol": "V",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3919,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.2841,
+      "forward_pe": 0.0264
+    },
+    "symbol": "V",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3919,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.2841,
+      "forward_pe": 0.0264
+    },
+    "symbol": "V",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3919,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.2841,
+      "forward_pe": 0.0264
+    },
+    "symbol": "V",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.3919,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.2841,
+      "forward_pe": 0.0264
+    },
+    "symbol": "V",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3919,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.2841,
+      "forward_pe": 0.0264
+    },
+    "symbol": "V",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.3919,
+    "expected_return_pct": -0.39,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.2841,
+      "forward_pe": 0.0264
+    },
+    "symbol": "V",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.396,
+    "expected_return_pct": -0.4,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "price_to_low": -0.3391,
+      "forward_pe": 0.0774
+    },
+    "symbol": "INTU",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.4006,
+    "expected_return_pct": -0.4,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "50-75th",
+    "feature_contributions": {
+      "forward_pe": -0.2479,
+      "price_to_low": -0.0184
+    },
+    "symbol": "WRB",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.452,
+    "expected_return_pct": -0.45,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2437,
+      "price_to_low": -0.074
+    },
+    "symbol": "JNJ",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.452,
+    "expected_return_pct": -0.45,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2437,
+      "price_to_low": -0.074
+    },
+    "symbol": "JNJ",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.452,
+    "expected_return_pct": -0.45,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2437,
+      "price_to_low": -0.074
+    },
+    "symbol": "JNJ",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.452,
+    "expected_return_pct": -0.45,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2437,
+      "price_to_low": -0.074
+    },
+    "symbol": "JNJ",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.452,
+    "expected_return_pct": -0.45,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2437,
+      "price_to_low": -0.074
+    },
+    "symbol": "JNJ",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.452,
+    "expected_return_pct": -0.45,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2437,
+      "price_to_low": -0.074
+    },
+    "symbol": "JNJ",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.452,
+    "expected_return_pct": -0.45,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2437,
+      "price_to_low": -0.074
+    },
+    "symbol": "JNJ",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.452,
+    "expected_return_pct": -0.45,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2437,
+      "price_to_low": -0.074
+    },
+    "symbol": "JNJ",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.4527,
+    "expected_return_pct": -0.45,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.4199,
+      "forward_pe": 0.1014
+    },
+    "symbol": "KIM",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.4952,
+    "expected_return_pct": -0.5,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3417,
+      "forward_pe": -0.0192
+    },
+    "symbol": "WAT",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5058,
+    "expected_return_pct": -0.51,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.355,
+      "forward_pe": -0.0165
+    },
+    "symbol": "ABT",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.5058,
+    "expected_return_pct": -0.51,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.355,
+      "forward_pe": -0.0165
+    },
+    "symbol": "ABT",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.5058,
+    "expected_return_pct": -0.51,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.355,
+      "forward_pe": -0.0165
+    },
+    "symbol": "ABT",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.5058,
+    "expected_return_pct": -0.51,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.355,
+      "forward_pe": -0.0165
+    },
+    "symbol": "ABT",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.5058,
+    "expected_return_pct": -0.51,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.355,
+      "forward_pe": -0.0165
+    },
+    "symbol": "ABT",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5058,
+    "expected_return_pct": -0.51,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.355,
+      "forward_pe": -0.0165
+    },
+    "symbol": "ABT",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5058,
+    "expected_return_pct": -0.51,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.355,
+      "forward_pe": -0.0165
+    },
+    "symbol": "ABT",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5058,
+    "expected_return_pct": -0.51,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.355,
+      "forward_pe": -0.0165
+    },
+    "symbol": "ABT",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5122,
+    "expected_return_pct": -0.51,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.4566,
+      "forward_pe": 0.0788
+    },
+    "symbol": "SPGI",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5473,
+    "expected_return_pct": -0.55,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3097,
+      "forward_pe": -0.1032
+    },
+    "symbol": "SO",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5602,
+    "expected_return_pct": -0.56,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2606,
+      "price_to_low": -0.1653
+    },
+    "symbol": "CSCO",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.5602,
+    "expected_return_pct": -0.56,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2606,
+      "price_to_low": -0.1653
+    },
+    "symbol": "CSCO",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.5602,
+    "expected_return_pct": -0.56,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2606,
+      "price_to_low": -0.1653
+    },
+    "symbol": "CSCO",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.5602,
+    "expected_return_pct": -0.56,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2606,
+      "price_to_low": -0.1653
+    },
+    "symbol": "CSCO",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.5602,
+    "expected_return_pct": -0.56,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2606,
+      "price_to_low": -0.1653
+    },
+    "symbol": "CSCO",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5602,
+    "expected_return_pct": -0.56,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2606,
+      "price_to_low": -0.1653
+    },
+    "symbol": "CSCO",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5602,
+    "expected_return_pct": -0.56,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2606,
+      "price_to_low": -0.1653
+    },
+    "symbol": "CSCO",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5602,
+    "expected_return_pct": -0.56,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.2606,
+      "price_to_low": -0.1653
+    },
+    "symbol": "CSCO",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5699,
+    "expected_return_pct": -0.57,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.3582,
+      "price_to_low": -0.0774
+    },
+    "symbol": "CAKE",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5773,
+    "expected_return_pct": -0.58,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.2642,
+      "forward_pe": -0.1788
+    },
+    "symbol": "NKE",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.5773,
+    "expected_return_pct": -0.58,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.2642,
+      "forward_pe": -0.1788
+    },
+    "symbol": "NKE",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.5773,
+    "expected_return_pct": -0.58,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.2642,
+      "forward_pe": -0.1788
+    },
+    "symbol": "NKE",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.5773,
+    "expected_return_pct": -0.58,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.2642,
+      "forward_pe": -0.1788
+    },
+    "symbol": "NKE",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5773,
+    "expected_return_pct": -0.58,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.2642,
+      "forward_pe": -0.1788
+    },
+    "symbol": "NKE",
+    "quarter": 4,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.5773,
+    "expected_return_pct": -0.58,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.2642,
+      "forward_pe": -0.1788
+    },
+    "symbol": "NKE",
+    "quarter": 4,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.6134,
+    "expected_return_pct": -0.61,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.3575,
+      "price_to_low": -0.1215
+    },
+    "symbol": "WFC",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.6134,
+    "expected_return_pct": -0.61,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.3575,
+      "price_to_low": -0.1215
+    },
+    "symbol": "WFC",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.6195,
+    "expected_return_pct": -0.62,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.4328,
+      "forward_pe": -0.0524
+    },
+    "symbol": "EFX",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.6237,
+    "expected_return_pct": -0.62,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.51,
+      "forward_pe": 0.0206
+    },
+    "symbol": "SYK",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.6311,
+    "expected_return_pct": -0.63,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.433,
+      "forward_pe": -0.0638
+    },
+    "symbol": "HD",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.6311,
+    "expected_return_pct": -0.63,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.433,
+      "forward_pe": -0.0638
+    },
+    "symbol": "HD",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.6311,
+    "expected_return_pct": -0.63,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.433,
+      "forward_pe": -0.0638
+    },
+    "symbol": "HD",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.6311,
+    "expected_return_pct": -0.63,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.433,
+      "forward_pe": -0.0638
+    },
+    "symbol": "HD",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.6311,
+    "expected_return_pct": -0.63,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.433,
+      "forward_pe": -0.0638
+    },
+    "symbol": "HD",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.6311,
+    "expected_return_pct": -0.63,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.433,
+      "forward_pe": -0.0638
+    },
+    "symbol": "HD",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.6346,
+    "expected_return_pct": -0.63,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.6826,
+      "forward_pe": 0.1822
+    },
+    "symbol": "MAA",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.6858,
+    "expected_return_pct": -0.69,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.4786,
+      "price_to_low": -0.0729
+    },
+    "symbol": "GL",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.6928,
+    "expected_return_pct": -0.69,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.4182,
+      "forward_pe": -0.1403
+    },
+    "symbol": "IR",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7475,
+    "expected_return_pct": -0.75,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.4797,
+      "forward_pe": -0.1335
+    },
+    "symbol": "VRTX",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7529,
+    "expected_return_pct": -0.75,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.6182,
+      "forward_pe": -0.0004
+    },
+    "symbol": "ADP",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.756,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5131,
+      "forward_pe": -0.1085
+    },
+    "symbol": "KO",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.756,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5131,
+      "forward_pe": -0.1085
+    },
+    "symbol": "KO",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.756,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5131,
+      "forward_pe": -0.1085
+    },
+    "symbol": "KO",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.756,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5131,
+      "forward_pe": -0.1085
+    },
+    "symbol": "KO",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.756,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5131,
+      "forward_pe": -0.1085
+    },
+    "symbol": "KO",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.756,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5131,
+      "forward_pe": -0.1085
+    },
+    "symbol": "KO",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.756,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5131,
+      "forward_pe": -0.1085
+    },
+    "symbol": "KO",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.756,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5131,
+      "forward_pe": -0.1085
+    },
+    "symbol": "KO",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7618,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.4043,
+      "price_to_low": -0.2232
+    },
+    "symbol": "QCOM",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.7618,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.4043,
+      "price_to_low": -0.2232
+    },
+    "symbol": "QCOM",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.7618,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.4043,
+      "price_to_low": -0.2232
+    },
+    "symbol": "QCOM",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.7618,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.4043,
+      "price_to_low": -0.2232
+    },
+    "symbol": "QCOM",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.7618,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.4043,
+      "price_to_low": -0.2232
+    },
+    "symbol": "QCOM",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7618,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.4043,
+      "price_to_low": -0.2232
+    },
+    "symbol": "QCOM",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7618,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.4043,
+      "price_to_low": -0.2232
+    },
+    "symbol": "QCOM",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7618,
+    "expected_return_pct": -0.76,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "forward_pe": -0.4043,
+      "price_to_low": -0.2232
+    },
+    "symbol": "QCOM",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.783,
+    "expected_return_pct": -0.78,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5691,
+      "forward_pe": -0.0796
+    },
+    "symbol": "MCD",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.783,
+    "expected_return_pct": -0.78,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5691,
+      "forward_pe": -0.0796
+    },
+    "symbol": "MCD",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.783,
+    "expected_return_pct": -0.78,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5691,
+      "forward_pe": -0.0796
+    },
+    "symbol": "MCD",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.783,
+    "expected_return_pct": -0.78,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5691,
+      "forward_pe": -0.0796
+    },
+    "symbol": "MCD",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.783,
+    "expected_return_pct": -0.78,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5691,
+      "forward_pe": -0.0796
+    },
+    "symbol": "MCD",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.783,
+    "expected_return_pct": -0.78,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5691,
+      "forward_pe": -0.0796
+    },
+    "symbol": "MCD",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.783,
+    "expected_return_pct": -0.78,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5691,
+      "forward_pe": -0.0796
+    },
+    "symbol": "MCD",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7854,
+    "expected_return_pct": -0.79,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3896,
+      "forward_pe": -0.2615
+    },
+    "symbol": "PEP",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.7854,
+    "expected_return_pct": -0.79,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3896,
+      "forward_pe": -0.2615
+    },
+    "symbol": "PEP",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.7854,
+    "expected_return_pct": -0.79,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3896,
+      "forward_pe": -0.2615
+    },
+    "symbol": "PEP",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.7854,
+    "expected_return_pct": -0.79,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3896,
+      "forward_pe": -0.2615
+    },
+    "symbol": "PEP",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.7854,
+    "expected_return_pct": -0.79,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3896,
+      "forward_pe": -0.2615
+    },
+    "symbol": "PEP",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7854,
+    "expected_return_pct": -0.79,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3896,
+      "forward_pe": -0.2615
+    },
+    "symbol": "PEP",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7854,
+    "expected_return_pct": -0.79,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3896,
+      "forward_pe": -0.2615
+    },
+    "symbol": "PEP",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7854,
+    "expected_return_pct": -0.79,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3896,
+      "forward_pe": -0.2615
+    },
+    "symbol": "PEP",
+    "quarter": 4,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.7854,
+    "expected_return_pct": -0.79,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.3896,
+      "forward_pe": -0.2615
+    },
+    "symbol": "PEP",
+    "quarter": 4,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8032,
+    "expected_return_pct": -0.8,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5284,
+      "forward_pe": -0.1405
+    },
+    "symbol": "ARE",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8034,
+    "expected_return_pct": -0.8,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5272,
+      "forward_pe": -0.1419
+    },
+    "symbol": "TMUS",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.8034,
+    "expected_return_pct": -0.8,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5272,
+      "forward_pe": -0.1419
+    },
+    "symbol": "TMUS",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.8034,
+    "expected_return_pct": -0.8,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5272,
+      "forward_pe": -0.1419
+    },
+    "symbol": "TMUS",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.8034,
+    "expected_return_pct": -0.8,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5272,
+      "forward_pe": -0.1419
+    },
+    "symbol": "TMUS",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8034,
+    "expected_return_pct": -0.8,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5272,
+      "forward_pe": -0.1419
+    },
+    "symbol": "TMUS",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8034,
+    "expected_return_pct": -0.8,
+    "signal": "NEUTRAL",
+    "confidence": "low",
+    "percentile": "25-50th",
+    "feature_contributions": {
+      "price_to_low": -0.5272,
+      "forward_pe": -0.1419
+    },
+    "symbol": "TMUS",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8352,
+    "expected_return_pct": -0.84,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4549,
+      "forward_pe": -0.246
+    },
+    "symbol": "MDLZ",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8389,
+    "expected_return_pct": -0.84,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.594,
+      "forward_pe": -0.1106
+    },
+    "symbol": "GWW",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8495,
+    "expected_return_pct": -0.85,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.5813,
+      "forward_pe": -0.1339
+    },
+    "symbol": "CRM",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.8495,
+    "expected_return_pct": -0.85,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.5813,
+      "forward_pe": -0.1339
+    },
+    "symbol": "CRM",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.8495,
+    "expected_return_pct": -0.85,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.5813,
+      "forward_pe": -0.1339
+    },
+    "symbol": "CRM",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.8495,
+    "expected_return_pct": -0.85,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.5813,
+      "forward_pe": -0.1339
+    },
+    "symbol": "CRM",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.8495,
+    "expected_return_pct": -0.85,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.5813,
+      "forward_pe": -0.1339
+    },
+    "symbol": "CRM",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.8495,
+    "expected_return_pct": -0.85,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.5813,
+      "forward_pe": -0.1339
+    },
+    "symbol": "CRM",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8495,
+    "expected_return_pct": -0.85,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.5813,
+      "forward_pe": -0.1339
+    },
+    "symbol": "CRM",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8495,
+    "expected_return_pct": -0.85,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.5813,
+      "forward_pe": -0.1339
+    },
+    "symbol": "CRM",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8572,
+    "expected_return_pct": -0.86,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.6925,
+      "forward_pe": -0.0304
+    },
+    "symbol": "CPRT",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.8933,
+    "expected_return_pct": -0.89,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.4573,
+      "price_to_low": -0.3017
+    },
+    "symbol": "MAT",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9006,
+    "expected_return_pct": -0.9,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4717,
+      "forward_pe": -0.2946
+    },
+    "symbol": "SNA",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9385,
+    "expected_return_pct": -0.94,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4437,
+      "forward_pe": -0.3605
+    },
+    "symbol": "AMGN",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9433,
+    "expected_return_pct": -0.94,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.7078,
+      "price_to_low": -0.1012
+    },
+    "symbol": "ORLY",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9571,
+    "expected_return_pct": -0.96,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.4645,
+      "price_to_low": -0.3583
+    },
+    "symbol": "BLDR",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9607,
+    "expected_return_pct": -0.96,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4669,
+      "forward_pe": -0.3595
+    },
+    "symbol": "XOM",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.9607,
+    "expected_return_pct": -0.96,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4669,
+      "forward_pe": -0.3595
+    },
+    "symbol": "XOM",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.9607,
+    "expected_return_pct": -0.96,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4669,
+      "forward_pe": -0.3595
+    },
+    "symbol": "XOM",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.9607,
+    "expected_return_pct": -0.96,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4669,
+      "forward_pe": -0.3595
+    },
+    "symbol": "XOM",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.9607,
+    "expected_return_pct": -0.96,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4669,
+      "forward_pe": -0.3595
+    },
+    "symbol": "XOM",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.9607,
+    "expected_return_pct": -0.96,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4669,
+      "forward_pe": -0.3595
+    },
+    "symbol": "XOM",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9607,
+    "expected_return_pct": -0.96,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4669,
+      "forward_pe": -0.3595
+    },
+    "symbol": "XOM",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9607,
+    "expected_return_pct": -0.96,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4669,
+      "forward_pe": -0.3595
+    },
+    "symbol": "XOM",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9607,
+    "expected_return_pct": -0.96,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4669,
+      "forward_pe": -0.3595
+    },
+    "symbol": "XOM",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9859,
+    "expected_return_pct": -0.99,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4748,
+      "forward_pe": -0.3767
+    },
+    "symbol": "CVX",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -0.9859,
+    "expected_return_pct": -0.99,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4748,
+      "forward_pe": -0.3767
+    },
+    "symbol": "CVX",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.9859,
+    "expected_return_pct": -0.99,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4748,
+      "forward_pe": -0.3767
+    },
+    "symbol": "CVX",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.9859,
+    "expected_return_pct": -0.99,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4748,
+      "forward_pe": -0.3767
+    },
+    "symbol": "CVX",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.9859,
+    "expected_return_pct": -0.99,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4748,
+      "forward_pe": -0.3767
+    },
+    "symbol": "CVX",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -0.9859,
+    "expected_return_pct": -0.99,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4748,
+      "forward_pe": -0.3767
+    },
+    "symbol": "CVX",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9859,
+    "expected_return_pct": -0.99,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4748,
+      "forward_pe": -0.3767
+    },
+    "symbol": "CVX",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -0.9859,
+    "expected_return_pct": -0.99,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.4748,
+      "forward_pe": -0.3767
+    },
+    "symbol": "CVX",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0101,
+    "expected_return_pct": -1.01,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.6965,
+      "forward_pe": -0.1794
+    },
+    "symbol": "PG",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -1.0101,
+    "expected_return_pct": -1.01,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.6965,
+      "forward_pe": -0.1794
+    },
+    "symbol": "PG",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0101,
+    "expected_return_pct": -1.01,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.6965,
+      "forward_pe": -0.1794
+    },
+    "symbol": "PG",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0101,
+    "expected_return_pct": -1.01,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.6965,
+      "forward_pe": -0.1794
+    },
+    "symbol": "PG",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0101,
+    "expected_return_pct": -1.01,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.6965,
+      "forward_pe": -0.1794
+    },
+    "symbol": "PG",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0101,
+    "expected_return_pct": -1.01,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.6965,
+      "forward_pe": -0.1794
+    },
+    "symbol": "PG",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0101,
+    "expected_return_pct": -1.01,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.6965,
+      "forward_pe": -0.1794
+    },
+    "symbol": "PG",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0145,
+    "expected_return_pct": -1.01,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "price_to_low": -0.6109,
+      "forward_pe": -0.2694
+    },
+    "symbol": "ACN",
+    "quarter": 4,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0344,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5048,
+      "price_to_low": -0.3952
+    },
+    "symbol": "MRK",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -1.0344,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5048,
+      "price_to_low": -0.3952
+    },
+    "symbol": "MRK",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0344,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5048,
+      "price_to_low": -0.3952
+    },
+    "symbol": "MRK",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0344,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5048,
+      "price_to_low": -0.3952
+    },
+    "symbol": "MRK",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0344,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5048,
+      "price_to_low": -0.3952
+    },
+    "symbol": "MRK",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0344,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5048,
+      "price_to_low": -0.3952
+    },
+    "symbol": "MRK",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0344,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5048,
+      "price_to_low": -0.3952
+    },
+    "symbol": "MRK",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0344,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5048,
+      "price_to_low": -0.3952
+    },
+    "symbol": "MRK",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0345,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5252,
+      "price_to_low": -0.3749
+    },
+    "symbol": "PFE",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -1.0345,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5252,
+      "price_to_low": -0.3749
+    },
+    "symbol": "PFE",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0345,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5252,
+      "price_to_low": -0.3749
+    },
+    "symbol": "PFE",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0345,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5252,
+      "price_to_low": -0.3749
+    },
+    "symbol": "PFE",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0345,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5252,
+      "price_to_low": -0.3749
+    },
+    "symbol": "PFE",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0345,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5252,
+      "price_to_low": -0.3749
+    },
+    "symbol": "PFE",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0345,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5252,
+      "price_to_low": -0.3749
+    },
+    "symbol": "PFE",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0345,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5252,
+      "price_to_low": -0.3749
+    },
+    "symbol": "PFE",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0345,
+    "expected_return_pct": -1.03,
+    "signal": "SHORT",
+    "confidence": "medium",
+    "percentile": "10-25th",
+    "feature_contributions": {
+      "forward_pe": -0.5252,
+      "price_to_low": -0.3749
+    },
+    "symbol": "PFE",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0355,
+    "expected_return_pct": -1.04,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6711,
+      "forward_pe": -0.2302
+    },
+    "symbol": "TRGP",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0575,
+    "expected_return_pct": -1.06,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "forward_pe": -0.5563,
+      "price_to_low": -0.3669
+    },
+    "symbol": "RNR",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0839,
+    "expected_return_pct": -1.08,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6595,
+      "forward_pe": -0.2901
+    },
+    "symbol": "ADBE",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0839,
+    "expected_return_pct": -1.08,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6595,
+      "forward_pe": -0.2901
+    },
+    "symbol": "ADBE",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0839,
+    "expected_return_pct": -1.08,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6595,
+      "forward_pe": -0.2901
+    },
+    "symbol": "ADBE",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.0839,
+    "expected_return_pct": -1.08,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6595,
+      "forward_pe": -0.2901
+    },
+    "symbol": "ADBE",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0839,
+    "expected_return_pct": -1.08,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6595,
+      "forward_pe": -0.2901
+    },
+    "symbol": "ADBE",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0839,
+    "expected_return_pct": -1.08,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6595,
+      "forward_pe": -0.2901
+    },
+    "symbol": "ADBE",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0839,
+    "expected_return_pct": -1.08,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6595,
+      "forward_pe": -0.2901
+    },
+    "symbol": "ADBE",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0839,
+    "expected_return_pct": -1.08,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6595,
+      "forward_pe": -0.2901
+    },
+    "symbol": "ADBE",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0839,
+    "expected_return_pct": -1.08,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6595,
+      "forward_pe": -0.2901
+    },
+    "symbol": "ADBE",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.0991,
+    "expected_return_pct": -1.1,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.4836,
+      "forward_pe": -0.4812
+    },
+    "symbol": "SJM",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.1155,
+    "expected_return_pct": -1.12,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5285,
+      "forward_pe": -0.4527
+    },
+    "symbol": "COP",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -1.1155,
+    "expected_return_pct": -1.12,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5285,
+      "forward_pe": -0.4527
+    },
+    "symbol": "COP",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.1155,
+    "expected_return_pct": -1.12,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5285,
+      "forward_pe": -0.4527
+    },
+    "symbol": "COP",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.1155,
+    "expected_return_pct": -1.12,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5285,
+      "forward_pe": -0.4527
+    },
+    "symbol": "COP",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.1155,
+    "expected_return_pct": -1.12,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5285,
+      "forward_pe": -0.4527
+    },
+    "symbol": "COP",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.1155,
+    "expected_return_pct": -1.12,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5285,
+      "forward_pe": -0.4527
+    },
+    "symbol": "COP",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.1155,
+    "expected_return_pct": -1.12,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5285,
+      "forward_pe": -0.4527
+    },
+    "symbol": "COP",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.1155,
+    "expected_return_pct": -1.12,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5285,
+      "forward_pe": -0.4527
+    },
+    "symbol": "COP",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.1797,
+    "expected_return_pct": -1.18,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "forward_pe": -0.5372,
+      "price_to_low": -0.5082
+    },
+    "symbol": "HLX",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.2391,
+    "expected_return_pct": -1.24,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "forward_pe": -0.5757,
+      "price_to_low": -0.5291
+    },
+    "symbol": "PRU",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.2541,
+    "expected_return_pct": -1.25,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5936,
+      "forward_pe": -0.5262
+    },
+    "symbol": "VZ",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "raw_score": -1.2541,
+    "expected_return_pct": -1.25,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5936,
+      "forward_pe": -0.5262
+    },
+    "symbol": "VZ",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.2541,
+    "expected_return_pct": -1.25,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5936,
+      "forward_pe": -0.5262
+    },
+    "symbol": "VZ",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.2541,
+    "expected_return_pct": -1.25,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5936,
+      "forward_pe": -0.5262
+    },
+    "symbol": "VZ",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "raw_score": -1.2541,
+    "expected_return_pct": -1.25,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5936,
+      "forward_pe": -0.5262
+    },
+    "symbol": "VZ",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.2541,
+    "expected_return_pct": -1.25,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5936,
+      "forward_pe": -0.5262
+    },
+    "symbol": "VZ",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.2541,
+    "expected_return_pct": -1.25,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.5936,
+      "forward_pe": -0.5262
+    },
+    "symbol": "VZ",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.2976,
+    "expected_return_pct": -1.3,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6766,
+      "forward_pe": -0.4867
+    },
+    "symbol": "CTRA",
+    "quarter": 3,
+    "year": 2025
+  },
+  {
+    "raw_score": -1.4537,
+    "expected_return_pct": -1.45,
+    "signal": "SHORT",
+    "confidence": "high",
+    "percentile": "<10th",
+    "feature_contributions": {
+      "price_to_low": -0.6985,
+      "forward_pe": -0.6209
+    },
+    "symbol": "LYB",
+    "quarter": 3,
+    "year": 2025
+  }
+]

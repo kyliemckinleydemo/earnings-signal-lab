@@ -19,12 +19,19 @@
   body { background:var(--bg); color:var(--text); font-family:var(--mono); font-size:13px; line-height:1.5; min-height:100vh; }
   a { color:var(--blue); text-decoration:none; }
 
-  .header { background:linear-gradient(180deg, var(--bg2), var(--bg)); border-bottom:1px solid var(--border); padding:28px 32px 24px; }
+  .header { background:linear-gradient(180deg, var(--bg2), var(--bg)); border-bottom:1px solid var(--border); padding:28px 32px 20px; }
   .header h1 { font-family:var(--serif); font-size:32px; font-weight:400; letter-spacing:-0.5px; margin-bottom:4px; }
   .header h1 span.g { color:var(--green); }
   .header h1 span.b { color:var(--blue); }
   .header .meta { font-size:11px; color:var(--dim); }
   .header .meta strong { color:var(--text); font-weight:500; }
+
+  /* Source selector */
+  .source-bar { display:flex; gap:6px; margin-top:12px; }
+  .source-btn { background:transparent; border:1px solid var(--border); color:var(--dim); border-radius:6px; padding:5px 14px; font:500 11px var(--mono); cursor:pointer; transition:all 0.15s; text-transform:uppercase; letter-spacing:0.5px; }
+  .source-btn:hover { border-color:var(--dim); color:var(--text); }
+  .source-btn.active { background:rgba(61,232,160,0.08); border-color:var(--green); color:var(--green); }
+  .source-btn.unavailable { opacity:0.35; cursor:not-allowed; }
 
   .tabs { display:flex; gap:0; border-bottom:1px solid var(--border); padding:0 32px; background:var(--bg); position:sticky; top:0; z-index:10; }
   .tab { background:none; border:none; border-bottom:2px solid transparent; color:var(--dim); padding:11px 18px; font:600 11px/1 var(--mono); cursor:pointer; text-transform:uppercase; letter-spacing:1px; transition:all 0.15s; }
@@ -52,7 +59,7 @@
   .feat-ic { font-size:17px; font-weight:700; text-align:right; }
 
   /* Period grid */
-  .period-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:20px; }
+  .period-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; margin-bottom:20px; }
   .period-box { background:var(--bg3); border-radius:6px; padding:10px; text-align:center; }
   .period-label { font-size:10px; color:var(--dim); margin-bottom:4px; }
   .period-ic { font-size:20px; font-weight:700; }
@@ -147,6 +154,11 @@
 <div class="header">
   <h1><span class="g">Earnings</span> Signal <span class="b">Lab</span></h1>
   <div class="meta" id="meta">Loading...</div>
+  <div class="source-bar" id="source-bar">
+    <button class="source-btn active" data-source="earnings">Earnings Transcripts</button>
+    <button class="source-btn" data-source="sec">SEC Filings</button>
+    <button class="source-btn" data-source="combined">Combined</button>
+  </div>
 </div>
 
 <div class="tabs" id="tabs">
@@ -164,13 +176,13 @@
 
 <script>
 // ============================================================
-// Feature metadata (public — no secret info)
+// Feature metadata — per data source
 // ============================================================
-const FM = {
+const FM_EARNINGS = {
   mgmt_hedging: { name:"Management Hedging", cat:"Management", color:"#e74c3c", bear:true, desc:"Hedging vs definitive language" },
   mgmt_deflection: { name:"Q&A Deflection", cat:"Management", color:"#c0392b", bear:true, desc:"Non-answers in Q&A" },
   mgmt_specificity: { name:"Guidance Specificity", cat:"Management", color:"#e67e22", bear:false, desc:"Specific numbers vs vague" },
-  mgmt_confidence_shift: { name:"Confidence Shift", cat:"Management", color:"#d35400", bear:true, desc:"Drop from prepared→Q&A" },
+  mgmt_confidence_shift: { name:"Confidence Shift", cat:"Management", color:"#d35400", bear:true, desc:"Drop from prepared to Q&A" },
   analyst_skepticism: { name:"Analyst Skepticism", cat:"Analyst", color:"#2980b9", bear:true, desc:"Challenging follow-ups" },
   analyst_surprise: { name:"Analyst Surprise", cat:"Analyst", color:"#3498db", bear:false, desc:"Unexpected info reactions" },
   analyst_focus_cluster: { name:"Question Clustering", cat:"Analyst", color:"#1abc9c", bear:false, desc:"Analysts converge on topic" },
@@ -184,8 +196,70 @@ const FM = {
   customer_language: { name:"Demand Descriptors", cat:"Demand", color:"#f39c12", bear:false, desc:"Robust vs softening" },
   pricing_power: { name:"Pricing Power", cat:"Demand", color:"#f1c40f", bear:false, desc:"Raising vs discounting" },
 };
-const CATS = [...new Set(Object.values(FM).map(f=>f.cat))];
-const PDS = ["1D","5D","10D","21D"];
+
+const FM_SEC = {
+  risk_score: { name:"Risk Score", cat:"AI Analysis", color:"#e74c3c", bear:true, desc:"Claude-assessed risk severity (0-10)" },
+  sentiment_score: { name:"Sentiment", cat:"AI Analysis", color:"#27ae60", bear:false, desc:"MD&A sentiment (-1 to +1)" },
+  concern_level: { name:"Concern Level", cat:"AI Analysis", color:"#c0392b", bear:true, desc:"Multi-factor concern synthesis (0-10)" },
+  pe_ratio: { name:"P/E Ratio", cat:"Valuation", color:"#8e44ad", bear:true, desc:"Price-to-earnings multiple" },
+  forward_pe: { name:"Forward P/E", cat:"Valuation", color:"#9b59b6", bear:true, desc:"Forward price-to-earnings" },
+  price_to_high: { name:"Price to High", cat:"Valuation", color:"#2980b9", bear:true, desc:"Price relative to 52-week high" },
+  price_to_low: { name:"Price to Low", cat:"Valuation", color:"#3498db", bear:false, desc:"Price relative to 52-week low" },
+  price_to_target: { name:"Price to Target", cat:"Valuation", color:"#1abc9c", bear:false, desc:"Price relative to analyst target" },
+  price_to_ma30: { name:"Price/MA30", cat:"Technical", color:"#e67e22", bear:false, desc:"Price relative to 30-day MA" },
+  price_to_ma50: { name:"Price/MA50", cat:"Technical", color:"#d35400", bear:false, desc:"Price relative to 50-day MA" },
+  rsi14: { name:"RSI (14)", cat:"Technical", color:"#f39c12", bear:true, desc:"Relative Strength Index (overbought > 70)" },
+  volatility30: { name:"Volatility 30D", cat:"Technical", color:"#e74c3c", bear:true, desc:"30-day price volatility" },
+  return_30d: { name:"Prior 30D Return", cat:"Technical", color:"#2ecc71", bear:false, desc:"Trailing 30-day return (momentum)" },
+  spx_return_7d: { name:"SPX 7D Return", cat:"Market Context", color:"#3498db", bear:false, desc:"S&P 500 7-day return" },
+  spx_return_30d: { name:"SPX 30D Return", cat:"Market Context", color:"#2980b9", bear:false, desc:"S&P 500 30-day return" },
+  vix_close: { name:"VIX Close", cat:"Market Context", color:"#e74c3c", bear:true, desc:"CBOE VIX volatility index" },
+  analyst_upside_potential: { name:"Analyst Upside", cat:"Analyst Activity", color:"#27ae60", bear:false, desc:"Analyst-implied upside potential" },
+  analyst_consensus_score: { name:"Analyst Consensus", cat:"Analyst Activity", color:"#2ecc71", bear:false, desc:"Analyst consensus rating score" },
+  analyst_coverage: { name:"Analyst Coverage", cat:"Analyst Activity", color:"#16a085", bear:false, desc:"Number of covering analysts" },
+  net_upgrades: { name:"Net Upgrades", cat:"Analyst Activity", color:"#1abc9c", bear:false, desc:"Recent upgrades minus downgrades" },
+};
+
+// Combined uses metadata from the API response
+let FM_COMBINED = {};
+
+// Active feature metadata (swapped on source change)
+let FM = FM_EARNINGS;
+
+function getFM() {
+  // For combined, try API metadata first, then merge defaults
+  if (activeSource === "combined" && DATA && DATA.metadata && DATA.metadata.feature_metadata) {
+    const apiMeta = DATA.metadata.feature_metadata;
+    const fm = {};
+    for (const [key, meta] of Object.entries(apiMeta)) {
+      fm[key] = {
+        name: meta.name || key,
+        cat: meta.cat || "Other",
+        color: meta.color || "#6b7094",
+        bear: meta.bear || false,
+        desc: meta.desc || "",
+      };
+    }
+    return fm;
+  }
+  if (activeSource === "sec") return FM_SEC;
+  return FM_EARNINGS;
+}
+
+function getCategories() {
+  return [...new Set(Object.values(FM).map(f=>f.cat))];
+}
+
+function getPeriods() {
+  if (!DATA || !DATA.regression) return ["1D","5D","10D","21D"];
+  return Object.keys(DATA.regression);
+}
+
+const SOURCE_LABELS = {
+  earnings: "Earnings Transcripts",
+  sec: "SEC Filings",
+  combined: "Combined",
+};
 
 // ============================================================
 // State
@@ -193,6 +267,8 @@ const PDS = ["1D","5D","10D","21D"];
 let DATA = null;
 let SCORES = null;
 let MODEL = null;
+let SOURCES = null;
+let activeSource = "earnings";
 let activeTab = "features";
 let selectedFeat = null;
 let catFilter = "All";
@@ -206,35 +282,93 @@ let expandedScoreIdx = null;
 // Fetch data
 // ============================================================
 async function init() {
+  // First fetch available sources
+  try {
+    const srcRes = await fetch("/api/sources");
+    if (srcRes.ok) SOURCES = await srcRes.json();
+  } catch(e) {}
+  updateSourceButtons();
+  await loadSource(activeSource);
+}
+
+async function loadSource(source) {
+  activeSource = source;
+  FM = getFM();
+
+  // Reset state
+  selectedFeat = null;
+  catFilter = "All";
+  scoreSignalFilter = "ALL";
+  scoreConfFilter = "ALL";
+  scoreOffset = 0;
+  expandedScoreIdx = null;
+  SCORES = null;
+  MODEL = null;
+
+  document.getElementById("content").innerHTML =
+    `<div class="loading"><div class="spinner"></div><div>Loading ${SOURCE_LABELS[source] || source} data...</div></div>`;
+
   try {
     const [resultsRes, scoresRes, modelRes] = await Promise.all([
-      fetch("/api/results"),
-      fetch("/api/scores?limit=50").catch(() => null),
-      fetch("/api/model").catch(() => null),
+      fetch(`/api/results?source=${source}`),
+      fetch(`/api/scores?source=${source}&limit=50`).catch(() => null),
+      fetch(`/api/model?source=${source}`).catch(() => null),
     ]);
     if (!resultsRes.ok) throw new Error(`${resultsRes.status}: ${resultsRes.statusText}`);
     DATA = await resultsRes.json();
     if (scoresRes && scoresRes.ok) SCORES = await scoresRes.json();
     if (modelRes && modelRes.ok) MODEL = await modelRes.json();
+
+    // Update FM from API metadata if available
+    FM = getFM();
+
     renderMeta();
     renderTab();
   } catch(e) {
     document.getElementById("content").innerHTML =
       `<div class="loading" style="color:var(--red)">
-        <div style="font-size:16px;margin-bottom:8px">No data available</div>
+        <div style="font-size:16px;margin-bottom:8px">No data available for ${SOURCE_LABELS[source] || source}</div>
         <div style="font-size:11px">${e.message}<br>Pipeline may not have run yet.</div>
        </div>`;
   }
 }
 
+function updateSourceButtons() {
+  document.querySelectorAll(".source-btn").forEach(btn => {
+    const src = btn.dataset.source;
+    btn.classList.toggle("active", src === activeSource);
+    if (SOURCES && SOURCES[src]) {
+      btn.classList.toggle("unavailable", !SOURCES[src].available);
+    }
+  });
+}
+
 function renderMeta() {
   const m = DATA.metadata || {};
-  document.getElementById("meta").innerHTML =
-    `<strong>${m.total_events||0}</strong> earnings events · ` +
-    `<strong>${(m.companies||[]).length}</strong> companies · ` +
-    `${(m.date_range||[])[0]||"?"} to ${(m.date_range||[])[1]||"?"} · ` +
-    `Updated: ${DATA.last_updated ? new Date(DATA.last_updated).toLocaleDateString() : "?"}`;
+  const sourceLabel = SOURCE_LABELS[activeSource] || activeSource;
+  let info = `<strong>${sourceLabel}</strong> · `;
+  info += `<strong>${m.total_events||0}</strong> events · `;
+  info += `<strong>${(m.companies||[]).length}</strong> companies`;
+  if ((m.date_range||[]).length >= 2) {
+    info += ` · ${m.date_range[0]} to ${m.date_range[1]}`;
+  }
+  info += ` · Updated: ${DATA.last_updated ? new Date(DATA.last_updated).toLocaleDateString() : "?"}`;
+  document.getElementById("meta").innerHTML = info;
 }
+
+// ============================================================
+// Source selector
+// ============================================================
+document.getElementById("source-bar").addEventListener("click", e => {
+  const btn = e.target.closest(".source-btn");
+  if (!btn || btn.classList.contains("unavailable")) return;
+  const source = btn.dataset.source;
+  if (source === activeSource) return;
+
+  document.querySelectorAll(".source-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  loadSource(source);
+});
 
 // ============================================================
 // Tab routing
@@ -269,6 +403,8 @@ function retColor(r) { return r>0?"var(--green)":"var(--red)"; }
 // ============================================================
 function renderFeatures() {
   const fids = Object.keys(FM);
+  const cats = getCategories();
+  const pds = getPeriods();
   const filtered = catFilter==="All" ? fids : fids.filter(f=>FM[f].cat===catFilter);
   const sorted = [...filtered].sort((a,b) => {
     const aD=DATA.features?.[a], bD=DATA.features?.[b];
@@ -277,7 +413,7 @@ function renderFeatures() {
   });
 
   let filters = `<div class="filters">`;
-  ["All",...CATS].forEach(c => {
+  ["All",...cats].forEach(c => {
     filters += `<button class="filter-btn ${catFilter===c?"active":""}" data-cat="${c}">${c}</button>`;
   });
   filters += `</div>`;
@@ -285,6 +421,7 @@ function renderFeatures() {
   let list = `<div class="feat-list">`;
   sorted.forEach(fid => {
     const m=FM[fid], d=DATA.features?.[fid];
+    if (!m) return;
     let bestIC=0, bestP="";
     if(d) Object.entries(d).forEach(([p,s])=>{ if(Math.abs(s.ic||0)>Math.abs(bestIC)){bestIC=s.ic;bestP=p;} });
     list += `<div class="card feat-card ${selectedFeat===fid?"selected":""}" data-fid="${fid}">
@@ -306,11 +443,12 @@ function renderFeatures() {
 
   let detail = "";
   if (selectedFeat && DATA.features?.[selectedFeat]) {
-    const m=FM[selectedFeat], d=DATA.features[selectedFeat];
+    const m=FM[selectedFeat] || {name:selectedFeat, desc:"", color:"var(--text)"};
+    const d=DATA.features[selectedFeat];
     detail = `<div class="card"><div style="font-size:15px;font-weight:700;color:${m.color};margin-bottom:2px">${m.name}</div>
       <div style="font-size:11px;color:var(--dim);margin-bottom:16px">${m.desc}</div>
       <div style="font-size:12px;font-weight:600;margin-bottom:8px">Signal by Holding Period</div>
-      <div class="period-grid">${PDS.map(p=>{
+      <div class="period-grid">${pds.map(p=>{
         const s=d[p]; if(!s) return `<div class="period-box" style="opacity:0.4"><div class="period-label">${p}</div><div>—</div></div>`;
         return `<div class="period-box"><div class="period-label">${p}</div>
           <div class="period-ic" style="color:${icColor(s.ic||0)}">${(s.ic||0)>0?"+":""}${(s.ic||0).toFixed(3)}</div>
@@ -320,7 +458,7 @@ function renderFeatures() {
           p: ${(s.ic_pvalue||0).toFixed(4)}<br>n=${s.n_observations}</div></div>`;
       }).join("")}</div>`;
 
-    // Samples (scores + returns only, no evidence)
+    // Samples
     const samples = DATA.sample_extractions?.[selectedFeat] || [];
     if(samples.length) {
       detail += `<div style="font-size:12px;font-weight:600;margin:16px 0 8px">Sample Signals</div>`;
@@ -331,8 +469,11 @@ function renderFeatures() {
             <span style="font-weight:600">${s.symbol} <span style="color:var(--dim);font-weight:400">${s.quarter}</span></span>
             <div style="display:flex;gap:8px;align-items:center">
               <span style="font-size:10px;padding:1px 6px;border-radius:3px;background:rgba(255,255,255,0.04);color:var(--dim)">Score: ${s.score}</span>
-              ${s.return_5D!=null?`<span style="font-size:11px;font-weight:600;color:${retColor(s.return_5D)}">5D: ${s.return_5D>0?"+":""}${Number(s.return_5D).toFixed(1)}%</span>`:""}
-              ${s.return_10D!=null?`<span style="font-size:11px;font-weight:600;color:${retColor(s.return_10D)}">10D: ${s.return_10D>0?"+":""}${Number(s.return_10D).toFixed(1)}%</span>`:""}
+              ${Object.entries(s).filter(([k])=>k.startsWith("return_")).map(([k,v])=>{
+                if(v==null) return "";
+                const label=k.replace("return_","");
+                return `<span style="font-size:11px;font-weight:600;color:${retColor(v)}">${label}: ${v>0?"+":""}${Number(v).toFixed(1)}%</span>`;
+              }).join("")}
             </div>
           </div></div>`;
       });
@@ -340,7 +481,7 @@ function renderFeatures() {
     detail += `</div>`;
   } else {
     detail = `<div class="card" style="text-align:center;padding:60px 20px;color:var(--dim)">
-      <div style="font-size:28px;margin-bottom:6px">←</div>Select a feature to view details</div>`;
+      <div style="font-size:28px;margin-bottom:6px">&larr;</div>Select a feature to view details</div>`;
   }
 
   return filters + `<div class="features-grid">${list}<div>${detail}</div></div>`;
@@ -350,7 +491,7 @@ function renderFeatures() {
 // Scores tab
 // ============================================================
 async function fetchScores() {
-  let url = `/api/scores?limit=${scoreLimit}&offset=${scoreOffset}`;
+  let url = `/api/scores?source=${activeSource}&limit=${scoreLimit}&offset=${scoreOffset}`;
   if (scoreSignalFilter !== "ALL") url += `&signal=${scoreSignalFilter}`;
   if (scoreConfFilter !== "ALL") url += `&confidence=${scoreConfFilter}`;
   const res = await fetch(url);
@@ -365,16 +506,14 @@ function renderScores() {
   const total = sum.total || 1;
   const items = SCORES.items || [];
 
-  // Active features from model
   const nActive = MODEL ? Object.values(MODEL.weights || {}).filter(w => w !== 0 && w !== -0).length : "?";
   const cvR2 = MODEL ? (MODEL.cv_r2 * 100).toFixed(2) : "?";
   const horizon = MODEL ? MODEL.horizon : "?";
 
-  // Header: signal distribution bar
   let html = `<div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px;margin-bottom:14px">
     <div>
-      <div style="font-size:14px;font-weight:600;margin-bottom:2px">Scored Transcripts</div>
-      <div style="font-size:11px;color:var(--dim)">Lasso ${horizon} · CV R² ${cvR2}% · ${nActive} features · ${total} transcripts scored</div>
+      <div style="font-size:14px;font-weight:600;margin-bottom:2px">Scored ${activeSource === "sec" ? "Filings" : activeSource === "combined" ? "Events" : "Transcripts"}</div>
+      <div style="font-size:11px;color:var(--dim)">Lasso ${horizon} · CV R² ${cvR2}% · ${nActive} features · ${total} scored</div>
     </div></div>`;
 
   const lPct = ((sigs.LONG||0)/total*100).toFixed(1);
@@ -398,10 +537,8 @@ function renderScores() {
   });
   html += `</div></div>`;
 
-  // Main layout: table + sidebar
   html += `<div class="scores-layout">`;
 
-  // Table
   html += `<div class="card" style="padding:0;overflow-x:auto"><table class="scores-table">
     <thead><tr><th>#</th><th>Symbol</th><th>Qtr</th><th>Year</th><th>Score</th><th>Signal</th><th>Conf.</th><th>Top Driver</th></tr></thead><tbody>`;
 
@@ -411,7 +548,7 @@ function renderScores() {
     const scoreColor = item.raw_score > 0 ? "var(--green)" : item.raw_score < 0 ? "var(--red)" : "var(--dim)";
     const contribs = item.feature_contributions || {};
     const topDriver = Object.entries(contribs).sort((a,b) => Math.abs(b[1]) - Math.abs(a[1]))[0];
-    const topDriverName = topDriver ? (FM[topDriver[0]]?.name || topDriver[0]) : "—";
+    const topDriverName = topDriver ? (FM[topDriver[0]]?.name || topDriver[0]) : "\u2014";
     const isExpanded = expandedScoreIdx === i;
 
     html += `<tr class="expandable ${isExpanded ? "expanded" : ""}" data-score-idx="${i}">
@@ -425,7 +562,6 @@ function renderScores() {
       <td style="font-size:10px">${topDriverName}</td>
     </tr>`;
 
-    // Expanded contribution breakdown
     if (isExpanded) {
       const entries = Object.entries(contribs).sort((a,b) => Math.abs(b[1]) - Math.abs(a[1]));
       const maxAbs = Math.max(...entries.map(e => Math.abs(e[1])), 0.01);
@@ -454,9 +590,9 @@ function renderScores() {
   const hasPrev = scoreOffset > 0;
   const hasNext = scoreOffset + scoreLimit < totalFiltered;
   html += `<div class="pagination">
-    <button id="scores-prev" ${hasPrev ? "" : "disabled"}>← Prev</button>
-    <span>${scoreOffset + 1}–${Math.min(scoreOffset + scoreLimit, totalFiltered)} of ${totalFiltered}</span>
-    <button id="scores-next" ${hasNext ? "" : "disabled"}>Next →</button>
+    <button id="scores-prev" ${hasPrev ? "" : "disabled"}>&larr; Prev</button>
+    <span>${scoreOffset + 1}&ndash;${Math.min(scoreOffset + scoreLimit, totalFiltered)} of ${totalFiltered}</span>
+    <button id="scores-next" ${hasNext ? "" : "disabled"}>Next &rarr;</button>
   </div></div>`;
 
   // Top 10 sidebar
@@ -470,12 +606,8 @@ function renderScores() {
 
 function renderTop10(signal, color) {
   if (!SCORES) return "";
-  // We need all items of this signal — use a separate fetch or approximate from current data
-  // For the sidebar, we'll show from the cached full summary
-  // We need to fetch top 10 separately
   const items = SCORES._top10?.[signal];
   if (!items) {
-    // Fetch top 10 async and re-render
     fetchTop10(signal);
     return `<div class="card"><div style="font-size:12px;font-weight:600;color:${color};margin-bottom:8px">Top 10 ${signal}</div>
       <div style="font-size:10px;color:var(--dim)">Loading...</div></div>`;
@@ -501,12 +633,10 @@ async function fetchTop10(signal) {
   if (!SCORES) return;
   if (!SCORES._top10) SCORES._top10 = {};
   if (SCORES._top10[signal]) return;
-  const order = signal === "SHORT" ? "asc" : "desc";
-  const res = await fetch(`/api/scores?signal=${signal}&limit=10&offset=0`);
+  const res = await fetch(`/api/scores?source=${activeSource}&signal=${signal}&limit=10&offset=0`);
   if (res.ok) {
     const data = await res.json();
     SCORES._top10[signal] = data.items || [];
-    // Re-render only if still on scores tab
     if (activeTab === "scores") renderTab();
   }
 }
@@ -587,20 +717,33 @@ function renderCombos() {
 // ============================================================
 function renderCorrelations() {
   const matrix = DATA.correlation_matrix || {};
-  const fs = Object.keys(matrix).filter(f=>FM[f]).slice(0,12);
-  if (!fs.length) return `<div class="loading" style="color:var(--dim)">No correlation data.</div>`;
+  const allKeys = Object.keys(matrix);
+  const fs = allKeys.filter(f=>FM[f]).slice(0,16);
+  if (!fs.length) {
+    // If FM doesn't match (e.g. combined mode), show all keys
+    const fallbackFs = allKeys.slice(0, 16);
+    if (!fallbackFs.length) return `<div class="loading" style="color:var(--dim)">No correlation data.</div>`;
+    return renderCorrMatrix(fallbackFs, matrix);
+  }
+  return renderCorrMatrix(fs, matrix);
+}
 
+function renderCorrMatrix(fs, matrix) {
   let html = `<div style="font-size:14px;font-weight:600;margin-bottom:4px">Feature Correlation Matrix</div>
     <div style="font-size:11px;color:var(--dim);margin-bottom:14px">High correlation = redundant signal. Combine uncorrelated features.</div>
     <div style="overflow-x:auto"><table class="corr-table"><thead><tr><th></th>`;
-  fs.forEach(f => { html += `<th style="color:${FM[f]?.color}">${FM[f]?.name?.split(" ")[0]}</th>`; });
+  fs.forEach(f => {
+    const label = FM[f]?.name?.split(" ")[0] || f.split("_")[0];
+    html += `<th style="color:${FM[f]?.color||"var(--text)"}">${label}</th>`;
+  });
   html += `</tr></thead><tbody>`;
   fs.forEach(f1 => {
-    html += `<tr><td class="label" style="color:${FM[f1]?.color}">${FM[f1]?.name?.split(" ")[0]}</td>`;
+    const label = FM[f1]?.name?.split(" ")[0] || f1.split("_")[0];
+    html += `<tr><td class="label" style="color:${FM[f1]?.color||"var(--text)"}">${label}</td>`;
     fs.forEach(f2 => {
       const v=matrix[f1]?.[f2]??0, a=Math.abs(v);
       const bg = f1===f2 ? "var(--bg3)" : a>0.5?`rgba(240,104,120,${a*0.4})` : a>0.3?`rgba(240,200,72,${a*0.35})` : a>0.1?`rgba(61,232,160,${a*0.25})`:"rgba(255,255,255,0.02)";
-      html += `<td><div class="corr-cell" style="background:${bg};font-weight:${a>0.3?600:400};color:${f1===f2?"var(--dim)":"var(--text)"}">${f1===f2?"—":v.toFixed(2)}</div></td>`;
+      html += `<td><div class="corr-cell" style="background:${bg};font-weight:${a>0.3?600:400};color:${f1===f2?"var(--dim)":"var(--text)"}">${f1===f2?"\u2014":v.toFixed(2)}</div></td>`;
     });
     html += `</tr>`;
   });
@@ -615,7 +758,6 @@ function renderSummary() {
   const md = DATA.summary || "";
   if (!md) return `<div class="loading" style="color:var(--dim)">No summary available. Run the pipeline with Claude API to generate one.</div>`;
 
-  // Basic markdown→HTML (handles ##, **, *, -, `, code blocks)
   let html = md
     .replace(/^## (.+)$/gm, '<h2>$1</h2>')
     .replace(/^### (.+)$/gm, '<h3 style="font-size:15px;color:var(--blue);margin:20px 0 8px">$1</h3>')
@@ -652,7 +794,7 @@ function attachListeners() {
     el.addEventListener("click", () => {
       scoreSignalFilter = el.dataset.signal;
       scoreOffset = 0;
-      SCORES._top10 = null;
+      if (SCORES) SCORES._top10 = null;
       fetchScores();
     });
   });

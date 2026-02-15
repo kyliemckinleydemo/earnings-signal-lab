@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "trained_at": "2026-02-15T17:49:59.513675",
+  "horizon": "30D_alpha",
+  "n_training_samples": 340,
+  "cv_r2": -0.025,
+  "lasso_alpha": 1.0,
+  "features": [
+    "risk_score",
+    "sentiment_score",
+    "concern_level",
+    "pe_ratio",
+    "forward_pe",
+    "price_to_high",
+    "price_to_low",
+    "analyst_upside_potential",
+    "analyst_consensus_score",
+    "analyst_coverage",
+    "net_upgrades"
+  ],
+  "weights": {
+    "risk_score": -0.0,
+    "sentiment_score": 0.0,
+    "concern_level": -0.0,
+    "pe_ratio": 0.0,
+    "forward_pe": 0.548869,
+    "price_to_high": 0.0,
+    "price_to_low": 0.73373,
+    "analyst_upside_potential": -0.0,
+    "analyst_consensus_score": -0.0,
+    "analyst_coverage": 0.0,
+    "net_upgrades": -0.0
+  },
+  "intercept": -0.134291,
+  "scaler_means": {
+    "risk_score": 2.519412,
+    "sentiment_score": 0.023588,
+    "concern_level": 5.345,
+    "pe_ratio": 37.837501,
+    "forward_pe": 26.249406,
+    "price_to_high": 0.858843,
+    "price_to_low": 1.397792,
+    "analyst_upside_potential": 13.518,
+    "analyst_consensus_score": 77.176408,
+    "analyst_coverage": 30.041176,
+    "net_upgrades": -0.076471
+  },
+  "scaler_stds": {
+    "risk_score": 3.09195,
+    "sentiment_score": 0.120611,
+    "concern_level": 1.577919,
+    "pe_ratio": 38.205565,
+    "forward_pe": 18.592876,
+    "price_to_high": 0.091205,
+    "price_to_low": 0.417374,
+    "analyst_upside_potential": 10.886692,
+    "analyst_consensus_score": 9.423611,
+    "analyst_coverage": 11.663092,
+    "net_upgrades": 0.797075
+  },
+  "feature_percentiles": {
+    "risk_score": {
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 6.5,
+      "mean": 2.519411764705882,
+      "std": 3.0919496430497877
+    },
+    "sentiment_score": {
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "mean": 0.023588235294117646,
+      "std": 0.12061146117792473
+    },
+    "concern_level": {
+      "p25": 5.0,
+      "p50": 5.0,
+      "p75": 6.5,
+      "mean": 5.345,
+      "std": 1.5779188639396104
+    },
+    "pe_ratio": {
+      "p25": 17.5978695,
+      "p50": 25.728774,
+      "p75": 37.49314775,
+      "mean": 37.83750068088235,
+      "std": 38.20556472662481
+    },
+    "forward_pe": {
+      "p25": 16.423845,
+      "p50": 22.341421,
+      "p75": 31.179776500000003,
+      "mean": 26.249405739117645,
+      "std": 18.592876253922576
+    },
+    "price_to_high": {
+      "p25": 0.8363999132655974,
+      "p50": 0.8812736742424242,
+      "p75": 0.9200075642965204,
+      "mean": 0.8588432728386064,
+      "std": 0.0912053013468988
+    },
+    "price_to_low": {
+      "p25": 1.1322085889570552,
+      "p50": 1.270819536423841,
+      "p75": 1.4699874947894955,
+      "mean": 1.3977921516683174,
+      "std": 0.4173738299538837
+    },
+    "analyst_upside_potential": {
+      "p25": 6.686837060702875,
+      "p50": 13.028683155080223,
+      "p75": 21.09753587988519,
+      "mean": 13.518000026080037,
+      "std": 10.886691949566126
+    },
+    "analyst_consensus_score": {
+      "p25": 71.02025,
+      "p50": 77.04162500000001,
+      "p75": 83.98068750000002,
+      "mean": 77.1764080882353,
+      "std": 9.423610743267842
+    },
+    "analyst_coverage": {
+      "p25": 22.0,
+      "p50": 26.0,
+      "p75": 36.0,
+      "mean": 30.041176470588237,
+      "std": 11.663092054124231
+    },
+    "net_upgrades": {
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "mean": -0.07647058823529412,
+      "std": 0.7970751029377241
+    }
+  },
+  "score_percentiles": {
+    "p10": -1.0344587006071084,
+    "p25": -0.811364232854907,
+    "p50": -0.42630921925079146,
+    "p75": 0.04376902990359232,
+    "p90": 1.6600165881257076,
+    "mean": -0.13429079263201635,
+    "std": 1.1163637110573177
+  }
+}
