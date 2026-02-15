@@ -5,7 +5,6 @@ Run this ONCE on your local machine to build the initial dataset,
 then push the data directory to Railway's persistent volume.
 
 Usage:
-    export EARNINGSCALL_API_KEY="your_key"
     export ANTHROPIC_API_KEY="your_key"
     python first_run.py
 """
@@ -19,7 +18,7 @@ def main():
     print("=" * 60)
     print()
     print("This will:")
-    print("  1. Pull transcripts via earningscall (~2 min)")
+    print("  1. Load transcripts from HuggingFace dataset (~2 min)")
     print("  2. Analyze with Claude (~$5, ~20 min)")
     print("  3. Get price data from Yahoo Finance (~2 min)")
     print("  4. Run regression analysis (~5 min)")
@@ -51,7 +50,7 @@ def main():
         print("  2. Connect repo to Railway")
         print("  3. Add a persistent volume mounted at /app/earnings_signal_data")
         print("  4. Upload the earnings_signal_data/ folder to the volume")
-        print("  5. Set env vars: EARNINGSCALL_API_KEY, ANTHROPIC_API_KEY")
+        print("  5. Set env var: ANTHROPIC_API_KEY")
         print("  6. Deploy!")
     else:
         print(f"\nPipeline exited with code {result.returncode}")

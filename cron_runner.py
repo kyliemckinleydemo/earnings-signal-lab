@@ -10,7 +10,7 @@ Railway cron setup:
   5. Same env vars as the main service
 
 What it does:
-  - Pulls any new transcripts via earningscall
+  - Loads transcripts from HuggingFace dataset
   - Analyzes new transcripts with Claude
   - Refreshes incomplete price data
   - Re-runs the backtest
@@ -27,9 +27,6 @@ def main():
     print("=" * 60)
 
     # Check env vars
-    if not os.environ.get("EARNINGSCALL_API_KEY"):
-        print("ERROR: EARNINGSCALL_API_KEY not set")
-        sys.exit(1)
     if not os.environ.get("ANTHROPIC_API_KEY"):
         print("ERROR: ANTHROPIC_API_KEY not set")
         sys.exit(1)

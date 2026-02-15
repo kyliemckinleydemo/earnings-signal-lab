@@ -28,10 +28,10 @@ This is not a sentiment analysis tool. Instead of computing a single "positive/n
 ## How It Works
 
 ```
-earningscall Transcripts → Claude NLP Extraction → Yahoo Finance Prices → Statistical Backtest
+HuggingFace Dataset → Claude NLP Extraction → Yahoo Finance Prices → Statistical Backtest
 ```
 
-1. **Pull transcripts** via the [earningscall](https://github.com/earningscall/earningscall-python) library
+1. **Load transcripts** from the public [glopardo/sp500-earnings-transcripts](https://huggingface.co/datasets/glopardo/sp500-earnings-transcripts) HuggingFace dataset (~20.7k transcripts, ~496 S&P 500 tickers, 2014–Nov 2025)
 2. **Extract features** using Claude API — each transcript is analyzed for all 16 features with scores (0-1), evidence quotes, and section attribution (prepared remarks vs Q&A)
 3. **Get price data** from Yahoo Finance at 1D, 5D, 10D, 21D post-earnings
 4. **Backtest** — Information Coefficient, directional accuracy, Sharpe ratios, p-values, feature correlations, and multi-feature combination tests
@@ -41,17 +41,17 @@ earningscall Transcripts → Claude NLP Extraction → Yahoo Finance Prices → 
 ### Prerequisites
 
 ```bash
-pip install earningscall yfinance pandas numpy anthropic scipy
+pip install datasets yfinance pandas numpy anthropic scipy
 ```
 
 ### API Keys
 
-Get free keys from:
-- **EarningsCall**: https://earningscall.biz
+Transcripts come from a public HuggingFace dataset — no API key needed for that.
+
+You only need a Claude API key for the NLP analysis step:
 - **Anthropic**: https://console.anthropic.com
 
 ```bash
-export EARNINGSCALL_API_KEY="your_earningscall_key"
 export ANTHROPIC_API_KEY="your_claude_key"
 ```
 
@@ -66,8 +66,8 @@ python earnings_signal_pipeline.py --status
 ```
 
 The pipeline will:
-- Pull transcripts for 30 companies × 8 quarters
-- Analyze each with Claude (~$0.02/transcript, ~$5 total)
+- Load ~20.7k transcripts across ~496 S&P 500 tickers from HuggingFace
+- Analyze each with Claude (~$0.02/transcript)
 - Fetch price data from Yahoo Finance
 - Output `earnings_signal_data/backtest_results.json`
 
@@ -114,16 +114,6 @@ Upload `backtest_results.json` to the React dashboard (`dashboard/earnings-signa
 - **p-value**: Statistical significance of the IC.
 
 ## Customization
-
-### Change the company universe
-
-Edit the `COMPANIES` list in `earnings_signal_pipeline.py`:
-
-```python
-COMPANIES = ["AAPL", "MSFT", "GOOGL", ...]  # Add your 700 tickers
-```
-
-The pipeline tracks progress and caches everything, so re-runs skip already-pulled transcripts.
 
 ### Adjust holding periods
 
@@ -179,7 +169,6 @@ The app runs as a full-stack Python service on Railway: FastAPI serves the publi
 ### Step 1: Initial data population (local)
 
 ```bash
-export EARNINGSCALL_API_KEY="your_key"
 export ANTHROPIC_API_KEY="your_key"
 python first_run.py
 ```
@@ -209,7 +198,6 @@ Note: The `.gitignore` excludes `earnings_signal_data/` by default. For Railway,
 In Railway dashboard → your service → Variables:
 
 ```
-EARNINGSCALL_API_KEY=your_earningscall_key
 ANTHROPIC_API_KEY=your_anthropic_key
 PORT=8000
 ```
@@ -248,7 +236,7 @@ No raw transcripts or Claude analysis text is exposed through any endpoint.
 
 ## Legal Notes
 
-- **Transcripts**: Pulled via earningscall for personal analysis. Not redistributed.
+- **Transcripts**: Sourced from the public [glopardo/sp500-earnings-transcripts](https://huggingface.co/datasets/glopardo/sp500-earnings-transcripts) HuggingFace dataset. Not redistributed.
 - **Price Data**: Yahoo Finance data is for personal use per their terms.
 - **Predictions**: Your derived analysis/predictions are your own work.
 

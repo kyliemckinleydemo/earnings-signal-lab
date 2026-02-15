@@ -1,18 +1,16 @@
 """
 Earnings Transcript Signal Analyzer - Real Data Pipeline
 =========================================================
-Pulls real earnings transcripts via the earningscall library, analyzes them
-with Claude API for 16 granular NLP features, and backtests against real
+Loads S&P 500 earnings transcripts from HuggingFace (glopardo/sp500-earnings-transcripts),
+analyzes them with Claude API for 16 granular NLP features, and backtests against real
 price data.
 
 Requirements:
-    pip install earningscall yfinance pandas numpy anthropic scipy
+    pip install datasets yfinance pandas numpy anthropic scipy
 
 Setup:
-    1. Get a free API key at https://earningscall.biz
-    2. Get a Claude API key at https://console.anthropic.com
-    3. Set environment variables:
-       export EARNINGSCALL_API_KEY="your_earningscall_key"
+    1. Get a Claude API key at https://console.anthropic.com
+    2. Set environment variable:
        export ANTHROPIC_API_KEY="your_claude_key"
 
 Usage:
@@ -20,7 +18,7 @@ Usage:
     python earnings_signal_pipeline.py --refresh        # Update incomplete prices & re-backtest
     python earnings_signal_pipeline.py --refresh-all    # Re-fetch ALL prices & re-backtest
     python earnings_signal_pipeline.py --status         # Show what's cached
-    python earnings_signal_pipeline.py --step pull      # Only pull transcripts
+    python earnings_signal_pipeline.py --step pull      # Only load transcripts from HuggingFace
     python earnings_signal_pipeline.py --step analyze   # Only run Claude analysis
     python earnings_signal_pipeline.py --step prices    # Only fetch price data
     python earnings_signal_pipeline.py --step backtest  # Only re-run backtest on existing data
@@ -38,7 +36,9 @@ import os
 import json
 import time
 import argparse
-import earningscall
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datasets import load_dataset
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -53,21 +53,22 @@ MAX_HOLDING_CALENDAR_DAYS = 35  # ~21 trading days + weekends/holidays buffer
 # CONFIGURATION
 # ============================================================
 
-earningscall.api_key = os.environ.get("EARNINGSCALL_API_KEY", "")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "YOUR_CLAUDE_KEY_HERE")
 
-# Companies to analyze - diversified across sectors/caps
-COMPANIES = [
-    "AAPL", "MSFT", "GOOGL", "AMZN", "META",  # mega tech
-    "NVDA", "AMD", "INTC", "CRM", "ADBE",       # tech
-    "JPM", "GS", "BAC", "MS", "V",               # financials
-    "JNJ", "PFE", "UNH", "ABBV", "LLY",         # healthcare
-    "WMT", "COST", "TGT", "HD", "NKE",          # consumer
-    "XOM", "CVX", "NEE", "DUK", "SLB",          # energy/utilities
-]
+# HuggingFace dataset: ~20.7k transcripts across ~496 S&P 500 tickers (2014-Nov 2025)
+HF_DATASET = "glopardo/sp500-earnings-transcripts"
 
-# How many quarters back to analyze per company
-QUARTERS_BACK = 8
+# Populated dynamically from the HuggingFace dataset during pull step
+COMPANIES = []
+
+# How many quarters back to analyze per company (0 = use all available data)
+QUARTERS_BACK = 0
+
+# Year range filter (set via --years CLI arg; None = no filter)
+YEAR_RANGE = None  # e.g. (2023, 2025)
+
+# Concurrent API calls for analysis step
+CONCURRENCY = 10
 
 # Holding periods to test (trading days)
 HOLDING_PERIODS = {
@@ -165,83 +166,114 @@ Respond ONLY with valid JSON in this exact format (no markdown, no backticks):
 """
 
 # ============================================================
-# STEP 1: Pull Transcripts via earningscall library
+# STEP 1: Load Transcripts from HuggingFace Dataset
 # ============================================================
 
-def get_recent_quarters(n=8):
-    """Compute the last N calendar quarters (most recent first)."""
-    now = datetime.now()
-    current_q = (now.month - 1) // 3 + 1
-    current_y = now.year
-    quarters = []
-    q, y = current_q, current_y
-    for _ in range(n):
-        q -= 1
-        if q == 0:
-            q = 4
-            y -= 1
-        quarters.append((q, y))
-    return quarters
-
-
 def pull_all_transcripts():
-    """Pull transcripts for all companies using the earningscall library."""
+    """Load transcripts from the HuggingFace S&P 500 earnings dataset."""
+    global COMPANIES
+
     print("=" * 60)
-    print("STEP 1: Pulling Earnings Transcripts via earningscall")
+    print("STEP 1: Loading Transcripts from HuggingFace Dataset")
+    print(f"        Dataset: {HF_DATASET}")
     print("=" * 60)
 
-    total_pulled = 0
-    total_skipped = 0
-    quarters_to_check = get_recent_quarters(QUARTERS_BACK)
+    print("\nLoading dataset (cached locally after first download)...")
+    ds = load_dataset(HF_DATASET, split="train")
+    print(f"  Dataset loaded: {len(ds)} records")
 
-    for symbol in COMPANIES:
-        print(f"\n[{symbol}] Checking last {QUARTERS_BACK} quarters...")
-        cache_file = TRANSCRIPTS_DIR / f"{symbol}_transcripts.json"
+    # Filter to recent N quarters if QUARTERS_BACK > 0
+    if QUARTERS_BACK > 0:
+        now = datetime.now()
+        current_q = (now.month - 1) // 3 + 1
+        current_y = now.year
+        cutoff_quarters = set()
+        q, y = current_q, current_y
+        for _ in range(QUARTERS_BACK):
+            q -= 1
+            if q == 0:
+                q = 4
+                y -= 1
+            cutoff_quarters.add((q, y))
+        print(f"  Filtering to last {QUARTERS_BACK} quarters")
 
-        # Load cache if exists
+    # Group records by ticker
+    by_ticker = defaultdict(list)
+    skipped_null = 0
+    skipped_empty = 0
+    skipped_quarter_filter = 0
+
+    for row in ds:
+        ticker = row.get("ticker")
+        year = row.get("year")
+        quarter = row.get("quarter")
+        transcript = row.get("transcript", "")
+
+        # Skip records with missing required fields
+        if not ticker or year is None or quarter is None:
+            skipped_null += 1
+            continue
+        if not transcript or len(transcript.strip()) < 100:
+            skipped_empty += 1
+            continue
+
+        # Apply quarter filter if set
+        if QUARTERS_BACK > 0 and (quarter, year) not in cutoff_quarters:
+            skipped_quarter_filter += 1
+            continue
+
+        entry = {
+            "symbol": ticker,
+            "quarter": int(quarter),
+            "year": int(year),
+            "content": transcript,
+            "date": row.get("earnings_date"),
+        }
+        by_ticker[ticker].append(entry)
+
+    print(f"  Valid records: {sum(len(v) for v in by_ticker.values())}")
+    if skipped_null > 0:
+        print(f"  Skipped (null ticker/year/quarter): {skipped_null}")
+    if skipped_empty > 0:
+        print(f"  Skipped (empty transcript): {skipped_empty}")
+    if skipped_quarter_filter > 0:
+        print(f"  Skipped (outside quarter filter): {skipped_quarter_filter}")
+
+    # Derive COMPANIES from the dataset
+    COMPANIES = sorted(by_ticker.keys())
+    print(f"  Tickers found: {len(COMPANIES)}")
+
+    # Merge with existing cache and write per-ticker JSON files
+    total_new = 0
+    total_existing = 0
+
+    for ticker in COMPANIES:
+        cache_file = TRANSCRIPTS_DIR / f"{ticker}_transcripts.json"
+
+        # Load existing cache
         if cache_file.exists():
             existing = json.loads(cache_file.read_text())
-            print(f"  Cache has {len(existing)} transcripts")
         else:
             existing = []
 
         existing_keys = {(t["quarter"], t["year"]) for t in existing if "quarter" in t and "year" in t}
 
-        try:
-            company = earningscall.get_company(symbol)
-        except Exception as e:
-            print(f"  Error getting company {symbol}: {e}")
-            continue
-
-        for q, y in quarters_to_check:
-            if (q, y) in existing_keys:
-                total_skipped += 1
-                continue
-
-            try:
-                transcript = company.get_transcript(year=y, quarter=q)
-            except Exception as e:
-                print(f"  Error fetching Q{q} {y}: {e}")
-                continue
-
-            if transcript and transcript.text:
-                entry = {
-                    "symbol": symbol,
-                    "quarter": q,
-                    "year": y,
-                    "content": transcript.text,
-                    "date": str(transcript.date) if hasattr(transcript, "date") and transcript.date else None,
-                }
+        new_count = 0
+        for entry in by_ticker[ticker]:
+            key = (entry["quarter"], entry["year"])
+            if key not in existing_keys:
                 existing.append(entry)
-                total_pulled += 1
-                print(f"  ✓ Q{q} {y} ({len(transcript.text)} chars)")
-            else:
-                print(f"  ✗ Q{q} {y} - no data")
+                existing_keys.add(key)
+                new_count += 1
+
+        total_new += new_count
+        total_existing += len(existing) - new_count
 
         _save_transcripts(cache_file, existing)
 
-    print(f"\nDone: {total_pulled} new transcripts pulled, {total_skipped} cached")
-    return total_pulled
+    print(f"\nDone: {total_new} new transcripts cached, {total_existing} already existed")
+    print(f"  {len(COMPANIES)} tickers across {sum(len(json.loads(f.read_text())) for f in TRANSCRIPTS_DIR.glob('*_transcripts.json'))} total transcripts")
+    return total_new
 
 
 def _save_transcripts(cache_file, transcripts):
@@ -268,8 +300,8 @@ def analyze_transcript(client: Anthropic, symbol: str, quarter: int, year: int, 
 
     try:
         response = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=2000,
+            model="claude-haiku-4-5-20251001",
+            max_tokens=4096,
             messages=[
                 {
                     "role": "user",
@@ -308,22 +340,20 @@ def analyze_transcript(client: Anthropic, symbol: str, quarter: int, year: int, 
 
 
 def analyze_all_transcripts():
-    """Run Claude analysis on all cached transcripts."""
+    """Run Claude analysis on all cached transcripts using concurrent workers."""
     print("\n" + "=" * 60)
-    print("STEP 2: Analyzing Transcripts with Claude API")
+    print(f"STEP 2: Analyzing Transcripts with Claude API ({CONCURRENCY} workers)")
     print("=" * 60)
 
     client = Anthropic(api_key=ANTHROPIC_API_KEY)
-    total_analyzed = 0
+
+    # Build work queue: collect all (symbol, quarter, year, content) needing analysis
+    work_items = []
     total_cached = 0
 
-    for symbol in COMPANIES:
-        cache_file = TRANSCRIPTS_DIR / f"{symbol}_transcripts.json"
-        if not cache_file.exists():
-            continue
-
+    for cache_file in sorted(TRANSCRIPTS_DIR.glob("*_transcripts.json")):
+        symbol = cache_file.stem.replace("_transcripts", "")
         transcripts = json.loads(cache_file.read_text())
-        print(f"\n[{symbol}] {len(transcripts)} transcripts to analyze")
 
         for t in transcripts:
             content = t.get("content", "")
@@ -333,20 +363,43 @@ def analyze_all_transcripts():
             q = t.get("quarter")
             y = t.get("year")
 
+            # Apply year range filter
+            if YEAR_RANGE and y is not None and not (YEAR_RANGE[0] <= y <= YEAR_RANGE[1]):
+                continue
+
             # Check if already analyzed
             analysis_file = ANALYSIS_DIR / f"{symbol}_Q{q}_{y}_analysis.json"
             if analysis_file.exists():
                 total_cached += 1
                 continue
 
-            analysis = analyze_transcript(client, symbol, q, y, content)
-            if analysis:
+            work_items.append((symbol, q, y, content))
+
+    print(f"\n  {len(work_items)} transcripts to analyze, {total_cached} already cached")
+
+    if not work_items:
+        print("  Nothing to do.")
+        return
+
+    total_analyzed = 0
+    total_failed = 0
+
+    def _analyze_one(item):
+        symbol, q, y, content = item
+        return analyze_transcript(client, symbol, q, y, content)
+
+    with ThreadPoolExecutor(max_workers=CONCURRENCY) as pool:
+        futures = {pool.submit(_analyze_one, item): item for item in work_items}
+        for i, future in enumerate(as_completed(futures), 1):
+            result = future.result()
+            if result:
                 total_analyzed += 1
+            else:
+                total_failed += 1
+            if i % 50 == 0:
+                print(f"  ... {i}/{len(work_items)} done ({total_analyzed} ok, {total_failed} failed)")
 
-            # Small delay between Claude calls
-            time.sleep(0.5)
-
-    print(f"\nDone: {total_analyzed} newly analyzed, {total_cached} cached")
+    print(f"\nDone: {total_analyzed} newly analyzed, {total_failed} failed, {total_cached} cached")
 
 
 # ============================================================
@@ -396,6 +449,9 @@ def compute_returns(symbol: str, earnings_date: str) -> dict | None:
         return None
 
     earnings_ts = pd.Timestamp(earnings_date)
+    # Match timezone of Yahoo Finance index if needed
+    if prices.index.tz is not None:
+        earnings_ts = earnings_ts.tz_localize(prices.index.tz)
 
     # Find the first trading day on or after earnings date
     future_prices = prices[prices.index >= earnings_ts]
@@ -457,6 +513,10 @@ def gather_all_price_data(refresh=False):
         year = analysis.get("year")
 
         if not all([symbol, quarter, year]):
+            continue
+
+        # Apply year range filter
+        if YEAR_RANGE and not (YEAR_RANGE[0] <= year <= YEAR_RANGE[1]):
             continue
 
         key = f"{symbol}_Q{quarter}_{year}"
@@ -611,7 +671,15 @@ def run_backtest():
     # SIGNAL ANALYSIS FOR EACH FEATURE
     # ============================================================
 
-    feature_cols = [c for c in df.columns if c.startswith("feat_")]
+    # Only use the 16 known features (ignore any extras hallucinated by the model)
+    KNOWN_FEATURES = [
+        "mgmt_hedging", "mgmt_deflection", "mgmt_specificity", "mgmt_confidence_shift",
+        "analyst_skepticism", "analyst_surprise", "analyst_focus_cluster",
+        "guidance_revision_dir", "guidance_qualifiers",
+        "new_risk_mention", "macro_blame", "capex_language", "hiring_language",
+        "competitive_mentions", "customer_language", "pricing_power",
+    ]
+    feature_cols = [f"feat_{f}" for f in KNOWN_FEATURES if f"feat_{f}" in df.columns]
     return_cols = [c for c in df.columns if c.startswith("return_") and c != "return_earnings_day"]
 
     results = {
@@ -1585,6 +1653,205 @@ def generate_basic_summary(pkg: dict) -> dict:
 
 
 # ============================================================
+# BATCH ANALYSIS (Message Batches API — 50% cheaper)
+# ============================================================
+
+BATCH_STATE_FILE = DATA_DIR / "batch_state.json"
+
+
+def _truncate_content(content: str) -> str:
+    """Truncate very long transcripts to stay within context."""
+    if len(content) > 80000:
+        content = content[:30000] + "\n\n[... middle section truncated ...]\n\n" + content[-50000:]
+    return content
+
+
+def submit_batch():
+    """Submit all pending transcripts as a Message Batch (50% cheaper, no rate limits)."""
+    print("\n" + "=" * 60)
+    print("STEP 2: Submitting Batch Analysis (Message Batches API)")
+    print("=" * 60)
+
+    client = Anthropic(api_key=ANTHROPIC_API_KEY)
+
+    # Build work queue
+    work_items = []
+    total_cached = 0
+
+    for cache_file in sorted(TRANSCRIPTS_DIR.glob("*_transcripts.json")):
+        symbol = cache_file.stem.replace("_transcripts", "")
+        transcripts = json.loads(cache_file.read_text())
+
+        for t in transcripts:
+            content = t.get("content", "")
+            if not content or len(content) < 500:
+                continue
+
+            q = t.get("quarter")
+            y = t.get("year")
+
+            if YEAR_RANGE and y is not None and not (YEAR_RANGE[0] <= y <= YEAR_RANGE[1]):
+                continue
+
+            analysis_file = ANALYSIS_DIR / f"{symbol}_Q{q}_{y}_analysis.json"
+            if analysis_file.exists():
+                total_cached += 1
+                continue
+
+            work_items.append((symbol, q, y, content))
+
+    print(f"\n  {len(work_items)} transcripts to submit, {total_cached} already cached")
+
+    if not work_items:
+        print("  Nothing to submit.")
+        return
+
+    # Batches API supports up to 10,000 requests per batch
+    # Split into chunks if needed
+    BATCH_SIZE = 10000
+    batch_ids = []
+
+    for chunk_start in range(0, len(work_items), BATCH_SIZE):
+        chunk = work_items[chunk_start:chunk_start + BATCH_SIZE]
+        chunk_num = chunk_start // BATCH_SIZE + 1
+        total_chunks = (len(work_items) + BATCH_SIZE - 1) // BATCH_SIZE
+
+        if total_chunks > 1:
+            print(f"\n  Submitting batch {chunk_num}/{total_chunks} ({len(chunk)} requests)...")
+        else:
+            print(f"\n  Submitting batch ({len(chunk)} requests)...")
+
+        requests = []
+        for symbol, q, y, content in chunk:
+            content = _truncate_content(content)
+            requests.append({
+                "custom_id": f"{symbol}_Q{q}_{y}",
+                "params": {
+                    "model": "claude-haiku-4-5-20251001",
+                    "max_tokens": 4096,
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": f"Here is the earnings call transcript for {symbol} Q{q} {y}:\n\n{content}\n\n{EXTRACTION_PROMPT}"
+                        }
+                    ],
+                }
+            })
+
+        batch = client.messages.batches.create(requests=requests)
+        batch_ids.append(batch.id)
+        print(f"  Batch ID: {batch.id}")
+        print(f"  Status: {batch.processing_status}")
+        print(f"  Expires: {batch.expires_at}")
+
+    # Save batch state for later retrieval
+    state = {
+        "batch_ids": batch_ids,
+        "submitted_at": datetime.now().isoformat(),
+        "total_requests": len(work_items),
+    }
+    BATCH_STATE_FILE.write_text(json.dumps(state, indent=2))
+    print(f"\n  Batch state saved to {BATCH_STATE_FILE}")
+    print(f"\n  Run '--step batch-results' to check status and retrieve results.")
+    print(f"  Results typically arrive within a few hours (max 24h).")
+
+
+def retrieve_batch_results():
+    """Check batch status and retrieve results when ready."""
+    print("\n" + "=" * 60)
+    print("STEP 2: Retrieving Batch Results")
+    print("=" * 60)
+
+    if not BATCH_STATE_FILE.exists():
+        print("\n  No batch state found. Run '--step batch' first.")
+        return
+
+    state = json.loads(BATCH_STATE_FILE.read_text())
+    batch_ids = state.get("batch_ids", [])
+    client = Anthropic(api_key=ANTHROPIC_API_KEY)
+
+    total_succeeded = 0
+    total_errored = 0
+    total_processing = 0
+    all_done = True
+
+    for batch_id in batch_ids:
+        batch = client.messages.batches.retrieve(batch_id)
+        counts = batch.request_counts
+        print(f"\n  Batch {batch_id}:")
+        print(f"    Status:     {batch.processing_status}")
+        print(f"    Succeeded:  {counts.succeeded}")
+        print(f"    Errored:    {counts.errored}")
+        print(f"    Expired:    {counts.expired}")
+        print(f"    Canceled:   {counts.canceled}")
+        print(f"    Processing: {counts.processing}")
+
+        if batch.processing_status != "ended":
+            all_done = False
+            total_processing += counts.processing
+            continue
+
+        # Retrieve results
+        print(f"    Retrieving results...")
+        for result in client.messages.batches.results(batch_id):
+            custom_id = result.custom_id  # e.g. "AAPL_Q3_2023"
+            parts = custom_id.rsplit("_Q", 1)
+            if len(parts) != 2:
+                print(f"    ✗ Unexpected custom_id format: {custom_id}")
+                total_errored += 1
+                continue
+
+            symbol = parts[0]
+            q_y = parts[1].split("_")
+            if len(q_y) != 2:
+                print(f"    ✗ Unexpected custom_id format: {custom_id}")
+                total_errored += 1
+                continue
+            q, y = int(q_y[0]), int(q_y[1])
+
+            analysis_file = ANALYSIS_DIR / f"{symbol}_Q{q}_{y}_analysis.json"
+            if analysis_file.exists():
+                total_succeeded += 1
+                continue
+
+            if result.result.type == "succeeded":
+                message = result.result.message
+                text = message.content[0].text.strip()
+
+                # Clean potential markdown formatting
+                if text.startswith("```"):
+                    text = text.split("\n", 1)[1]
+                if text.endswith("```"):
+                    text = text.rsplit("```", 1)[0]
+                text = text.strip()
+
+                try:
+                    analysis = json.loads(text)
+                    analysis["symbol"] = symbol
+                    analysis["quarter"] = q
+                    analysis["year"] = y
+                    analysis_file.write_text(json.dumps(analysis, indent=2))
+                    total_succeeded += 1
+                except json.JSONDecodeError as e:
+                    debug_file = ANALYSIS_DIR / f"{symbol}_Q{q}_{y}_raw.txt"
+                    debug_file.write_text(text)
+                    total_errored += 1
+            else:
+                print(f"    ✗ {custom_id}: {result.result.type}")
+                total_errored += 1
+
+    print(f"\n  Results: {total_succeeded} succeeded, {total_errored} errored")
+    if total_processing > 0:
+        print(f"  Still processing: {total_processing} requests")
+        print(f"  Run '--step batch-results' again later.")
+    if all_done:
+        print(f"\n  All batches complete!")
+        # Clean up state file
+        total_analyses = len(list(ANALYSIS_DIR.glob("*_analysis.json")))
+        print(f"  Total analyses on disk: {total_analyses}")
+
+
+# ============================================================
 # MAIN
 # ============================================================
 
@@ -1598,7 +1865,9 @@ Run modes:
   python earnings_signal_pipeline.py --refresh        Refresh incomplete price data & re-run backtest
   python earnings_signal_pipeline.py --refresh-all    Re-fetch ALL price data from scratch & backtest
   python earnings_signal_pipeline.py --step pull      Run only transcript pulling
-  python earnings_signal_pipeline.py --step analyze   Run only Claude analysis
+  python earnings_signal_pipeline.py --step analyze   Run only Claude analysis (concurrent, real-time)
+  python earnings_signal_pipeline.py --step batch     Submit analysis as batch (50% cheaper, async)
+  python earnings_signal_pipeline.py --step batch-results  Retrieve batch results
   python earnings_signal_pipeline.py --step prices    Run only price fetching
   python earnings_signal_pipeline.py --step backtest  Run only backtest (on existing data)
   python earnings_signal_pipeline.py --status         Show cache status without running anything
@@ -1608,10 +1877,12 @@ Run modes:
                         help="Refresh price data for events with incomplete returns or recent earnings, then re-run backtest")
     parser.add_argument("--refresh-all", action="store_true",
                         help="Re-fetch ALL price data from Yahoo Finance and re-run backtest")
-    parser.add_argument("--step", choices=["pull", "analyze", "prices", "backtest"],
-                        help="Run only a specific pipeline step")
+    parser.add_argument("--step", choices=["pull", "analyze", "batch", "batch-results", "prices", "backtest"],
+                        help="Run only a specific pipeline step (batch/batch-results use the 50%% cheaper Batches API)")
     parser.add_argument("--status", action="store_true",
                         help="Show cache status: how many transcripts, analyses, price records exist")
+    parser.add_argument("--years", type=str, default=None,
+                        help="Year range filter, e.g. 2023-2025. Only process transcripts within this range.")
     parser.add_argument("--no-confirm", action="store_true",
                         help="Skip confirmation prompts (for automation/cron)")
     return parser.parse_args()
@@ -1684,14 +1955,29 @@ def show_status():
 
 
 def main():
+    global YEAR_RANGE
     args = parse_args()
+
+    # Parse --years flag
+    if args.years:
+        parts = args.years.split("-")
+        if len(parts) == 2:
+            YEAR_RANGE = (int(parts[0]), int(parts[1]))
+        elif len(parts) == 1:
+            YEAR_RANGE = (int(parts[0]), int(parts[0]))
+        else:
+            print(f"Invalid --years format: {args.years}. Use e.g. 2023-2025")
+            return
 
     print("=" * 60)
     print("  EARNINGS TRANSCRIPT SIGNAL ANALYZER")
     print("  Real Data Pipeline")
     print("=" * 60)
-    print(f"\nCompanies: {len(COMPANIES)}")
-    print(f"Quarters back: {QUARTERS_BACK}")
+    print(f"\nData source: HuggingFace ({HF_DATASET})")
+    print(f"Companies: S&P 500 (~496 tickers)")
+    print(f"Quarters back: {'all available' if QUARTERS_BACK == 0 else QUARTERS_BACK}")
+    if YEAR_RANGE:
+        print(f"Year filter: {YEAR_RANGE[0]}-{YEAR_RANGE[1]}")
     print(f"Holding periods: {list(HOLDING_PERIODS.keys())}")
     print(f"Features: 16 granular NLP features")
     print(f"Data directory: {DATA_DIR}")
@@ -1701,14 +1987,8 @@ def main():
         show_status()
         return
 
-    # Check API keys (not needed for backtest-only or status)
-    needs_ec = args.step in [None, "pull"]
-    needs_claude = args.step in [None, "analyze"]
-
-    if needs_ec and not earningscall.api_key:
-        print("\n⚠️  Set EARNINGSCALL_API_KEY environment variable.")
-        print("   Get a free key at https://earningscall.biz")
-        return
+    # Check API keys (not needed for backtest-only, status, or pull)
+    needs_claude = args.step in [None, "analyze", "batch", "batch-results"]
 
     if needs_claude and ANTHROPIC_API_KEY == "YOUR_CLAUDE_KEY_HERE":
         print("\n⚠️  Set ANTHROPIC_API_KEY environment variable or edit this script.")
@@ -1744,18 +2024,25 @@ def main():
             pull_all_transcripts()
         elif args.step == "analyze":
             if not args.no_confirm:
-                n_pending = len(list(ANALYSIS_DIR.glob("*_analysis.json")))
-                n_transcripts = sum(
-                    len(json.loads(f.read_text()))
-                    for f in TRANSCRIPTS_DIR.glob("*_transcripts.json")
-                )
-                pending = max(0, n_transcripts - n_pending)
+                n_existing = len(list(ANALYSIS_DIR.glob("*_analysis.json")))
+                n_transcripts = 0
+                for f in TRANSCRIPTS_DIR.glob("*_transcripts.json"):
+                    for t in json.loads(f.read_text()):
+                        y = t.get("year")
+                        if YEAR_RANGE and y is not None and not (YEAR_RANGE[0] <= y <= YEAR_RANGE[1]):
+                            continue
+                        n_transcripts += 1
+                pending = max(0, n_transcripts - n_existing)
                 if pending > 0:
                     print(f"\n{pending} transcripts to analyze (~${pending * 0.02:.2f})")
                     proceed = input("Proceed? (y/n): ").strip().lower()
                     if proceed != "y":
                         return
             analyze_all_transcripts()
+        elif args.step == "batch":
+            submit_batch()
+        elif args.step == "batch-results":
+            retrieve_batch_results()
         elif args.step == "prices":
             gather_all_price_data(refresh=False)
         elif args.step == "backtest":
@@ -1773,8 +2060,20 @@ def main():
 
     # Step 2: Analyze with Claude
     if not args.no_confirm:
-        print("\nNote: Claude API calls cost ~$0.01-0.03 per transcript.")
-        print(f"Estimated cost for {len(COMPANIES) * QUARTERS_BACK} transcripts: ${len(COMPANIES) * QUARTERS_BACK * 0.02:.2f}")
+        # Count transcripts from cache files to estimate cost
+        n_transcripts = 0
+        for f in TRANSCRIPTS_DIR.glob("*_transcripts.json"):
+            for t in json.loads(f.read_text()):
+                y = t.get("year")
+                if YEAR_RANGE and y is not None and not (YEAR_RANGE[0] <= y <= YEAR_RANGE[1]):
+                    continue
+                n_transcripts += 1
+        n_existing = len(list(ANALYSIS_DIR.glob("*_analysis.json")))
+        n_pending = max(0, n_transcripts - n_existing)
+        print(f"\nNote: Claude API calls cost ~$0.01-0.03 per transcript.")
+        print(f"Transcripts: {n_transcripts} total, {n_existing} already analyzed, {n_pending} pending")
+        if n_pending > 0:
+            print(f"Estimated cost for {n_pending} pending: ~${n_pending * 0.02:.2f}")
         proceed = input("Proceed with analysis? (y/n): ").strip().lower()
         if proceed != "y":
             print("Skipping analysis. Run with --step analyze later.")
