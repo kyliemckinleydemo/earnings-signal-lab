@@ -1,0 +1,25 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# System deps for scientific computing
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential gcc g++ && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install all ML dependencies
+COPY requirements-notebook.txt .
+RUN pip install --no-cache-dir -r requirements-notebook.txt
+
+# Copy notebooks and pipeline code
+COPY . .
+
+# Create data directory (Railway volume mounts here)
+RUN mkdir -p earnings_signal_data/transcripts earnings_signal_data/analysis
+
+EXPOSE 8888
+
+# Start Jupyter with token from env var
+CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser \
+    --allow-root --NotebookApp.token="${JUPYTER_TOKEN}" \
+    --notebook-dir=/app/notebooks
