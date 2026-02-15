@@ -90,6 +90,43 @@
   .corr-table td.label { font-size:9px; font-weight:500; white-space:nowrap; padding:3px 6px 3px 0; }
   .corr-cell { border-radius:2px; padding:4px 2px; font-size:9px; text-align:center; min-width:32px; }
 
+  /* Scores tab */
+  .signal-bar { display:flex; border-radius:6px; overflow:hidden; height:28px; margin-bottom:16px; font-size:11px; font-weight:600; }
+  .signal-bar div { display:flex; align-items:center; justify-content:center; gap:4px; }
+  .signal-long { background:rgba(61,232,160,0.15); color:var(--green); }
+  .signal-neutral { background:rgba(107,112,148,0.15); color:var(--dim); }
+  .signal-short { background:rgba(240,104,120,0.15); color:var(--red); }
+
+  .scores-layout { display:grid; grid-template-columns:1fr 320px; gap:16px; }
+  @media (max-width:1100px) { .scores-layout { grid-template-columns:1fr; } }
+
+  .scores-table { width:100%; border-collapse:collapse; font-size:11px; }
+  .scores-table th { text-align:left; font-size:10px; font-weight:600; color:var(--dim); padding:6px 8px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:0.5px; }
+  .scores-table td { padding:6px 8px; border-bottom:1px solid rgba(26,26,53,0.5); }
+  .scores-table tr:hover { background:rgba(255,255,255,0.02); }
+  .scores-table tr.expandable { cursor:pointer; }
+  .scores-table tr.expanded { background:rgba(61,232,160,0.03); }
+
+  .signal-badge { font-size:9px; font-weight:600; padding:2px 7px; border-radius:3px; display:inline-block; }
+  .signal-badge.long { background:rgba(61,232,160,0.12); color:var(--green); }
+  .signal-badge.neutral { background:rgba(107,112,148,0.12); color:var(--dim); }
+  .signal-badge.short { background:rgba(240,104,120,0.12); color:var(--red); }
+
+  .contrib-row { background:var(--bg3); }
+  .contrib-bar-wrap { display:flex; align-items:center; gap:6px; margin:2px 0; font-size:10px; }
+  .contrib-bar { height:8px; border-radius:4px; min-width:2px; }
+  .contrib-bar.pos { background:var(--green); }
+  .contrib-bar.neg { background:var(--red); }
+
+  .top10-card { padding:8px 10px; margin-bottom:4px; }
+  .top10-card .sym { font-weight:600; font-size:12px; }
+  .top10-card .score { font-size:11px; font-weight:600; }
+  .top10-card .driver { font-size:9px; color:var(--dim); margin-top:2px; }
+
+  .pagination { display:flex; gap:8px; align-items:center; justify-content:center; margin-top:14px; font-size:11px; color:var(--dim); }
+  .pagination button { background:var(--bg3); border:1px solid var(--border); color:var(--text); border-radius:4px; padding:4px 12px; font:500 11px var(--mono); cursor:pointer; }
+  .pagination button:disabled { opacity:0.3; cursor:default; }
+
   /* Loading */
   .loading { text-align:center; padding:80px 20px; color:var(--dim); }
   .loading .spinner { display:inline-block; width:24px; height:24px; border:2px solid var(--border); border-top-color:var(--green); border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:12px; }
@@ -114,6 +151,7 @@
 
 <div class="tabs" id="tabs">
   <button class="tab active" data-tab="features">Features</button>
+  <button class="tab" data-tab="scores">Scores</button>
   <button class="tab" data-tab="models">Models</button>
   <button class="tab" data-tab="combos">Combinations</button>
   <button class="tab" data-tab="correlations">Correlations</button>
@@ -153,18 +191,31 @@ const PDS = ["1D","5D","10D","21D"];
 // State
 // ============================================================
 let DATA = null;
+let SCORES = null;
+let MODEL = null;
 let activeTab = "features";
 let selectedFeat = null;
 let catFilter = "All";
+let scoreSignalFilter = "ALL";
+let scoreConfFilter = "ALL";
+let scoreOffset = 0;
+let scoreLimit = 50;
+let expandedScoreIdx = null;
 
 // ============================================================
 // Fetch data
 // ============================================================
 async function init() {
   try {
-    const res = await fetch("/api/results");
-    if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`);
-    DATA = await res.json();
+    const [resultsRes, scoresRes, modelRes] = await Promise.all([
+      fetch("/api/results"),
+      fetch("/api/scores?limit=50").catch(() => null),
+      fetch("/api/model").catch(() => null),
+    ]);
+    if (!resultsRes.ok) throw new Error(`${resultsRes.status}: ${resultsRes.statusText}`);
+    DATA = await resultsRes.json();
+    if (scoresRes && scoresRes.ok) SCORES = await scoresRes.json();
+    if (modelRes && modelRes.ok) MODEL = await modelRes.json();
     renderMeta();
     renderTab();
   } catch(e) {
@@ -201,6 +252,7 @@ function renderTab() {
   const el = document.getElementById("content");
   switch(activeTab) {
     case "features": el.innerHTML = renderFeatures(); break;
+    case "scores": el.innerHTML = renderScores(); break;
     case "models": el.innerHTML = renderModels(); break;
     case "combos": el.innerHTML = renderCombos(); break;
     case "correlations": el.innerHTML = renderCorrelations(); break;
@@ -292,6 +344,171 @@ function renderFeatures() {
   }
 
   return filters + `<div class="features-grid">${list}<div>${detail}</div></div>`;
+}
+
+// ============================================================
+// Scores tab
+// ============================================================
+async function fetchScores() {
+  let url = `/api/scores?limit=${scoreLimit}&offset=${scoreOffset}`;
+  if (scoreSignalFilter !== "ALL") url += `&signal=${scoreSignalFilter}`;
+  if (scoreConfFilter !== "ALL") url += `&confidence=${scoreConfFilter}`;
+  const res = await fetch(url);
+  if (res.ok) { SCORES = await res.json(); expandedScoreIdx = null; renderTab(); }
+}
+
+function renderScores() {
+  if (!SCORES) return `<div class="loading" style="color:var(--dim)">No scores available. Run the scoring pipeline first.</div>`;
+
+  const sum = SCORES.summary || {};
+  const sigs = sum.signals || {};
+  const total = sum.total || 1;
+  const items = SCORES.items || [];
+
+  // Active features from model
+  const nActive = MODEL ? Object.values(MODEL.weights || {}).filter(w => w !== 0 && w !== -0).length : "?";
+  const cvR2 = MODEL ? (MODEL.cv_r2 * 100).toFixed(2) : "?";
+  const horizon = MODEL ? MODEL.horizon : "?";
+
+  // Header: signal distribution bar
+  let html = `<div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+    <div>
+      <div style="font-size:14px;font-weight:600;margin-bottom:2px">Scored Transcripts</div>
+      <div style="font-size:11px;color:var(--dim)">Lasso ${horizon} · CV R² ${cvR2}% · ${nActive} features · ${total} transcripts scored</div>
+    </div></div>`;
+
+  const lPct = ((sigs.LONG||0)/total*100).toFixed(1);
+  const nPct = ((sigs.NEUTRAL||0)/total*100).toFixed(1);
+  const sPct = ((sigs.SHORT||0)/total*100).toFixed(1);
+  html += `<div class="signal-bar">
+    <div class="signal-long" style="width:${lPct}%">${sigs.LONG||0} LONG</div>
+    <div class="signal-neutral" style="width:${nPct}%">${sigs.NEUTRAL||0} NEUTRAL</div>
+    <div class="signal-short" style="width:${sPct}%">${sigs.SHORT||0} SHORT</div>
+  </div>`;
+
+  // Filters
+  html += `<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px">
+    <div class="filters" style="margin-bottom:0">`;
+  ["ALL","LONG","SHORT","NEUTRAL"].forEach(s => {
+    html += `<button class="filter-btn ${scoreSignalFilter===s?"active":""}" data-signal="${s}">${s}</button>`;
+  });
+  html += `</div><div class="filters" style="margin-bottom:0">`;
+  ["ALL","high","medium","low"].forEach(c => {
+    html += `<button class="filter-btn ${scoreConfFilter===c?"active":""}" data-conf="${c}">${c === "ALL" ? "All Conf." : c}</button>`;
+  });
+  html += `</div></div>`;
+
+  // Main layout: table + sidebar
+  html += `<div class="scores-layout">`;
+
+  // Table
+  html += `<div class="card" style="padding:0;overflow-x:auto"><table class="scores-table">
+    <thead><tr><th>#</th><th>Symbol</th><th>Qtr</th><th>Year</th><th>Score</th><th>Signal</th><th>Conf.</th><th>Top Driver</th></tr></thead><tbody>`;
+
+  items.forEach((item, i) => {
+    const rank = SCORES.offset + i + 1;
+    const sigCls = item.signal.toLowerCase();
+    const scoreColor = item.raw_score > 0 ? "var(--green)" : item.raw_score < 0 ? "var(--red)" : "var(--dim)";
+    const contribs = item.feature_contributions || {};
+    const topDriver = Object.entries(contribs).sort((a,b) => Math.abs(b[1]) - Math.abs(a[1]))[0];
+    const topDriverName = topDriver ? (FM[topDriver[0]]?.name || topDriver[0]) : "—";
+    const isExpanded = expandedScoreIdx === i;
+
+    html += `<tr class="expandable ${isExpanded ? "expanded" : ""}" data-score-idx="${i}">
+      <td style="color:var(--dim)">${rank}</td>
+      <td style="font-weight:600">${item.symbol}</td>
+      <td>Q${item.quarter}</td>
+      <td>${item.year}</td>
+      <td style="font-weight:600;color:${scoreColor}">${item.raw_score > 0 ? "+" : ""}${item.raw_score.toFixed(2)}</td>
+      <td><span class="signal-badge ${sigCls}">${item.signal}</span></td>
+      <td style="font-size:10px;color:var(--dim)">${item.confidence}</td>
+      <td style="font-size:10px">${topDriverName}</td>
+    </tr>`;
+
+    // Expanded contribution breakdown
+    if (isExpanded) {
+      const entries = Object.entries(contribs).sort((a,b) => Math.abs(b[1]) - Math.abs(a[1]));
+      const maxAbs = Math.max(...entries.map(e => Math.abs(e[1])), 0.01);
+      html += `<tr class="contrib-row"><td colspan="8" style="padding:10px 16px">
+        <div style="font-size:10px;font-weight:600;color:var(--dim);margin-bottom:6px">FEATURE CONTRIBUTIONS</div>`;
+      entries.forEach(([feat, val]) => {
+        const barW = Math.abs(val) / maxAbs * 100;
+        const cls = val >= 0 ? "pos" : "neg";
+        const fName = FM[feat]?.name || feat;
+        html += `<div class="contrib-bar-wrap">
+          <span style="min-width:130px;color:${FM[feat]?.color || 'var(--text)'}">${fName}</span>
+          <div style="flex:1;display:flex;align-items:center;${val < 0 ? "flex-direction:row-reverse" : ""}">
+            <div class="contrib-bar ${cls}" style="width:${barW}%"></div>
+          </div>
+          <span style="min-width:50px;text-align:right;font-weight:600;color:${val >= 0 ? "var(--green)" : "var(--red)"}">${val > 0 ? "+" : ""}${val.toFixed(3)}</span>
+        </div>`;
+      });
+      html += `</td></tr>`;
+    }
+  });
+
+  html += `</tbody></table>`;
+
+  // Pagination
+  const totalFiltered = SCORES.total || 0;
+  const hasPrev = scoreOffset > 0;
+  const hasNext = scoreOffset + scoreLimit < totalFiltered;
+  html += `<div class="pagination">
+    <button id="scores-prev" ${hasPrev ? "" : "disabled"}>← Prev</button>
+    <span>${scoreOffset + 1}–${Math.min(scoreOffset + scoreLimit, totalFiltered)} of ${totalFiltered}</span>
+    <button id="scores-next" ${hasNext ? "" : "disabled"}>Next →</button>
+  </div></div>`;
+
+  // Top 10 sidebar
+  html += `<div>`;
+  html += renderTop10("LONG", "var(--green)");
+  html += renderTop10("SHORT", "var(--red)");
+  html += `</div></div>`;
+
+  return html;
+}
+
+function renderTop10(signal, color) {
+  if (!SCORES) return "";
+  // We need all items of this signal — use a separate fetch or approximate from current data
+  // For the sidebar, we'll show from the cached full summary
+  // We need to fetch top 10 separately
+  const items = SCORES._top10?.[signal];
+  if (!items) {
+    // Fetch top 10 async and re-render
+    fetchTop10(signal);
+    return `<div class="card"><div style="font-size:12px;font-weight:600;color:${color};margin-bottom:8px">Top 10 ${signal}</div>
+      <div style="font-size:10px;color:var(--dim)">Loading...</div></div>`;
+  }
+  let html = `<div class="card"><div style="font-size:12px;font-weight:600;color:${color};margin-bottom:8px">Top 10 ${signal}</div>`;
+  items.forEach((item, i) => {
+    const contribs = item.feature_contributions || {};
+    const topDriver = Object.entries(contribs).sort((a,b) => Math.abs(b[1]) - Math.abs(a[1]))[0];
+    const driverName = topDriver ? (FM[topDriver[0]]?.name || topDriver[0]) : "";
+    html += `<div class="top10-card" style="border-left:2px solid ${color}; margin-left:0; padding-left:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="sym">${i+1}. ${item.symbol}</span>
+        <span class="score" style="color:${color}">${item.raw_score > 0 ? "+" : ""}${item.raw_score.toFixed(2)}</span>
+      </div>
+      <div class="driver">Q${item.quarter} ${item.year} · ${driverName}</div>
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+async function fetchTop10(signal) {
+  if (!SCORES) return;
+  if (!SCORES._top10) SCORES._top10 = {};
+  if (SCORES._top10[signal]) return;
+  const order = signal === "SHORT" ? "asc" : "desc";
+  const res = await fetch(`/api/scores?signal=${signal}&limit=10&offset=0`);
+  if (res.ok) {
+    const data = await res.json();
+    SCORES._top10[signal] = data.items || [];
+    // Re-render only if still on scores tab
+    if (activeTab === "scores") renderTab();
+  }
 }
 
 // ============================================================
@@ -423,13 +640,43 @@ function attachListeners() {
       renderTab();
     });
   });
-  // Category filters
-  document.querySelectorAll(".filter-btn").forEach(el => {
+  // Category filters (features tab)
+  document.querySelectorAll(".filter-btn[data-cat]").forEach(el => {
     el.addEventListener("click", () => {
       catFilter = el.dataset.cat;
       renderTab();
     });
   });
+  // Signal filters (scores tab)
+  document.querySelectorAll(".filter-btn[data-signal]").forEach(el => {
+    el.addEventListener("click", () => {
+      scoreSignalFilter = el.dataset.signal;
+      scoreOffset = 0;
+      SCORES._top10 = null;
+      fetchScores();
+    });
+  });
+  // Confidence filters (scores tab)
+  document.querySelectorAll(".filter-btn[data-conf]").forEach(el => {
+    el.addEventListener("click", () => {
+      scoreConfFilter = el.dataset.conf;
+      scoreOffset = 0;
+      fetchScores();
+    });
+  });
+  // Score row expansion
+  document.querySelectorAll("tr.expandable").forEach(el => {
+    el.addEventListener("click", () => {
+      const idx = parseInt(el.dataset.scoreIdx);
+      expandedScoreIdx = expandedScoreIdx === idx ? null : idx;
+      renderTab();
+    });
+  });
+  // Pagination
+  const prevBtn = document.getElementById("scores-prev");
+  const nextBtn = document.getElementById("scores-next");
+  if (prevBtn) prevBtn.addEventListener("click", () => { scoreOffset = Math.max(0, scoreOffset - scoreLimit); fetchScores(); });
+  if (nextBtn) nextBtn.addEventListener("click", () => { scoreOffset += scoreLimit; fetchScores(); });
 }
 
 // ============================================================

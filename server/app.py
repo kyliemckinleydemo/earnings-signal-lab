@@ -12,6 +12,7 @@ Does NOT expose: raw transcripts, Claude analysis details, or API keys.
 import os
 import json
 from pathlib import Path
+from collections import Counter
 from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
@@ -26,12 +27,20 @@ import asyncio
 
 DATA_DIR = Path(os.environ.get("DATA_DIR", "earnings_signal_data"))
 RESULTS_FILE = DATA_DIR / "backtest_results.json"
+SCORES_FILE = DATA_DIR / "scores.json"
+MODEL_FILE = DATA_DIR / "scoring_model.json"
 SUMMARY_FILE = DATA_DIR / "SUMMARY.md"
 PIPELINE_SCRIPT = Path("earnings_signal_pipeline.py")
 
 # Cache the results in memory for fast serving
 _cached_results = None
 _cached_at = None
+
+_cached_scores = None
+_cached_scores_at = None
+
+_cached_model = None
+_cached_model_at = None
 
 
 def load_results():
@@ -111,14 +120,48 @@ def load_results():
     return public
 
 
+def load_scores():
+    """Load and cache scored transcripts from scores.json."""
+    global _cached_scores, _cached_scores_at
+
+    if not SCORES_FILE.exists():
+        return None
+
+    mtime = SCORES_FILE.stat().st_mtime
+    if _cached_scores and _cached_scores_at == mtime:
+        return _cached_scores
+
+    _cached_scores = json.loads(SCORES_FILE.read_text())
+    _cached_scores_at = mtime
+    return _cached_scores
+
+
+def load_model():
+    """Load and cache scoring model from scoring_model.json."""
+    global _cached_model, _cached_model_at
+
+    if not MODEL_FILE.exists():
+        return None
+
+    mtime = MODEL_FILE.stat().st_mtime
+    if _cached_model and _cached_model_at == mtime:
+        return _cached_model
+
+    _cached_model = json.loads(MODEL_FILE.read_text())
+    _cached_model_at = mtime
+    return _cached_model
+
+
 # ============================================================
 # App
 # ============================================================
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: load results
+    # Startup: preload all data
     load_results()
+    load_scores()
+    load_model()
     yield
 
 app = FastAPI(
@@ -181,6 +224,49 @@ async def get_features():
         "features": results.get("features", {}),
         "sample_extractions": results.get("sample_extractions", {}),
     }
+
+
+@app.get("/api/scores")
+async def get_scores(signal: str = None, confidence: str = None, limit: int = 50, offset: int = 0):
+    """Scored transcripts with LONG/SHORT/NEUTRAL signals."""
+    scores = load_scores()
+    if not scores:
+        raise HTTPException(status_code=503, detail="No scores available. Run the scoring pipeline first.")
+
+    # Summary stats (always from full dataset)
+    signal_counts = Counter(s["signal"] for s in scores)
+    confidence_counts = Counter(s["confidence"] for s in scores)
+
+    # Filter
+    filtered = scores
+    if signal and signal.upper() in ("LONG", "SHORT", "NEUTRAL"):
+        filtered = [s for s in filtered if s["signal"] == signal.upper()]
+    if confidence and confidence.lower() in ("high", "medium", "low"):
+        filtered = [s for s in filtered if s["confidence"] == confidence.lower()]
+
+    # Paginate
+    page = filtered[offset:offset + limit]
+
+    return {
+        "items": page,
+        "total": len(filtered),
+        "offset": offset,
+        "limit": limit,
+        "summary": {
+            "total": len(scores),
+            "signals": dict(signal_counts),
+            "confidences": dict(confidence_counts),
+        },
+    }
+
+
+@app.get("/api/model")
+async def get_model():
+    """Scoring model weights and training metadata."""
+    model = load_model()
+    if not model:
+        raise HTTPException(status_code=503, detail="No scoring model available.")
+    return model
 
 
 @app.get("/api/summary")
