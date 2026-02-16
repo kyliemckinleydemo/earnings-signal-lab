@@ -1,62 +1,94 @@
 {
   "version": 1,
-  "trained_at": "2026-02-15T17:49:59.513675",
+  "trained_at": "2026-02-15T19:02:21.683926",
   "horizon": "30D_alpha",
   "n_training_samples": 340,
-  "cv_r2": -0.025,
+  "cv_r2": -0.0253,
   "lasso_alpha": 1.0,
   "features": [
     "risk_score",
     "sentiment_score",
     "concern_level",
+    "market_cap",
+    "current_price",
     "pe_ratio",
     "forward_pe",
+    "fifty_two_week_high",
+    "fifty_two_week_low",
     "price_to_high",
     "price_to_low",
     "analyst_upside_potential",
     "analyst_consensus_score",
     "analyst_coverage",
-    "net_upgrades"
+    "upgrades_last_30d",
+    "downgrades_last_30d",
+    "net_upgrades",
+    "major_upgrades",
+    "major_downgrades"
   ],
   "weights": {
     "risk_score": -0.0,
     "sentiment_score": 0.0,
     "concern_level": -0.0,
+    "market_cap": 0.0,
+    "current_price": 0.0,
     "pe_ratio": 0.0,
     "forward_pe": 0.548869,
+    "fifty_two_week_high": -0.0,
+    "fifty_two_week_low": -0.0,
     "price_to_high": 0.0,
     "price_to_low": 0.73373,
     "analyst_upside_potential": -0.0,
     "analyst_consensus_score": -0.0,
     "analyst_coverage": 0.0,
-    "net_upgrades": -0.0
+    "upgrades_last_30d": 0.0,
+    "downgrades_last_30d": 0.0,
+    "net_upgrades": -0.0,
+    "major_upgrades": -0.0,
+    "major_downgrades": 0.0
   },
   "intercept": -0.134291,
   "scaler_means": {
     "risk_score": 2.519412,
     "sentiment_score": 0.023588,
     "concern_level": 5.345,
+    "market_cap": 682892847206.9647,
+    "current_price": 276.087382,
     "pe_ratio": 37.837501,
     "forward_pe": 26.249406,
+    "fifty_two_week_high": 323.702324,
+    "fifty_two_week_low": 199.718763,
     "price_to_high": 0.858843,
     "price_to_low": 1.397792,
     "analyst_upside_potential": 13.518,
     "analyst_consensus_score": 77.176408,
     "analyst_coverage": 30.041176,
-    "net_upgrades": -0.076471
+    "upgrades_last_30d": 0.194118,
+    "downgrades_last_30d": 0.270588,
+    "net_upgrades": -0.076471,
+    "major_upgrades": 0.058824,
+    "major_downgrades": 0.102941
   },
   "scaler_stds": {
     "risk_score": 3.09195,
     "sentiment_score": 0.120611,
     "concern_level": 1.577919,
+    "market_cap": 1043282559376.2556,
+    "current_price": 247.235713,
     "pe_ratio": 38.205565,
     "forward_pe": 18.592876,
+    "fifty_two_week_high": 292.022885,
+    "fifty_two_week_low": 172.151445,
     "price_to_high": 0.091205,
     "price_to_low": 0.417374,
     "analyst_upside_potential": 10.886692,
     "analyst_consensus_score": 9.423611,
     "analyst_coverage": 11.663092,
-    "net_upgrades": 0.797075
+    "upgrades_last_30d": 0.457577,
+    "downgrades_last_30d": 0.662229,
+    "net_upgrades": 0.797075,
+    "major_upgrades": 0.235294,
+    "major_downgrades": 0.381163
   },
   "feature_percentiles": {
     "risk_score": {
@@ -80,6 +112,20 @@
       "mean": 5.345,
       "std": 1.5779188639396104
     },
+    "market_cap": {
+      "p25": 165642698752.0,
+      "p50": 268580225024.0,
+      "p75": 518444089344.0,
+      "mean": 682892847206.9647,
+      "std": 1043282559376.2556
+    },
+    "current_price": {
+      "p25": 109.19,
+      "p50": 214.76,
+      "p75": 343.65,
+      "mean": 276.0873823529412,
+      "std": 247.23571331423958
+    },
     "pe_ratio": {
       "p25": 17.5978695,
       "p50": 25.728774,
@@ -93,6 +139,20 @@
       "p75": 31.179776500000003,
       "mean": 26.249405739117645,
       "std": 18.592876253922576
+    },
+    "fifty_two_week_high": {
+      "p25": 124.5825,
+      "p50": 240.54,
+      "p75": 410.5325,
+      "mean": 323.7023235294118,
+      "std": 292.0228852346639
+    },
+    "fifty_two_week_low": {
+      "p25": 80.1,
+      "p50": 138.1,
+      "p75": 276.53,
+      "mean": 199.7187627352941,
+      "std": 172.1514453713389
     },
     "price_to_high": {
       "p25": 0.8363999132655974,
@@ -129,12 +189,40 @@
       "mean": 30.041176470588237,
       "std": 11.663092054124231
     },
+    "upgrades_last_30d": {
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "mean": 0.19411764705882353,
+      "std": 0.4575774935786919
+    },
+    "downgrades_last_30d": {
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "mean": 0.27058823529411763,
+      "std": 0.6622285955791762
+    },
     "net_upgrades": {
       "p25": 0.0,
       "p50": 0.0,
       "p75": 0.0,
       "mean": -0.07647058823529412,
       "std": 0.7970751029377241
+    },
+    "major_upgrades": {
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "mean": 0.058823529411764705,
+      "std": 0.23529411764705885
+    },
+    "major_downgrades": {
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "mean": 0.10294117647058823,
+      "std": 0.3811633076884863
     }
   },
   "score_percentiles": {

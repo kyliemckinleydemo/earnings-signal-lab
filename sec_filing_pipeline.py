@@ -70,49 +70,77 @@ ALPHA_PERIODS = {
 
 # Map CSV column names → clean snake_case names + metadata
 FEATURE_COLUMNS = {
+    # AI Analysis
     "riskScore": "risk_score",
     "sentimentScore": "sentiment_score",
     "concernLevel": "concern_level",
+    # Valuation
+    "marketCap": "market_cap",
+    "currentPrice": "current_price",
     "peRatio": "pe_ratio",
     "forwardPE": "forward_pe",
+    "fiftyTwoWeekHigh": "fifty_two_week_high",
+    "fiftyTwoWeekLow": "fifty_two_week_low",
     "priceToHigh": "price_to_high",
     "priceToLow": "price_to_low",
     "priceToTarget": "price_to_target",
+    # Technical
     "priceToMA30": "price_to_ma30",
     "priceToMA50": "price_to_ma50",
     "rsi14": "rsi14",
+    "macd": "macd",
     "volatility30": "volatility30",
     "return30d": "return_30d",
+    # Market Context
     "spxReturn7d": "spx_return_7d",
     "spxReturn30d": "spx_return_30d",
     "vixClose": "vix_close",
+    # Analyst Activity
     "analystUpsidePotential": "analyst_upside_potential",
     "analystConsensusScore": "analyst_consensus_score",
     "analystCoverage": "analyst_coverage",
+    "upgradesLast30d": "upgrades_last_30d",
+    "downgradesLast30d": "downgrades_last_30d",
     "netUpgrades": "net_upgrades",
+    "majorUpgrades": "major_upgrades",
+    "majorDowngrades": "major_downgrades",
 }
 
 SEC_FEATURES = {
+    # AI Analysis
     "risk_score": {"name": "Risk Score", "cat": "AI Analysis", "color": "#e74c3c", "bear": True, "desc": "Claude-assessed risk severity (0-10)"},
     "sentiment_score": {"name": "Sentiment", "cat": "AI Analysis", "color": "#27ae60", "bear": False, "desc": "MD&A sentiment (-1 to +1)"},
     "concern_level": {"name": "Concern Level", "cat": "AI Analysis", "color": "#c0392b", "bear": True, "desc": "Multi-factor concern synthesis (0-10)"},
+    # Valuation
+    "market_cap": {"name": "Market Cap", "cat": "Valuation", "color": "#8e44ad", "bear": False, "desc": "Total market capitalization"},
+    "current_price": {"name": "Current Price", "cat": "Valuation", "color": "#9b59b6", "bear": False, "desc": "Stock price at filing date"},
     "pe_ratio": {"name": "P/E Ratio", "cat": "Valuation", "color": "#8e44ad", "bear": True, "desc": "Price-to-earnings multiple"},
     "forward_pe": {"name": "Forward P/E", "cat": "Valuation", "color": "#9b59b6", "bear": True, "desc": "Forward price-to-earnings"},
+    "fifty_two_week_high": {"name": "52W High", "cat": "Valuation", "color": "#2980b9", "bear": False, "desc": "52-week high price"},
+    "fifty_two_week_low": {"name": "52W Low", "cat": "Valuation", "color": "#3498db", "bear": False, "desc": "52-week low price"},
     "price_to_high": {"name": "Price to High", "cat": "Valuation", "color": "#2980b9", "bear": True, "desc": "Price relative to 52-week high"},
     "price_to_low": {"name": "Price to Low", "cat": "Valuation", "color": "#3498db", "bear": False, "desc": "Price relative to 52-week low"},
     "price_to_target": {"name": "Price to Target", "cat": "Valuation", "color": "#1abc9c", "bear": False, "desc": "Price relative to analyst target"},
+    # Technical
     "price_to_ma30": {"name": "Price/MA30", "cat": "Technical", "color": "#e67e22", "bear": False, "desc": "Price relative to 30-day moving average"},
     "price_to_ma50": {"name": "Price/MA50", "cat": "Technical", "color": "#d35400", "bear": False, "desc": "Price relative to 50-day moving average"},
     "rsi14": {"name": "RSI (14)", "cat": "Technical", "color": "#f39c12", "bear": True, "desc": "Relative Strength Index (overbought > 70)"},
+    "macd": {"name": "MACD", "cat": "Technical", "color": "#e67e22", "bear": False, "desc": "Moving Average Convergence Divergence"},
     "volatility30": {"name": "Volatility 30D", "cat": "Technical", "color": "#e74c3c", "bear": True, "desc": "30-day price volatility"},
     "return_30d": {"name": "Prior 30D Return", "cat": "Technical", "color": "#2ecc71", "bear": False, "desc": "Trailing 30-day return (momentum)"},
+    # Market Context
     "spx_return_7d": {"name": "SPX 7D Return", "cat": "Market Context", "color": "#3498db", "bear": False, "desc": "S&P 500 7-day return"},
     "spx_return_30d": {"name": "SPX 30D Return", "cat": "Market Context", "color": "#2980b9", "bear": False, "desc": "S&P 500 30-day return"},
     "vix_close": {"name": "VIX Close", "cat": "Market Context", "color": "#e74c3c", "bear": True, "desc": "CBOE VIX volatility index"},
+    # Analyst Activity
     "analyst_upside_potential": {"name": "Analyst Upside", "cat": "Analyst Activity", "color": "#27ae60", "bear": False, "desc": "Analyst-implied upside potential"},
     "analyst_consensus_score": {"name": "Analyst Consensus", "cat": "Analyst Activity", "color": "#2ecc71", "bear": False, "desc": "Analyst consensus rating score"},
     "analyst_coverage": {"name": "Analyst Coverage", "cat": "Analyst Activity", "color": "#16a085", "bear": False, "desc": "Number of covering analysts"},
+    "upgrades_last_30d": {"name": "Upgrades (30D)", "cat": "Analyst Activity", "color": "#27ae60", "bear": False, "desc": "Analyst upgrades in last 30 days"},
+    "downgrades_last_30d": {"name": "Downgrades (30D)", "cat": "Analyst Activity", "color": "#e74c3c", "bear": True, "desc": "Analyst downgrades in last 30 days"},
     "net_upgrades": {"name": "Net Upgrades", "cat": "Analyst Activity", "color": "#1abc9c", "bear": False, "desc": "Recent upgrades minus downgrades"},
+    "major_upgrades": {"name": "Major Upgrades", "cat": "Analyst Activity", "color": "#2ecc71", "bear": False, "desc": "Upgrades from top-tier banks (Goldman, JPM, etc.)"},
+    "major_downgrades": {"name": "Major Downgrades", "cat": "Analyst Activity", "color": "#c0392b", "bear": True, "desc": "Downgrades from top-tier banks"},
 }
 
 # Conservative ML settings for small dataset (n=352)

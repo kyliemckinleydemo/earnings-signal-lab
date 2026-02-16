@@ -47,9 +47,9 @@
       "2023-12-15",
       "2025-09-15"
     ],
-    "generated_at": "2026-02-15T17:58:29.132029",
+    "generated_at": "2026-02-15T19:02:29.712402",
     "source": "combined",
-    "n_sec_features": 20,
+    "n_sec_features": 29,
     "n_nlp_features": 16,
     "feature_metadata": {
       "sec_risk_score": {
@@ -73,6 +73,20 @@
         "bear": true,
         "desc": "Multi-factor concern synthesis (0-10)"
       },
+      "sec_market_cap": {
+        "name": "SEC: Market Cap",
+        "cat": "Valuation",
+        "color": "#8e44ad",
+        "bear": false,
+        "desc": "Total market capitalization"
+      },
+      "sec_current_price": {
+        "name": "SEC: Current Price",
+        "cat": "Valuation",
+        "color": "#9b59b6",
+        "bear": false,
+        "desc": "Stock price at filing date"
+      },
       "sec_pe_ratio": {
         "name": "SEC: P/E Ratio",
         "cat": "Valuation",
@@ -86,6 +100,20 @@
         "color": "#9b59b6",
         "bear": true,
         "desc": "Forward price-to-earnings"
+      },
+      "sec_fifty_two_week_high": {
+        "name": "SEC: 52W High",
+        "cat": "Valuation",
+        "color": "#2980b9",
+        "bear": false,
+        "desc": "52-week high price"
+      },
+      "sec_fifty_two_week_low": {
+        "name": "SEC: 52W Low",
+        "cat": "Valuation",
+        "color": "#3498db",
+        "bear": false,
+        "desc": "52-week low price"
       },
       "sec_price_to_high": {
         "name": "SEC: Price to High",
@@ -128,6 +156,13 @@
         "color": "#f39c12",
         "bear": true,
         "desc": "Relative Strength Index (overbought > 70)"
+      },
+      "sec_macd": {
+        "name": "SEC: MACD",
+        "cat": "Technical",
+        "color": "#e67e22",
+        "bear": false,
+        "desc": "Moving Average Convergence Divergence"
       },
       "sec_volatility30": {
         "name": "SEC: Volatility 30D",
@@ -185,12 +220,40 @@
         "bear": false,
         "desc": "Number of covering analysts"
       },
+      "sec_upgrades_last_30d": {
+        "name": "SEC: Upgrades (30D)",
+        "cat": "Analyst Activity",
+        "color": "#27ae60",
+        "bear": false,
+        "desc": "Analyst upgrades in last 30 days"
+      },
+      "sec_downgrades_last_30d": {
+        "name": "SEC: Downgrades (30D)",
+        "cat": "Analyst Activity",
+        "color": "#e74c3c",
+        "bear": true,
+        "desc": "Analyst downgrades in last 30 days"
+      },
       "sec_net_upgrades": {
         "name": "SEC: Net Upgrades",
         "cat": "Analyst Activity",
         "color": "#1abc9c",
         "bear": false,
         "desc": "Recent upgrades minus downgrades"
+      },
+      "sec_major_upgrades": {
+        "name": "SEC: Major Upgrades",
+        "cat": "Analyst Activity",
+        "color": "#2ecc71",
+        "bear": false,
+        "desc": "Upgrades from top-tier banks (Goldman, JPM, etc.)"
+      },
+      "sec_major_downgrades": {
+        "name": "SEC: Major Downgrades",
+        "cat": "Analyst Activity",
+        "color": "#c0392b",
+        "bear": true,
+        "desc": "Downgrades from top-tier banks"
       },
       "nlp_mgmt_hedging": {
         "name": "NLP: Mgmt Hedging",
@@ -433,6 +496,90 @@
         "n_signal_triggered": 35
       }
     },
+    "sec_market_cap": {
+      "7D": {
+        "ic": 0.1456,
+        "ic_pvalue": 0.0612,
+        "accuracy": 0.5542,
+        "sharpe": 0.6959,
+        "avg_return_pct": 3.2353,
+        "win_rate": 0.619,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      },
+      "30D": {
+        "ic": 0.2154,
+        "ic_pvalue": 0.0053,
+        "accuracy": 0.5482,
+        "sharpe": 0.9793,
+        "avg_return_pct": 7.2265,
+        "win_rate": 0.6429,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      },
+      "7D_alpha": {
+        "ic": 0.1888,
+        "ic_pvalue": 0.0149,
+        "accuracy": 0.5542,
+        "sharpe": 0.6672,
+        "avg_return_pct": 2.8743,
+        "win_rate": 0.5714,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      },
+      "30D_alpha": {
+        "ic": 0.2159,
+        "ic_pvalue": 0.0052,
+        "accuracy": 0.5663,
+        "sharpe": 0.5294,
+        "avg_return_pct": 3.69,
+        "win_rate": 0.5952,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      }
+    },
+    "sec_current_price": {
+      "7D": {
+        "ic": 0.1085,
+        "ic_pvalue": 0.164,
+        "accuracy": 0.5542,
+        "sharpe": 0.4932,
+        "avg_return_pct": 2.0566,
+        "win_rate": 0.619,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      },
+      "30D": {
+        "ic": 0.1384,
+        "ic_pvalue": 0.0755,
+        "accuracy": 0.4759,
+        "sharpe": 0.7854,
+        "avg_return_pct": 5.3092,
+        "win_rate": 0.5952,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      },
+      "7D_alpha": {
+        "ic": 0.1499,
+        "ic_pvalue": 0.0538,
+        "accuracy": 0.5422,
+        "sharpe": 0.4759,
+        "avg_return_pct": 1.839,
+        "win_rate": 0.4762,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      },
+      "30D_alpha": {
+        "ic": 0.1654,
+        "ic_pvalue": 0.0332,
+        "accuracy": 0.5422,
+        "sharpe": 0.3436,
+        "avg_return_pct": 2.2451,
+        "win_rate": 0.5238,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      }
+    },
     "sec_pe_ratio": {
       "7D": {
         "ic": 0.088,
@@ -513,6 +660,90 @@
         "sharpe": -0.5887,
         "avg_return_pct": -4.2116,
         "win_rate": 0.3902,
+        "n_observations": 166,
+        "n_signal_triggered": 41
+      }
+    },
+    "sec_fifty_two_week_high": {
+      "7D": {
+        "ic": 0.1144,
+        "ic_pvalue": 0.1421,
+        "accuracy": 0.5602,
+        "sharpe": 0.4311,
+        "avg_return_pct": 1.8047,
+        "win_rate": 0.5714,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      },
+      "30D": {
+        "ic": 0.1294,
+        "ic_pvalue": 0.0967,
+        "accuracy": 0.4819,
+        "sharpe": 0.6956,
+        "avg_return_pct": 4.782,
+        "win_rate": 0.5476,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      },
+      "7D_alpha": {
+        "ic": 0.1562,
+        "ic_pvalue": 0.0445,
+        "accuracy": 0.5602,
+        "sharpe": 0.4081,
+        "avg_return_pct": 1.5874,
+        "win_rate": 0.4286,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      },
+      "30D_alpha": {
+        "ic": 0.157,
+        "ic_pvalue": 0.0434,
+        "accuracy": 0.5482,
+        "sharpe": 0.256,
+        "avg_return_pct": 1.6947,
+        "win_rate": 0.4762,
+        "n_observations": 166,
+        "n_signal_triggered": 42
+      }
+    },
+    "sec_fifty_two_week_low": {
+      "7D": {
+        "ic": 0.1168,
+        "ic_pvalue": 0.134,
+        "accuracy": 0.5663,
+        "sharpe": 0.4083,
+        "avg_return_pct": 1.2488,
+        "win_rate": 0.6098,
+        "n_observations": 166,
+        "n_signal_triggered": 41
+      },
+      "30D": {
+        "ic": 0.0992,
+        "ic_pvalue": 0.2035,
+        "accuracy": 0.5241,
+        "sharpe": 0.8899,
+        "avg_return_pct": 3.5717,
+        "win_rate": 0.6098,
+        "n_observations": 166,
+        "n_signal_triggered": 41
+      },
+      "7D_alpha": {
+        "ic": 0.14,
+        "ic_pvalue": 0.072,
+        "accuracy": 0.5542,
+        "sharpe": 0.4068,
+        "avg_return_pct": 1.1057,
+        "win_rate": 0.4878,
+        "n_observations": 166,
+        "n_signal_triggered": 41
+      },
+      "30D_alpha": {
+        "ic": 0.1193,
+        "ic_pvalue": 0.1257,
+        "accuracy": 0.5422,
+        "sharpe": 0.1575,
+        "avg_return_pct": 0.5868,
+        "win_rate": 0.4878,
         "n_observations": 166,
         "n_signal_triggered": 41
       }
@@ -727,6 +958,90 @@
         "n_signal_triggered": 38
       }
     },
+    "sec_upgrades_last_30d": {
+      "7D": {
+        "ic": 0.009,
+        "ic_pvalue": 0.908,
+        "accuracy": 0.4458,
+        "sharpe": 0.4152,
+        "avg_return_pct": 0.7499,
+        "win_rate": 0.5714,
+        "n_observations": 166,
+        "n_signal_triggered": 28
+      },
+      "30D": {
+        "ic": 0.0603,
+        "ic_pvalue": 0.4403,
+        "accuracy": 0.4157,
+        "sharpe": 1.0979,
+        "avg_return_pct": 4.0167,
+        "win_rate": 0.6786,
+        "n_observations": 166,
+        "n_signal_triggered": 28
+      },
+      "7D_alpha": {
+        "ic": 0.0024,
+        "ic_pvalue": 0.9758,
+        "accuracy": 0.506,
+        "sharpe": -0.1317,
+        "avg_return_pct": -0.2734,
+        "win_rate": 0.4286,
+        "n_observations": 166,
+        "n_signal_triggered": 28
+      },
+      "30D_alpha": {
+        "ic": 0.0107,
+        "ic_pvalue": 0.8911,
+        "accuracy": 0.5181,
+        "sharpe": -0.0535,
+        "avg_return_pct": -0.2065,
+        "win_rate": 0.4643,
+        "n_observations": 166,
+        "n_signal_triggered": 28
+      }
+    },
+    "sec_downgrades_last_30d": {
+      "7D": {
+        "ic": -0.092,
+        "ic_pvalue": 0.2384,
+        "accuracy": 0.5783,
+        "sharpe": -0.2793,
+        "avg_return_pct": -0.8287,
+        "win_rate": 0.5,
+        "n_observations": 166,
+        "n_signal_triggered": 32
+      },
+      "30D": {
+        "ic": 0.0094,
+        "ic_pvalue": 0.9048,
+        "accuracy": 0.5602,
+        "sharpe": -0.6312,
+        "avg_return_pct": -2.7806,
+        "win_rate": 0.2812,
+        "n_observations": 166,
+        "n_signal_triggered": 32
+      },
+      "7D_alpha": {
+        "ic": -0.0607,
+        "ic_pvalue": 0.4375,
+        "accuracy": 0.5301,
+        "sharpe": -0.0557,
+        "avg_return_pct": -0.1702,
+        "win_rate": 0.6562,
+        "n_observations": 166,
+        "n_signal_triggered": 32
+      },
+      "30D_alpha": {
+        "ic": 0.0347,
+        "ic_pvalue": 0.657,
+        "accuracy": 0.4819,
+        "sharpe": 0.0609,
+        "avg_return_pct": 0.2427,
+        "win_rate": 0.5312,
+        "n_observations": 166,
+        "n_signal_triggered": 32
+      }
+    },
     "sec_net_upgrades": {
       "7D": {
         "ic": 0.0709,
@@ -767,6 +1082,90 @@
         "win_rate": 0.4783,
         "n_observations": 166,
         "n_signal_triggered": 23
+      }
+    },
+    "sec_major_upgrades": {
+      "7D": {
+        "ic": -0.0013,
+        "ic_pvalue": 0.9863,
+        "accuracy": 0.4217,
+        "sharpe": 0.4947,
+        "avg_return_pct": 1.2509,
+        "win_rate": 0.5,
+        "n_observations": 166,
+        "n_signal_triggered": 6
+      },
+      "30D": {
+        "ic": 0.0936,
+        "ic_pvalue": 0.2302,
+        "accuracy": 0.3675,
+        "sharpe": 1.5575,
+        "avg_return_pct": 7.5539,
+        "win_rate": 0.6667,
+        "n_observations": 166,
+        "n_signal_triggered": 6
+      },
+      "7D_alpha": {
+        "ic": 0.0242,
+        "ic_pvalue": 0.7565,
+        "accuracy": 0.5301,
+        "sharpe": 0.2625,
+        "avg_return_pct": 0.7957,
+        "win_rate": 0.5,
+        "n_observations": 166,
+        "n_signal_triggered": 6
+      },
+      "30D_alpha": {
+        "ic": 0.0572,
+        "ic_pvalue": 0.4638,
+        "accuracy": 0.5422,
+        "sharpe": 0.5219,
+        "avg_return_pct": 2.7773,
+        "win_rate": 0.6667,
+        "n_observations": 166,
+        "n_signal_triggered": 6
+      }
+    },
+    "sec_major_downgrades": {
+      "7D": {
+        "ic": -0.0126,
+        "ic_pvalue": 0.8716,
+        "accuracy": 0.5843,
+        "sharpe": -0.5304,
+        "avg_return_pct": -2.1984,
+        "win_rate": 0.5385,
+        "n_observations": 166,
+        "n_signal_triggered": 13
+      },
+      "30D": {
+        "ic": 0.0245,
+        "ic_pvalue": 0.7539,
+        "accuracy": 0.6145,
+        "sharpe": -0.865,
+        "avg_return_pct": -3.884,
+        "win_rate": 0.3077,
+        "n_observations": 166,
+        "n_signal_triggered": 13
+      },
+      "7D_alpha": {
+        "ic": 0.0137,
+        "ic_pvalue": 0.861,
+        "accuracy": 0.488,
+        "sharpe": -0.4191,
+        "avg_return_pct": -1.7539,
+        "win_rate": 0.6154,
+        "n_observations": 166,
+        "n_signal_triggered": 13
+      },
+      "30D_alpha": {
+        "ic": 0.045,
+        "ic_pvalue": 0.5646,
+        "accuracy": 0.4759,
+        "sharpe": -0.3024,
+        "avg_return_pct": -1.3552,
+        "win_rate": 0.5385,
+        "n_observations": 166,
+        "n_signal_triggered": 13
       }
     },
     "nlp_mgmt_hedging": {
@@ -1448,13 +1847,18 @@
       "sec_risk_score": 1.0,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.108,
+      "sec_market_cap": -0.302,
+      "sec_current_price": -0.341,
       "sec_pe_ratio": -0.273,
       "sec_forward_pe": -0.324,
+      "sec_fifty_two_week_high": -0.325,
+      "sec_fifty_two_week_low": -0.235,
       "sec_price_to_high": -0.203,
       "sec_price_to_low": -0.324,
       "sec_price_to_ma30": -0.5,
       "sec_price_to_ma50": -0.5,
       "sec_rsi14": -0.5,
+      "sec_macd": -0.5,
       "sec_return_30d": -0.5,
       "sec_spx_return_7d": -0.5,
       "sec_spx_return_30d": -0.5,
@@ -1462,7 +1866,11 @@
       "sec_analyst_upside_potential": 0.14,
       "sec_analyst_consensus_score": -0.116,
       "sec_analyst_coverage": -0.303,
+      "sec_upgrades_last_30d": -0.084,
+      "sec_downgrades_last_30d": -0.018,
       "sec_net_upgrades": -0.04,
+      "sec_major_upgrades": -0.026,
+      "sec_major_downgrades": -0.014,
       "nlp_mgmt_hedging": 0.277,
       "nlp_mgmt_deflection": 0.271,
       "nlp_mgmt_specificity": -0.1,
@@ -1484,13 +1892,18 @@
       "sec_risk_score": null,
       "sec_sentiment_score": null,
       "sec_concern_level": null,
+      "sec_market_cap": null,
+      "sec_current_price": null,
       "sec_pe_ratio": null,
       "sec_forward_pe": null,
+      "sec_fifty_two_week_high": null,
+      "sec_fifty_two_week_low": null,
       "sec_price_to_high": null,
       "sec_price_to_low": null,
       "sec_price_to_ma30": null,
       "sec_price_to_ma50": null,
       "sec_rsi14": null,
+      "sec_macd": null,
       "sec_return_30d": null,
       "sec_spx_return_7d": null,
       "sec_spx_return_30d": null,
@@ -1498,7 +1911,11 @@
       "sec_analyst_upside_potential": null,
       "sec_analyst_consensus_score": null,
       "sec_analyst_coverage": null,
+      "sec_upgrades_last_30d": null,
+      "sec_downgrades_last_30d": null,
       "sec_net_upgrades": null,
+      "sec_major_upgrades": null,
+      "sec_major_downgrades": null,
       "nlp_mgmt_hedging": null,
       "nlp_mgmt_deflection": null,
       "nlp_mgmt_specificity": null,
@@ -1520,13 +1937,18 @@
       "sec_risk_score": 0.108,
       "sec_sentiment_score": null,
       "sec_concern_level": 1.0,
+      "sec_market_cap": -0.207,
+      "sec_current_price": -0.185,
       "sec_pe_ratio": -0.128,
       "sec_forward_pe": -0.117,
+      "sec_fifty_two_week_high": -0.19,
+      "sec_fifty_two_week_low": -0.211,
       "sec_price_to_high": 0.029,
       "sec_price_to_low": 0.058,
       "sec_price_to_ma30": -0.866,
       "sec_price_to_ma50": -0.866,
       "sec_rsi14": -0.866,
+      "sec_macd": -0.866,
       "sec_return_30d": -0.866,
       "sec_spx_return_7d": -0.866,
       "sec_spx_return_30d": -0.866,
@@ -1534,7 +1956,11 @@
       "sec_analyst_upside_potential": -0.161,
       "sec_analyst_consensus_score": -0.263,
       "sec_analyst_coverage": -0.136,
+      "sec_upgrades_last_30d": -0.017,
+      "sec_downgrades_last_30d": -0.059,
       "sec_net_upgrades": 0.053,
+      "sec_major_upgrades": -0.012,
+      "sec_major_downgrades": -0.036,
       "nlp_mgmt_hedging": 0.198,
       "nlp_mgmt_deflection": 0.203,
       "nlp_mgmt_specificity": -0.232,
@@ -1552,17 +1978,112 @@
       "nlp_customer_language": -0.126,
       "nlp_pricing_power": -0.363
     },
+    "sec_market_cap": {
+      "sec_risk_score": -0.302,
+      "sec_sentiment_score": null,
+      "sec_concern_level": -0.207,
+      "sec_market_cap": 1.0,
+      "sec_current_price": 0.538,
+      "sec_pe_ratio": 0.647,
+      "sec_forward_pe": 0.74,
+      "sec_fifty_two_week_high": 0.484,
+      "sec_fifty_two_week_low": 0.425,
+      "sec_price_to_high": 0.551,
+      "sec_price_to_low": 0.612,
+      "sec_price_to_ma30": 1.0,
+      "sec_price_to_ma50": 1.0,
+      "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
+      "sec_return_30d": 1.0,
+      "sec_spx_return_7d": 1.0,
+      "sec_spx_return_30d": 1.0,
+      "sec_vix_close": -1.0,
+      "sec_analyst_upside_potential": -0.276,
+      "sec_analyst_consensus_score": 0.389,
+      "sec_analyst_coverage": 0.547,
+      "sec_upgrades_last_30d": 0.065,
+      "sec_downgrades_last_30d": 0.056,
+      "sec_net_upgrades": 0.004,
+      "sec_major_upgrades": -0.148,
+      "sec_major_downgrades": 0.038,
+      "nlp_mgmt_hedging": -0.246,
+      "nlp_mgmt_deflection": -0.186,
+      "nlp_mgmt_specificity": 0.163,
+      "nlp_mgmt_confidence_shift": -0.194,
+      "nlp_analyst_skepticism": -0.311,
+      "nlp_analyst_surprise": -0.284,
+      "nlp_analyst_focus_cluster": -0.17,
+      "nlp_guidance_revision_dir": 0.062,
+      "nlp_guidance_qualifiers": -0.102,
+      "nlp_new_risk_mention": -0.087,
+      "nlp_macro_blame": -0.122,
+      "nlp_capex_language": 0.403,
+      "nlp_hiring_language": 0.074,
+      "nlp_competitive_mentions": -0.113,
+      "nlp_customer_language": 0.364,
+      "nlp_pricing_power": 0.108
+    },
+    "sec_current_price": {
+      "sec_risk_score": -0.341,
+      "sec_sentiment_score": null,
+      "sec_concern_level": -0.185,
+      "sec_market_cap": 0.538,
+      "sec_current_price": 1.0,
+      "sec_pe_ratio": 0.66,
+      "sec_forward_pe": 0.662,
+      "sec_fifty_two_week_high": 0.989,
+      "sec_fifty_two_week_low": 0.94,
+      "sec_price_to_high": 0.148,
+      "sec_price_to_low": 0.447,
+      "sec_price_to_ma30": 1.0,
+      "sec_price_to_ma50": 1.0,
+      "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
+      "sec_return_30d": 1.0,
+      "sec_spx_return_7d": 1.0,
+      "sec_spx_return_30d": 1.0,
+      "sec_vix_close": -1.0,
+      "sec_analyst_upside_potential": -0.231,
+      "sec_analyst_consensus_score": 0.299,
+      "sec_analyst_coverage": 0.514,
+      "sec_upgrades_last_30d": 0.079,
+      "sec_downgrades_last_30d": 0.124,
+      "sec_net_upgrades": -0.028,
+      "sec_major_upgrades": 0.014,
+      "sec_major_downgrades": 0.069,
+      "nlp_mgmt_hedging": -0.09,
+      "nlp_mgmt_deflection": -0.042,
+      "nlp_mgmt_specificity": 0.001,
+      "nlp_mgmt_confidence_shift": -0.032,
+      "nlp_analyst_skepticism": -0.15,
+      "nlp_analyst_surprise": -0.102,
+      "nlp_analyst_focus_cluster": -0.058,
+      "nlp_guidance_revision_dir": -0.131,
+      "nlp_guidance_qualifiers": -0.045,
+      "nlp_new_risk_mention": 0.02,
+      "nlp_macro_blame": -0.052,
+      "nlp_capex_language": 0.197,
+      "nlp_hiring_language": 0.181,
+      "nlp_competitive_mentions": -0.075,
+      "nlp_customer_language": 0.191,
+      "nlp_pricing_power": 0.034
+    },
     "sec_pe_ratio": {
       "sec_risk_score": -0.273,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.128,
+      "sec_market_cap": 0.647,
+      "sec_current_price": 0.66,
       "sec_pe_ratio": 1.0,
       "sec_forward_pe": 0.874,
+      "sec_fifty_two_week_high": 0.615,
+      "sec_fifty_two_week_low": 0.5,
       "sec_price_to_high": 0.352,
       "sec_price_to_low": 0.611,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -1570,7 +2091,11 @@
       "sec_analyst_upside_potential": -0.353,
       "sec_analyst_consensus_score": 0.322,
       "sec_analyst_coverage": 0.611,
+      "sec_upgrades_last_30d": 0.079,
+      "sec_downgrades_last_30d": 0.167,
       "sec_net_upgrades": -0.062,
+      "sec_major_upgrades": -0.088,
+      "sec_major_downgrades": 0.192,
       "nlp_mgmt_hedging": -0.078,
       "nlp_mgmt_deflection": -0.008,
       "nlp_mgmt_specificity": -0.005,
@@ -1592,13 +2117,18 @@
       "sec_risk_score": -0.324,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.117,
+      "sec_market_cap": 0.74,
+      "sec_current_price": 0.662,
       "sec_pe_ratio": 0.874,
       "sec_forward_pe": 1.0,
+      "sec_fifty_two_week_high": 0.616,
+      "sec_fifty_two_week_low": 0.492,
       "sec_price_to_high": 0.411,
       "sec_price_to_low": 0.634,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -1606,7 +2136,11 @@
       "sec_analyst_upside_potential": -0.244,
       "sec_analyst_consensus_score": 0.479,
       "sec_analyst_coverage": 0.688,
+      "sec_upgrades_last_30d": 0.049,
+      "sec_downgrades_last_30d": 0.118,
       "sec_net_upgrades": -0.045,
+      "sec_major_upgrades": -0.076,
+      "sec_major_downgrades": 0.145,
       "nlp_mgmt_hedging": -0.149,
       "nlp_mgmt_deflection": -0.07,
       "nlp_mgmt_specificity": -0.059,
@@ -1624,17 +2158,112 @@
       "nlp_customer_language": 0.269,
       "nlp_pricing_power": 0.062
     },
+    "sec_fifty_two_week_high": {
+      "sec_risk_score": -0.325,
+      "sec_sentiment_score": null,
+      "sec_concern_level": -0.19,
+      "sec_market_cap": 0.484,
+      "sec_current_price": 0.989,
+      "sec_pe_ratio": 0.615,
+      "sec_forward_pe": 0.616,
+      "sec_fifty_two_week_high": 1.0,
+      "sec_fifty_two_week_low": 0.936,
+      "sec_price_to_high": 0.06,
+      "sec_price_to_low": 0.426,
+      "sec_price_to_ma30": 1.0,
+      "sec_price_to_ma50": 1.0,
+      "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
+      "sec_return_30d": 1.0,
+      "sec_spx_return_7d": 1.0,
+      "sec_spx_return_30d": 1.0,
+      "sec_vix_close": -1.0,
+      "sec_analyst_upside_potential": -0.19,
+      "sec_analyst_consensus_score": 0.311,
+      "sec_analyst_coverage": 0.507,
+      "sec_upgrades_last_30d": 0.06,
+      "sec_downgrades_last_30d": 0.096,
+      "sec_net_upgrades": -0.017,
+      "sec_major_upgrades": 0.029,
+      "sec_major_downgrades": 0.06,
+      "nlp_mgmt_hedging": -0.106,
+      "nlp_mgmt_deflection": -0.054,
+      "nlp_mgmt_specificity": 0.024,
+      "nlp_mgmt_confidence_shift": -0.037,
+      "nlp_analyst_skepticism": -0.127,
+      "nlp_analyst_surprise": -0.066,
+      "nlp_analyst_focus_cluster": -0.024,
+      "nlp_guidance_revision_dir": -0.123,
+      "nlp_guidance_qualifiers": -0.057,
+      "nlp_new_risk_mention": 0.004,
+      "nlp_macro_blame": -0.069,
+      "nlp_capex_language": 0.187,
+      "nlp_hiring_language": 0.188,
+      "nlp_competitive_mentions": -0.077,
+      "nlp_customer_language": 0.214,
+      "nlp_pricing_power": 0.065
+    },
+    "sec_fifty_two_week_low": {
+      "sec_risk_score": -0.235,
+      "sec_sentiment_score": null,
+      "sec_concern_level": -0.211,
+      "sec_market_cap": 0.425,
+      "sec_current_price": 0.94,
+      "sec_pe_ratio": 0.5,
+      "sec_forward_pe": 0.492,
+      "sec_fifty_two_week_high": 0.936,
+      "sec_fifty_two_week_low": 1.0,
+      "sec_price_to_high": 0.129,
+      "sec_price_to_low": 0.184,
+      "sec_price_to_ma30": 1.0,
+      "sec_price_to_ma50": 1.0,
+      "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
+      "sec_return_30d": 1.0,
+      "sec_spx_return_7d": 1.0,
+      "sec_spx_return_30d": 1.0,
+      "sec_vix_close": -1.0,
+      "sec_analyst_upside_potential": -0.112,
+      "sec_analyst_consensus_score": 0.216,
+      "sec_analyst_coverage": 0.402,
+      "sec_upgrades_last_30d": 0.064,
+      "sec_downgrades_last_30d": 0.129,
+      "sec_net_upgrades": -0.044,
+      "sec_major_upgrades": 0.027,
+      "sec_major_downgrades": 0.061,
+      "nlp_mgmt_hedging": -0.028,
+      "nlp_mgmt_deflection": -0.013,
+      "nlp_mgmt_specificity": 0.02,
+      "nlp_mgmt_confidence_shift": 0.0,
+      "nlp_analyst_skepticism": -0.137,
+      "nlp_analyst_surprise": -0.118,
+      "nlp_analyst_focus_cluster": -0.054,
+      "nlp_guidance_revision_dir": -0.202,
+      "nlp_guidance_qualifiers": 0.041,
+      "nlp_new_risk_mention": 0.087,
+      "nlp_macro_blame": 0.034,
+      "nlp_capex_language": 0.16,
+      "nlp_hiring_language": 0.207,
+      "nlp_competitive_mentions": -0.114,
+      "nlp_customer_language": 0.081,
+      "nlp_pricing_power": 0.021
+    },
     "sec_price_to_high": {
       "sec_risk_score": -0.203,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.029,
+      "sec_market_cap": 0.551,
+      "sec_current_price": 0.148,
       "sec_pe_ratio": 0.352,
       "sec_forward_pe": 0.411,
+      "sec_fifty_two_week_high": 0.06,
+      "sec_fifty_two_week_low": 0.129,
       "sec_price_to_high": 1.0,
       "sec_price_to_low": 0.355,
       "sec_price_to_ma30": -1.0,
       "sec_price_to_ma50": -1.0,
       "sec_rsi14": -1.0,
+      "sec_macd": -1.0,
       "sec_return_30d": -1.0,
       "sec_spx_return_7d": -1.0,
       "sec_spx_return_30d": -1.0,
@@ -1642,7 +2271,11 @@
       "sec_analyst_upside_potential": -0.311,
       "sec_analyst_consensus_score": 0.24,
       "sec_analyst_coverage": 0.152,
+      "sec_upgrades_last_30d": 0.141,
+      "sec_downgrades_last_30d": 0.053,
       "sec_net_upgrades": 0.044,
+      "sec_major_upgrades": -0.114,
+      "sec_major_downgrades": -0.012,
       "nlp_mgmt_hedging": -0.139,
       "nlp_mgmt_deflection": -0.124,
       "nlp_mgmt_specificity": 0.037,
@@ -1664,13 +2297,18 @@
       "sec_risk_score": -0.324,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.058,
+      "sec_market_cap": 0.612,
+      "sec_current_price": 0.447,
       "sec_pe_ratio": 0.611,
       "sec_forward_pe": 0.634,
+      "sec_fifty_two_week_high": 0.426,
+      "sec_fifty_two_week_low": 0.184,
       "sec_price_to_high": 0.355,
       "sec_price_to_low": 1.0,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -1678,7 +2316,11 @@
       "sec_analyst_upside_potential": -0.439,
       "sec_analyst_consensus_score": 0.374,
       "sec_analyst_coverage": 0.45,
+      "sec_upgrades_last_30d": 0.084,
+      "sec_downgrades_last_30d": 0.076,
       "sec_net_upgrades": 0.02,
+      "sec_major_upgrades": -0.041,
+      "sec_major_downgrades": 0.105,
       "nlp_mgmt_hedging": -0.191,
       "nlp_mgmt_deflection": -0.106,
       "nlp_mgmt_specificity": -0.001,
@@ -1700,13 +2342,18 @@
       "sec_risk_score": -0.5,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.866,
+      "sec_market_cap": 1.0,
+      "sec_current_price": 1.0,
       "sec_pe_ratio": 1.0,
       "sec_forward_pe": 1.0,
+      "sec_fifty_two_week_high": 1.0,
+      "sec_fifty_two_week_low": 1.0,
       "sec_price_to_high": -1.0,
       "sec_price_to_low": 1.0,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -1714,7 +2361,11 @@
       "sec_analyst_upside_potential": 1.0,
       "sec_analyst_consensus_score": 1.0,
       "sec_analyst_coverage": 1.0,
+      "sec_upgrades_last_30d": 1.0,
+      "sec_downgrades_last_30d": null,
       "sec_net_upgrades": 1.0,
+      "sec_major_upgrades": null,
+      "sec_major_downgrades": null,
       "nlp_mgmt_hedging": -1.0,
       "nlp_mgmt_deflection": -1.0,
       "nlp_mgmt_specificity": 1.0,
@@ -1736,13 +2387,18 @@
       "sec_risk_score": -0.5,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.866,
+      "sec_market_cap": 1.0,
+      "sec_current_price": 1.0,
       "sec_pe_ratio": 1.0,
       "sec_forward_pe": 1.0,
+      "sec_fifty_two_week_high": 1.0,
+      "sec_fifty_two_week_low": 1.0,
       "sec_price_to_high": -1.0,
       "sec_price_to_low": 1.0,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -1750,7 +2406,11 @@
       "sec_analyst_upside_potential": 1.0,
       "sec_analyst_consensus_score": 1.0,
       "sec_analyst_coverage": 1.0,
+      "sec_upgrades_last_30d": 1.0,
+      "sec_downgrades_last_30d": null,
       "sec_net_upgrades": 1.0,
+      "sec_major_upgrades": null,
+      "sec_major_downgrades": null,
       "nlp_mgmt_hedging": -1.0,
       "nlp_mgmt_deflection": -1.0,
       "nlp_mgmt_specificity": 1.0,
@@ -1772,13 +2432,18 @@
       "sec_risk_score": -0.5,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.866,
+      "sec_market_cap": 1.0,
+      "sec_current_price": 1.0,
       "sec_pe_ratio": 1.0,
       "sec_forward_pe": 1.0,
+      "sec_fifty_two_week_high": 1.0,
+      "sec_fifty_two_week_low": 1.0,
       "sec_price_to_high": -1.0,
       "sec_price_to_low": 1.0,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -1786,7 +2451,56 @@
       "sec_analyst_upside_potential": 1.0,
       "sec_analyst_consensus_score": 1.0,
       "sec_analyst_coverage": 1.0,
+      "sec_upgrades_last_30d": 1.0,
+      "sec_downgrades_last_30d": null,
       "sec_net_upgrades": 1.0,
+      "sec_major_upgrades": null,
+      "sec_major_downgrades": null,
+      "nlp_mgmt_hedging": -1.0,
+      "nlp_mgmt_deflection": -1.0,
+      "nlp_mgmt_specificity": 1.0,
+      "nlp_mgmt_confidence_shift": -1.0,
+      "nlp_analyst_skepticism": -1.0,
+      "nlp_analyst_surprise": 1.0,
+      "nlp_analyst_focus_cluster": null,
+      "nlp_guidance_revision_dir": 1.0,
+      "nlp_guidance_qualifiers": -1.0,
+      "nlp_new_risk_mention": 1.0,
+      "nlp_macro_blame": -1.0,
+      "nlp_capex_language": -1.0,
+      "nlp_hiring_language": -1.0,
+      "nlp_competitive_mentions": null,
+      "nlp_customer_language": null,
+      "nlp_pricing_power": 1.0
+    },
+    "sec_macd": {
+      "sec_risk_score": -0.5,
+      "sec_sentiment_score": null,
+      "sec_concern_level": -0.866,
+      "sec_market_cap": 1.0,
+      "sec_current_price": 1.0,
+      "sec_pe_ratio": 1.0,
+      "sec_forward_pe": 1.0,
+      "sec_fifty_two_week_high": 1.0,
+      "sec_fifty_two_week_low": 1.0,
+      "sec_price_to_high": -1.0,
+      "sec_price_to_low": 1.0,
+      "sec_price_to_ma30": 1.0,
+      "sec_price_to_ma50": 1.0,
+      "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
+      "sec_return_30d": 1.0,
+      "sec_spx_return_7d": 1.0,
+      "sec_spx_return_30d": 1.0,
+      "sec_vix_close": -1.0,
+      "sec_analyst_upside_potential": 1.0,
+      "sec_analyst_consensus_score": 1.0,
+      "sec_analyst_coverage": 1.0,
+      "sec_upgrades_last_30d": 1.0,
+      "sec_downgrades_last_30d": null,
+      "sec_net_upgrades": 1.0,
+      "sec_major_upgrades": null,
+      "sec_major_downgrades": null,
       "nlp_mgmt_hedging": -1.0,
       "nlp_mgmt_deflection": -1.0,
       "nlp_mgmt_specificity": 1.0,
@@ -1808,13 +2522,18 @@
       "sec_risk_score": -0.5,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.866,
+      "sec_market_cap": 1.0,
+      "sec_current_price": 1.0,
       "sec_pe_ratio": 1.0,
       "sec_forward_pe": 1.0,
+      "sec_fifty_two_week_high": 1.0,
+      "sec_fifty_two_week_low": 1.0,
       "sec_price_to_high": -1.0,
       "sec_price_to_low": 1.0,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -1822,7 +2541,11 @@
       "sec_analyst_upside_potential": 1.0,
       "sec_analyst_consensus_score": 1.0,
       "sec_analyst_coverage": 1.0,
+      "sec_upgrades_last_30d": 1.0,
+      "sec_downgrades_last_30d": null,
       "sec_net_upgrades": 1.0,
+      "sec_major_upgrades": null,
+      "sec_major_downgrades": null,
       "nlp_mgmt_hedging": -1.0,
       "nlp_mgmt_deflection": -1.0,
       "nlp_mgmt_specificity": 1.0,
@@ -1844,13 +2567,18 @@
       "sec_risk_score": -0.5,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.866,
+      "sec_market_cap": 1.0,
+      "sec_current_price": 1.0,
       "sec_pe_ratio": 1.0,
       "sec_forward_pe": 1.0,
+      "sec_fifty_two_week_high": 1.0,
+      "sec_fifty_two_week_low": 1.0,
       "sec_price_to_high": -1.0,
       "sec_price_to_low": 1.0,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -1858,7 +2586,11 @@
       "sec_analyst_upside_potential": 1.0,
       "sec_analyst_consensus_score": 1.0,
       "sec_analyst_coverage": 1.0,
+      "sec_upgrades_last_30d": 1.0,
+      "sec_downgrades_last_30d": null,
       "sec_net_upgrades": 1.0,
+      "sec_major_upgrades": null,
+      "sec_major_downgrades": null,
       "nlp_mgmt_hedging": -1.0,
       "nlp_mgmt_deflection": -1.0,
       "nlp_mgmt_specificity": 1.0,
@@ -1880,13 +2612,18 @@
       "sec_risk_score": -0.5,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.866,
+      "sec_market_cap": 1.0,
+      "sec_current_price": 1.0,
       "sec_pe_ratio": 1.0,
       "sec_forward_pe": 1.0,
+      "sec_fifty_two_week_high": 1.0,
+      "sec_fifty_two_week_low": 1.0,
       "sec_price_to_high": -1.0,
       "sec_price_to_low": 1.0,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -1894,7 +2631,11 @@
       "sec_analyst_upside_potential": 1.0,
       "sec_analyst_consensus_score": 1.0,
       "sec_analyst_coverage": 1.0,
+      "sec_upgrades_last_30d": 1.0,
+      "sec_downgrades_last_30d": null,
       "sec_net_upgrades": 1.0,
+      "sec_major_upgrades": null,
+      "sec_major_downgrades": null,
       "nlp_mgmt_hedging": -1.0,
       "nlp_mgmt_deflection": -1.0,
       "nlp_mgmt_specificity": 1.0,
@@ -1916,13 +2657,18 @@
       "sec_risk_score": 0.5,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.866,
+      "sec_market_cap": -1.0,
+      "sec_current_price": -1.0,
       "sec_pe_ratio": -1.0,
       "sec_forward_pe": -1.0,
+      "sec_fifty_two_week_high": -1.0,
+      "sec_fifty_two_week_low": -1.0,
       "sec_price_to_high": 1.0,
       "sec_price_to_low": -1.0,
       "sec_price_to_ma30": -1.0,
       "sec_price_to_ma50": -1.0,
       "sec_rsi14": -1.0,
+      "sec_macd": -1.0,
       "sec_return_30d": -1.0,
       "sec_spx_return_7d": -1.0,
       "sec_spx_return_30d": -1.0,
@@ -1930,7 +2676,11 @@
       "sec_analyst_upside_potential": -1.0,
       "sec_analyst_consensus_score": -1.0,
       "sec_analyst_coverage": -1.0,
+      "sec_upgrades_last_30d": -1.0,
+      "sec_downgrades_last_30d": null,
       "sec_net_upgrades": -1.0,
+      "sec_major_upgrades": null,
+      "sec_major_downgrades": null,
       "nlp_mgmt_hedging": 1.0,
       "nlp_mgmt_deflection": 1.0,
       "nlp_mgmt_specificity": -1.0,
@@ -1952,13 +2702,18 @@
       "sec_risk_score": 0.14,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.161,
+      "sec_market_cap": -0.276,
+      "sec_current_price": -0.231,
       "sec_pe_ratio": -0.353,
       "sec_forward_pe": -0.244,
+      "sec_fifty_two_week_high": -0.19,
+      "sec_fifty_two_week_low": -0.112,
       "sec_price_to_high": -0.311,
       "sec_price_to_low": -0.439,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -1966,7 +2721,11 @@
       "sec_analyst_upside_potential": 1.0,
       "sec_analyst_consensus_score": 0.341,
       "sec_analyst_coverage": 0.212,
+      "sec_upgrades_last_30d": -0.011,
+      "sec_downgrades_last_30d": -0.239,
       "sec_net_upgrades": 0.19,
+      "sec_major_upgrades": 0.118,
+      "sec_major_downgrades": -0.172,
       "nlp_mgmt_hedging": -0.006,
       "nlp_mgmt_deflection": -0.164,
       "nlp_mgmt_specificity": 0.141,
@@ -1988,13 +2747,18 @@
       "sec_risk_score": -0.116,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.263,
+      "sec_market_cap": 0.389,
+      "sec_current_price": 0.299,
       "sec_pe_ratio": 0.322,
       "sec_forward_pe": 0.479,
+      "sec_fifty_two_week_high": 0.311,
+      "sec_fifty_two_week_low": 0.216,
       "sec_price_to_high": 0.24,
       "sec_price_to_low": 0.374,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -2002,7 +2766,11 @@
       "sec_analyst_upside_potential": 0.341,
       "sec_analyst_consensus_score": 1.0,
       "sec_analyst_coverage": 0.462,
+      "sec_upgrades_last_30d": -0.049,
+      "sec_downgrades_last_30d": -0.267,
       "sec_net_upgrades": 0.18,
+      "sec_major_upgrades": -0.137,
+      "sec_major_downgrades": -0.145,
       "nlp_mgmt_hedging": -0.187,
       "nlp_mgmt_deflection": -0.246,
       "nlp_mgmt_specificity": 0.171,
@@ -2024,13 +2792,18 @@
       "sec_risk_score": -0.303,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.136,
+      "sec_market_cap": 0.547,
+      "sec_current_price": 0.514,
       "sec_pe_ratio": 0.611,
       "sec_forward_pe": 0.688,
+      "sec_fifty_two_week_high": 0.507,
+      "sec_fifty_two_week_low": 0.402,
       "sec_price_to_high": 0.152,
       "sec_price_to_low": 0.45,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -2038,7 +2811,11 @@
       "sec_analyst_upside_potential": 0.212,
       "sec_analyst_consensus_score": 0.462,
       "sec_analyst_coverage": 1.0,
+      "sec_upgrades_last_30d": 0.099,
+      "sec_downgrades_last_30d": 0.045,
       "sec_net_upgrades": 0.036,
+      "sec_major_upgrades": 0.008,
+      "sec_major_downgrades": 0.028,
       "nlp_mgmt_hedging": -0.187,
       "nlp_mgmt_deflection": -0.148,
       "nlp_mgmt_specificity": 0.115,
@@ -2056,17 +2833,112 @@
       "nlp_customer_language": 0.386,
       "nlp_pricing_power": 0.142
     },
+    "sec_upgrades_last_30d": {
+      "sec_risk_score": -0.084,
+      "sec_sentiment_score": null,
+      "sec_concern_level": -0.017,
+      "sec_market_cap": 0.065,
+      "sec_current_price": 0.079,
+      "sec_pe_ratio": 0.079,
+      "sec_forward_pe": 0.049,
+      "sec_fifty_two_week_high": 0.06,
+      "sec_fifty_two_week_low": 0.064,
+      "sec_price_to_high": 0.141,
+      "sec_price_to_low": 0.084,
+      "sec_price_to_ma30": 1.0,
+      "sec_price_to_ma50": 1.0,
+      "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
+      "sec_return_30d": 1.0,
+      "sec_spx_return_7d": 1.0,
+      "sec_spx_return_30d": 1.0,
+      "sec_vix_close": -1.0,
+      "sec_analyst_upside_potential": -0.011,
+      "sec_analyst_consensus_score": -0.049,
+      "sec_analyst_coverage": 0.099,
+      "sec_upgrades_last_30d": 1.0,
+      "sec_downgrades_last_30d": 0.057,
+      "sec_net_upgrades": 0.622,
+      "sec_major_upgrades": 0.433,
+      "sec_major_downgrades": 0.124,
+      "nlp_mgmt_hedging": 0.024,
+      "nlp_mgmt_deflection": -0.022,
+      "nlp_mgmt_specificity": 0.046,
+      "nlp_mgmt_confidence_shift": 0.003,
+      "nlp_analyst_skepticism": -0.009,
+      "nlp_analyst_surprise": 0.059,
+      "nlp_analyst_focus_cluster": 0.135,
+      "nlp_guidance_revision_dir": -0.005,
+      "nlp_guidance_qualifiers": -0.015,
+      "nlp_new_risk_mention": -0.152,
+      "nlp_macro_blame": -0.141,
+      "nlp_capex_language": 0.012,
+      "nlp_hiring_language": 0.03,
+      "nlp_competitive_mentions": 0.018,
+      "nlp_customer_language": 0.081,
+      "nlp_pricing_power": 0.093
+    },
+    "sec_downgrades_last_30d": {
+      "sec_risk_score": -0.018,
+      "sec_sentiment_score": null,
+      "sec_concern_level": -0.059,
+      "sec_market_cap": 0.056,
+      "sec_current_price": 0.124,
+      "sec_pe_ratio": 0.167,
+      "sec_forward_pe": 0.118,
+      "sec_fifty_two_week_high": 0.096,
+      "sec_fifty_two_week_low": 0.129,
+      "sec_price_to_high": 0.053,
+      "sec_price_to_low": 0.076,
+      "sec_price_to_ma30": null,
+      "sec_price_to_ma50": null,
+      "sec_rsi14": null,
+      "sec_macd": null,
+      "sec_return_30d": null,
+      "sec_spx_return_7d": null,
+      "sec_spx_return_30d": null,
+      "sec_vix_close": null,
+      "sec_analyst_upside_potential": -0.239,
+      "sec_analyst_consensus_score": -0.267,
+      "sec_analyst_coverage": 0.045,
+      "sec_upgrades_last_30d": 0.057,
+      "sec_downgrades_last_30d": 1.0,
+      "sec_net_upgrades": -0.719,
+      "sec_major_upgrades": 0.06,
+      "sec_major_downgrades": 0.632,
+      "nlp_mgmt_hedging": 0.023,
+      "nlp_mgmt_deflection": 0.137,
+      "nlp_mgmt_specificity": -0.197,
+      "nlp_mgmt_confidence_shift": 0.122,
+      "nlp_analyst_skepticism": 0.125,
+      "nlp_analyst_surprise": 0.014,
+      "nlp_analyst_focus_cluster": 0.088,
+      "nlp_guidance_revision_dir": -0.271,
+      "nlp_guidance_qualifiers": 0.09,
+      "nlp_new_risk_mention": 0.024,
+      "nlp_macro_blame": 0.148,
+      "nlp_capex_language": -0.202,
+      "nlp_hiring_language": -0.044,
+      "nlp_competitive_mentions": -0.061,
+      "nlp_customer_language": -0.174,
+      "nlp_pricing_power": -0.031
+    },
     "sec_net_upgrades": {
       "sec_risk_score": -0.04,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.053,
+      "sec_market_cap": 0.004,
+      "sec_current_price": -0.028,
       "sec_pe_ratio": -0.062,
       "sec_forward_pe": -0.045,
+      "sec_fifty_two_week_high": -0.017,
+      "sec_fifty_two_week_low": -0.044,
       "sec_price_to_high": 0.044,
       "sec_price_to_low": 0.02,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -2074,7 +2946,11 @@
       "sec_analyst_upside_potential": 0.19,
       "sec_analyst_consensus_score": 0.18,
       "sec_analyst_coverage": 0.036,
+      "sec_upgrades_last_30d": 0.622,
+      "sec_downgrades_last_30d": -0.719,
       "sec_net_upgrades": 1.0,
+      "sec_major_upgrades": 0.303,
+      "sec_major_downgrades": -0.409,
       "nlp_mgmt_hedging": -0.011,
       "nlp_mgmt_deflection": -0.127,
       "nlp_mgmt_specificity": 0.171,
@@ -2092,17 +2968,112 @@
       "nlp_customer_language": 0.194,
       "nlp_pricing_power": 0.106
     },
+    "sec_major_upgrades": {
+      "sec_risk_score": -0.026,
+      "sec_sentiment_score": null,
+      "sec_concern_level": -0.012,
+      "sec_market_cap": -0.148,
+      "sec_current_price": 0.014,
+      "sec_pe_ratio": -0.088,
+      "sec_forward_pe": -0.076,
+      "sec_fifty_two_week_high": 0.029,
+      "sec_fifty_two_week_low": 0.027,
+      "sec_price_to_high": -0.114,
+      "sec_price_to_low": -0.041,
+      "sec_price_to_ma30": null,
+      "sec_price_to_ma50": null,
+      "sec_rsi14": null,
+      "sec_macd": null,
+      "sec_return_30d": null,
+      "sec_spx_return_7d": null,
+      "sec_spx_return_30d": null,
+      "sec_vix_close": null,
+      "sec_analyst_upside_potential": 0.118,
+      "sec_analyst_consensus_score": -0.137,
+      "sec_analyst_coverage": 0.008,
+      "sec_upgrades_last_30d": 0.433,
+      "sec_downgrades_last_30d": 0.06,
+      "sec_net_upgrades": 0.303,
+      "sec_major_upgrades": 1.0,
+      "sec_major_downgrades": 0.062,
+      "nlp_mgmt_hedging": -0.07,
+      "nlp_mgmt_deflection": -0.055,
+      "nlp_mgmt_specificity": -0.103,
+      "nlp_mgmt_confidence_shift": -0.003,
+      "nlp_analyst_skepticism": -0.016,
+      "nlp_analyst_surprise": -0.026,
+      "nlp_analyst_focus_cluster": -0.019,
+      "nlp_guidance_revision_dir": 0.009,
+      "nlp_guidance_qualifiers": -0.126,
+      "nlp_new_risk_mention": -0.097,
+      "nlp_macro_blame": -0.196,
+      "nlp_capex_language": -0.08,
+      "nlp_hiring_language": -0.003,
+      "nlp_competitive_mentions": 0.047,
+      "nlp_customer_language": 0.033,
+      "nlp_pricing_power": 0.166
+    },
+    "sec_major_downgrades": {
+      "sec_risk_score": -0.014,
+      "sec_sentiment_score": null,
+      "sec_concern_level": -0.036,
+      "sec_market_cap": 0.038,
+      "sec_current_price": 0.069,
+      "sec_pe_ratio": 0.192,
+      "sec_forward_pe": 0.145,
+      "sec_fifty_two_week_high": 0.06,
+      "sec_fifty_two_week_low": 0.061,
+      "sec_price_to_high": -0.012,
+      "sec_price_to_low": 0.105,
+      "sec_price_to_ma30": null,
+      "sec_price_to_ma50": null,
+      "sec_rsi14": null,
+      "sec_macd": null,
+      "sec_return_30d": null,
+      "sec_spx_return_7d": null,
+      "sec_spx_return_30d": null,
+      "sec_vix_close": null,
+      "sec_analyst_upside_potential": -0.172,
+      "sec_analyst_consensus_score": -0.145,
+      "sec_analyst_coverage": 0.028,
+      "sec_upgrades_last_30d": 0.124,
+      "sec_downgrades_last_30d": 0.632,
+      "sec_net_upgrades": -0.409,
+      "sec_major_upgrades": 0.062,
+      "sec_major_downgrades": 1.0,
+      "nlp_mgmt_hedging": 0.097,
+      "nlp_mgmt_deflection": 0.078,
+      "nlp_mgmt_specificity": -0.087,
+      "nlp_mgmt_confidence_shift": 0.144,
+      "nlp_analyst_skepticism": 0.163,
+      "nlp_analyst_surprise": 0.181,
+      "nlp_analyst_focus_cluster": 0.203,
+      "nlp_guidance_revision_dir": -0.173,
+      "nlp_guidance_qualifiers": 0.121,
+      "nlp_new_risk_mention": 0.021,
+      "nlp_macro_blame": 0.157,
+      "nlp_capex_language": -0.133,
+      "nlp_hiring_language": -0.083,
+      "nlp_competitive_mentions": -0.015,
+      "nlp_customer_language": -0.133,
+      "nlp_pricing_power": 0.009
+    },
     "nlp_mgmt_hedging": {
       "sec_risk_score": 0.277,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.198,
+      "sec_market_cap": -0.246,
+      "sec_current_price": -0.09,
       "sec_pe_ratio": -0.078,
       "sec_forward_pe": -0.149,
+      "sec_fifty_two_week_high": -0.106,
+      "sec_fifty_two_week_low": -0.028,
       "sec_price_to_high": -0.139,
       "sec_price_to_low": -0.191,
       "sec_price_to_ma30": -1.0,
       "sec_price_to_ma50": -1.0,
       "sec_rsi14": -1.0,
+      "sec_macd": -1.0,
       "sec_return_30d": -1.0,
       "sec_spx_return_7d": -1.0,
       "sec_spx_return_30d": -1.0,
@@ -2110,7 +3081,11 @@
       "sec_analyst_upside_potential": -0.006,
       "sec_analyst_consensus_score": -0.187,
       "sec_analyst_coverage": -0.187,
+      "sec_upgrades_last_30d": 0.024,
+      "sec_downgrades_last_30d": 0.023,
       "sec_net_upgrades": -0.011,
+      "sec_major_upgrades": -0.07,
+      "sec_major_downgrades": 0.097,
       "nlp_mgmt_hedging": 1.0,
       "nlp_mgmt_deflection": 0.657,
       "nlp_mgmt_specificity": -0.397,
@@ -2132,13 +3107,18 @@
       "sec_risk_score": 0.271,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.203,
+      "sec_market_cap": -0.186,
+      "sec_current_price": -0.042,
       "sec_pe_ratio": -0.008,
       "sec_forward_pe": -0.07,
+      "sec_fifty_two_week_high": -0.054,
+      "sec_fifty_two_week_low": -0.013,
       "sec_price_to_high": -0.124,
       "sec_price_to_low": -0.106,
       "sec_price_to_ma30": -1.0,
       "sec_price_to_ma50": -1.0,
       "sec_rsi14": -1.0,
+      "sec_macd": -1.0,
       "sec_return_30d": -1.0,
       "sec_spx_return_7d": -1.0,
       "sec_spx_return_30d": -1.0,
@@ -2146,7 +3126,11 @@
       "sec_analyst_upside_potential": -0.164,
       "sec_analyst_consensus_score": -0.246,
       "sec_analyst_coverage": -0.148,
+      "sec_upgrades_last_30d": -0.022,
+      "sec_downgrades_last_30d": 0.137,
       "sec_net_upgrades": -0.127,
+      "sec_major_upgrades": -0.055,
+      "sec_major_downgrades": 0.078,
       "nlp_mgmt_hedging": 0.657,
       "nlp_mgmt_deflection": 1.0,
       "nlp_mgmt_specificity": -0.466,
@@ -2168,13 +3152,18 @@
       "sec_risk_score": -0.1,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.232,
+      "sec_market_cap": 0.163,
+      "sec_current_price": 0.001,
       "sec_pe_ratio": -0.005,
       "sec_forward_pe": -0.059,
+      "sec_fifty_two_week_high": 0.024,
+      "sec_fifty_two_week_low": 0.02,
       "sec_price_to_high": 0.037,
       "sec_price_to_low": -0.001,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -2182,7 +3171,11 @@
       "sec_analyst_upside_potential": 0.141,
       "sec_analyst_consensus_score": 0.171,
       "sec_analyst_coverage": 0.115,
+      "sec_upgrades_last_30d": 0.046,
+      "sec_downgrades_last_30d": -0.197,
       "sec_net_upgrades": 0.171,
+      "sec_major_upgrades": -0.103,
+      "sec_major_downgrades": -0.087,
       "nlp_mgmt_hedging": -0.397,
       "nlp_mgmt_deflection": -0.466,
       "nlp_mgmt_specificity": 1.0,
@@ -2204,13 +3197,18 @@
       "sec_risk_score": 0.178,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.21,
+      "sec_market_cap": -0.194,
+      "sec_current_price": -0.032,
       "sec_pe_ratio": 0.036,
       "sec_forward_pe": -0.048,
+      "sec_fifty_two_week_high": -0.037,
+      "sec_fifty_two_week_low": 0.0,
       "sec_price_to_high": -0.116,
       "sec_price_to_low": -0.103,
       "sec_price_to_ma30": -1.0,
       "sec_price_to_ma50": -1.0,
       "sec_rsi14": -1.0,
+      "sec_macd": -1.0,
       "sec_return_30d": -1.0,
       "sec_spx_return_7d": -1.0,
       "sec_spx_return_30d": -1.0,
@@ -2218,7 +3216,11 @@
       "sec_analyst_upside_potential": -0.075,
       "sec_analyst_consensus_score": -0.118,
       "sec_analyst_coverage": -0.11,
+      "sec_upgrades_last_30d": 0.003,
+      "sec_downgrades_last_30d": 0.122,
       "sec_net_upgrades": -0.103,
+      "sec_major_upgrades": -0.003,
+      "sec_major_downgrades": 0.144,
       "nlp_mgmt_hedging": 0.67,
       "nlp_mgmt_deflection": 0.641,
       "nlp_mgmt_specificity": -0.463,
@@ -2240,13 +3242,18 @@
       "sec_risk_score": 0.209,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.101,
+      "sec_market_cap": -0.311,
+      "sec_current_price": -0.15,
       "sec_pe_ratio": -0.08,
       "sec_forward_pe": -0.206,
+      "sec_fifty_two_week_high": -0.127,
+      "sec_fifty_two_week_low": -0.137,
       "sec_price_to_high": -0.239,
       "sec_price_to_low": -0.165,
       "sec_price_to_ma30": -1.0,
       "sec_price_to_ma50": -1.0,
       "sec_rsi14": -1.0,
+      "sec_macd": -1.0,
       "sec_return_30d": -1.0,
       "sec_spx_return_7d": -1.0,
       "sec_spx_return_30d": -1.0,
@@ -2254,7 +3261,11 @@
       "sec_analyst_upside_potential": -0.103,
       "sec_analyst_consensus_score": -0.273,
       "sec_analyst_coverage": -0.243,
+      "sec_upgrades_last_30d": -0.009,
+      "sec_downgrades_last_30d": 0.125,
       "sec_net_upgrades": -0.107,
+      "sec_major_upgrades": -0.016,
+      "sec_major_downgrades": 0.163,
       "nlp_mgmt_hedging": 0.389,
       "nlp_mgmt_deflection": 0.628,
       "nlp_mgmt_specificity": -0.269,
@@ -2276,13 +3287,18 @@
       "sec_risk_score": 0.216,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.012,
+      "sec_market_cap": -0.284,
+      "sec_current_price": -0.102,
       "sec_pe_ratio": -0.021,
       "sec_forward_pe": -0.154,
+      "sec_fifty_two_week_high": -0.066,
+      "sec_fifty_two_week_low": -0.118,
       "sec_price_to_high": -0.301,
       "sec_price_to_low": -0.083,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -2290,7 +3306,11 @@
       "sec_analyst_upside_potential": -0.027,
       "sec_analyst_consensus_score": -0.093,
       "sec_analyst_coverage": -0.192,
+      "sec_upgrades_last_30d": 0.059,
+      "sec_downgrades_last_30d": 0.014,
       "sec_net_upgrades": 0.021,
+      "sec_major_upgrades": -0.026,
+      "sec_major_downgrades": 0.181,
       "nlp_mgmt_hedging": 0.36,
       "nlp_mgmt_deflection": 0.407,
       "nlp_mgmt_specificity": -0.191,
@@ -2312,13 +3332,18 @@
       "sec_risk_score": 0.097,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.07,
+      "sec_market_cap": -0.17,
+      "sec_current_price": -0.058,
       "sec_pe_ratio": -0.001,
       "sec_forward_pe": -0.125,
+      "sec_fifty_two_week_high": -0.024,
+      "sec_fifty_two_week_low": -0.054,
       "sec_price_to_high": -0.232,
       "sec_price_to_low": -0.02,
       "sec_price_to_ma30": null,
       "sec_price_to_ma50": null,
       "sec_rsi14": null,
+      "sec_macd": null,
       "sec_return_30d": null,
       "sec_spx_return_7d": null,
       "sec_spx_return_30d": null,
@@ -2326,7 +3351,11 @@
       "sec_analyst_upside_potential": 0.007,
       "sec_analyst_consensus_score": -0.049,
       "sec_analyst_coverage": -0.002,
+      "sec_upgrades_last_30d": 0.135,
+      "sec_downgrades_last_30d": 0.088,
       "sec_net_upgrades": 0.011,
+      "sec_major_upgrades": -0.019,
+      "sec_major_downgrades": 0.203,
       "nlp_mgmt_hedging": 0.06,
       "nlp_mgmt_deflection": 0.2,
       "nlp_mgmt_specificity": 0.008,
@@ -2348,13 +3377,18 @@
       "sec_risk_score": 0.015,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.124,
+      "sec_market_cap": 0.062,
+      "sec_current_price": -0.131,
       "sec_pe_ratio": 0.024,
       "sec_forward_pe": 0.1,
+      "sec_fifty_two_week_high": -0.123,
+      "sec_fifty_two_week_low": -0.202,
       "sec_price_to_high": 0.083,
       "sec_price_to_low": 0.159,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -2362,7 +3396,11 @@
       "sec_analyst_upside_potential": 0.035,
       "sec_analyst_consensus_score": 0.214,
       "sec_analyst_coverage": 0.082,
+      "sec_upgrades_last_30d": -0.005,
+      "sec_downgrades_last_30d": -0.271,
       "sec_net_upgrades": 0.219,
+      "sec_major_upgrades": 0.009,
+      "sec_major_downgrades": -0.173,
       "nlp_mgmt_hedging": -0.262,
       "nlp_mgmt_deflection": -0.281,
       "nlp_mgmt_specificity": 0.291,
@@ -2384,13 +3422,18 @@
       "sec_risk_score": 0.227,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.194,
+      "sec_market_cap": -0.102,
+      "sec_current_price": -0.045,
       "sec_pe_ratio": -0.044,
       "sec_forward_pe": -0.113,
+      "sec_fifty_two_week_high": -0.057,
+      "sec_fifty_two_week_low": 0.041,
       "sec_price_to_high": -0.023,
       "sec_price_to_low": -0.146,
       "sec_price_to_ma30": -1.0,
       "sec_price_to_ma50": -1.0,
       "sec_rsi14": -1.0,
+      "sec_macd": -1.0,
       "sec_return_30d": -1.0,
       "sec_spx_return_7d": -1.0,
       "sec_spx_return_30d": -1.0,
@@ -2398,7 +3441,11 @@
       "sec_analyst_upside_potential": -0.128,
       "sec_analyst_consensus_score": -0.169,
       "sec_analyst_coverage": -0.194,
+      "sec_upgrades_last_30d": -0.015,
+      "sec_downgrades_last_30d": 0.09,
       "sec_net_upgrades": -0.1,
+      "sec_major_upgrades": -0.126,
+      "sec_major_downgrades": 0.121,
       "nlp_mgmt_hedging": 0.749,
       "nlp_mgmt_deflection": 0.629,
       "nlp_mgmt_specificity": -0.309,
@@ -2420,13 +3467,18 @@
       "sec_risk_score": 0.21,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.077,
+      "sec_market_cap": -0.087,
+      "sec_current_price": 0.02,
       "sec_pe_ratio": -0.021,
       "sec_forward_pe": -0.038,
+      "sec_fifty_two_week_high": 0.004,
+      "sec_fifty_two_week_low": 0.087,
       "sec_price_to_high": -0.002,
       "sec_price_to_low": -0.122,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -2434,7 +3486,11 @@
       "sec_analyst_upside_potential": -0.035,
       "sec_analyst_consensus_score": -0.085,
       "sec_analyst_coverage": -0.136,
+      "sec_upgrades_last_30d": -0.152,
+      "sec_downgrades_last_30d": 0.024,
       "sec_net_upgrades": -0.124,
+      "sec_major_upgrades": -0.097,
+      "sec_major_downgrades": 0.021,
       "nlp_mgmt_hedging": 0.563,
       "nlp_mgmt_deflection": 0.43,
       "nlp_mgmt_specificity": -0.252,
@@ -2456,13 +3512,18 @@
       "sec_risk_score": 0.311,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.056,
+      "sec_market_cap": -0.122,
+      "sec_current_price": -0.052,
       "sec_pe_ratio": 0.016,
       "sec_forward_pe": -0.059,
+      "sec_fifty_two_week_high": -0.069,
+      "sec_fifty_two_week_low": 0.034,
       "sec_price_to_high": 0.002,
       "sec_price_to_low": -0.196,
       "sec_price_to_ma30": -1.0,
       "sec_price_to_ma50": -1.0,
       "sec_rsi14": -1.0,
+      "sec_macd": -1.0,
       "sec_return_30d": -1.0,
       "sec_spx_return_7d": -1.0,
       "sec_spx_return_30d": -1.0,
@@ -2470,7 +3531,11 @@
       "sec_analyst_upside_potential": -0.182,
       "sec_analyst_consensus_score": -0.112,
       "sec_analyst_coverage": -0.145,
+      "sec_upgrades_last_30d": -0.141,
+      "sec_downgrades_last_30d": 0.148,
       "sec_net_upgrades": -0.242,
+      "sec_major_upgrades": -0.196,
+      "sec_major_downgrades": 0.157,
       "nlp_mgmt_hedging": 0.561,
       "nlp_mgmt_deflection": 0.555,
       "nlp_mgmt_specificity": -0.309,
@@ -2492,13 +3557,18 @@
       "sec_risk_score": -0.099,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.126,
+      "sec_market_cap": 0.403,
+      "sec_current_price": 0.197,
       "sec_pe_ratio": 0.167,
       "sec_forward_pe": 0.261,
+      "sec_fifty_two_week_high": 0.187,
+      "sec_fifty_two_week_low": 0.16,
       "sec_price_to_high": 0.269,
       "sec_price_to_low": 0.277,
       "sec_price_to_ma30": -1.0,
       "sec_price_to_ma50": -1.0,
       "sec_rsi14": -1.0,
+      "sec_macd": -1.0,
       "sec_return_30d": -1.0,
       "sec_spx_return_7d": -1.0,
       "sec_spx_return_30d": -1.0,
@@ -2506,7 +3576,11 @@
       "sec_analyst_upside_potential": -0.037,
       "sec_analyst_consensus_score": 0.235,
       "sec_analyst_coverage": 0.215,
+      "sec_upgrades_last_30d": 0.012,
+      "sec_downgrades_last_30d": -0.202,
       "sec_net_upgrades": 0.161,
+      "sec_major_upgrades": -0.08,
+      "sec_major_downgrades": -0.133,
       "nlp_mgmt_hedging": -0.196,
       "nlp_mgmt_deflection": -0.257,
       "nlp_mgmt_specificity": 0.19,
@@ -2528,13 +3602,18 @@
       "sec_risk_score": -0.158,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.125,
+      "sec_market_cap": 0.074,
+      "sec_current_price": 0.181,
       "sec_pe_ratio": 0.065,
       "sec_forward_pe": 0.027,
+      "sec_fifty_two_week_high": 0.188,
+      "sec_fifty_two_week_low": 0.207,
       "sec_price_to_high": 0.155,
       "sec_price_to_low": -0.044,
       "sec_price_to_ma30": -1.0,
       "sec_price_to_ma50": -1.0,
       "sec_rsi14": -1.0,
+      "sec_macd": -1.0,
       "sec_return_30d": -1.0,
       "sec_spx_return_7d": -1.0,
       "sec_spx_return_30d": -1.0,
@@ -2542,7 +3621,11 @@
       "sec_analyst_upside_potential": -0.017,
       "sec_analyst_consensus_score": 0.034,
       "sec_analyst_coverage": 0.161,
+      "sec_upgrades_last_30d": 0.03,
+      "sec_downgrades_last_30d": -0.044,
       "sec_net_upgrades": 0.054,
+      "sec_major_upgrades": -0.003,
+      "sec_major_downgrades": -0.083,
       "nlp_mgmt_hedging": -0.075,
       "nlp_mgmt_deflection": -0.07,
       "nlp_mgmt_specificity": 0.109,
@@ -2564,13 +3647,18 @@
       "sec_risk_score": -0.016,
       "sec_sentiment_score": null,
       "sec_concern_level": 0.192,
+      "sec_market_cap": -0.113,
+      "sec_current_price": -0.075,
       "sec_pe_ratio": 0.035,
       "sec_forward_pe": 0.004,
+      "sec_fifty_two_week_high": -0.077,
+      "sec_fifty_two_week_low": -0.114,
       "sec_price_to_high": 0.013,
       "sec_price_to_low": 0.068,
       "sec_price_to_ma30": null,
       "sec_price_to_ma50": null,
       "sec_rsi14": null,
+      "sec_macd": null,
       "sec_return_30d": null,
       "sec_spx_return_7d": null,
       "sec_spx_return_30d": null,
@@ -2578,7 +3666,11 @@
       "sec_analyst_upside_potential": -0.101,
       "sec_analyst_consensus_score": -0.142,
       "sec_analyst_coverage": -0.037,
+      "sec_upgrades_last_30d": 0.018,
+      "sec_downgrades_last_30d": -0.061,
       "sec_net_upgrades": 0.072,
+      "sec_major_upgrades": 0.047,
+      "sec_major_downgrades": -0.015,
       "nlp_mgmt_hedging": 0.148,
       "nlp_mgmt_deflection": 0.178,
       "nlp_mgmt_specificity": -0.094,
@@ -2600,13 +3692,18 @@
       "sec_risk_score": -0.285,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.126,
+      "sec_market_cap": 0.364,
+      "sec_current_price": 0.191,
       "sec_pe_ratio": 0.242,
       "sec_forward_pe": 0.269,
+      "sec_fifty_two_week_high": 0.214,
+      "sec_fifty_two_week_low": 0.081,
       "sec_price_to_high": 0.125,
       "sec_price_to_low": 0.385,
       "sec_price_to_ma30": null,
       "sec_price_to_ma50": null,
       "sec_rsi14": null,
+      "sec_macd": null,
       "sec_return_30d": null,
       "sec_spx_return_7d": null,
       "sec_spx_return_30d": null,
@@ -2614,7 +3711,11 @@
       "sec_analyst_upside_potential": 0.034,
       "sec_analyst_consensus_score": 0.235,
       "sec_analyst_coverage": 0.386,
+      "sec_upgrades_last_30d": 0.081,
+      "sec_downgrades_last_30d": -0.174,
       "sec_net_upgrades": 0.194,
+      "sec_major_upgrades": 0.033,
+      "sec_major_downgrades": -0.133,
       "nlp_mgmt_hedging": -0.589,
       "nlp_mgmt_deflection": -0.476,
       "nlp_mgmt_specificity": 0.527,
@@ -2636,13 +3737,18 @@
       "sec_risk_score": -0.022,
       "sec_sentiment_score": null,
       "sec_concern_level": -0.363,
+      "sec_market_cap": 0.108,
+      "sec_current_price": 0.034,
       "sec_pe_ratio": -0.072,
       "sec_forward_pe": 0.062,
+      "sec_fifty_two_week_high": 0.065,
+      "sec_fifty_two_week_low": 0.021,
       "sec_price_to_high": 0.007,
       "sec_price_to_low": 0.074,
       "sec_price_to_ma30": 1.0,
       "sec_price_to_ma50": 1.0,
       "sec_rsi14": 1.0,
+      "sec_macd": 1.0,
       "sec_return_30d": 1.0,
       "sec_spx_return_7d": 1.0,
       "sec_spx_return_30d": 1.0,
@@ -2650,7 +3756,11 @@
       "sec_analyst_upside_potential": 0.288,
       "sec_analyst_consensus_score": 0.317,
       "sec_analyst_coverage": 0.142,
+      "sec_upgrades_last_30d": 0.093,
+      "sec_downgrades_last_30d": -0.031,
       "sec_net_upgrades": 0.106,
+      "sec_major_upgrades": 0.166,
+      "sec_major_downgrades": 0.009,
       "nlp_mgmt_hedging": -0.353,
       "nlp_mgmt_deflection": -0.318,
       "nlp_mgmt_specificity": 0.271,
@@ -2676,147 +3786,163 @@
       "y_mean": 1.2531,
       "y_std": 6.4417,
       "ols": {
-        "r2_insample": 0.1638,
-        "r2_cv_mean": -2.6209,
-        "r2_cv_std": 4.2168,
+        "r2_insample": 0.1897,
+        "r2_cv_mean": -3.5461,
+        "r2_cv_std": 5.4445,
         "coefficients": {
-          "sec_risk_score": -0.1776,
-          "sec_sentiment_score": -0.0,
-          "sec_concern_level": 0.0065,
-          "sec_pe_ratio": -4.045,
-          "sec_forward_pe": 3.6718,
-          "sec_price_to_high": -0.4183,
-          "sec_price_to_low": 0.4447,
-          "sec_analyst_upside_potential": -0.9387,
-          "sec_analyst_consensus_score": -0.9762,
-          "sec_analyst_coverage": 1.385,
-          "sec_net_upgrades": -0.194,
-          "nlp_mgmt_hedging": 0.8312,
-          "nlp_mgmt_deflection": -0.572,
-          "nlp_mgmt_specificity": 1.3065,
-          "nlp_mgmt_confidence_shift": 0.8384,
-          "nlp_analyst_skepticism": -0.4476,
-          "nlp_analyst_surprise": 0.3943,
-          "nlp_analyst_focus_cluster": -0.0369,
-          "nlp_guidance_revision_dir": 1.9661,
-          "nlp_guidance_qualifiers": 0.5635,
-          "nlp_new_risk_mention": -0.7596,
-          "nlp_macro_blame": -0.1129,
-          "nlp_capex_language": -0.3847,
-          "nlp_hiring_language": 0.1424,
-          "nlp_competitive_mentions": 0.2258,
-          "nlp_customer_language": -1.0356,
-          "nlp_pricing_power": 0.1304
+          "sec_risk_score": -0.2002,
+          "sec_sentiment_score": 0.0,
+          "sec_concern_level": 0.0865,
+          "sec_market_cap": 0.2016,
+          "sec_current_price": -2.9041,
+          "sec_pe_ratio": -4.0862,
+          "sec_forward_pe": 3.6439,
+          "sec_fifty_two_week_high": 2.0162,
+          "sec_fifty_two_week_low": 1.5314,
+          "sec_price_to_high": 0.3848,
+          "sec_price_to_low": 1.2112,
+          "sec_analyst_upside_potential": -0.5499,
+          "sec_analyst_consensus_score": -1.7783,
+          "sec_analyst_coverage": 1.3573,
+          "sec_upgrades_last_30d": -1.0671,
+          "sec_downgrades_last_30d": -0.6478,
+          "sec_net_upgrades": -0.1313,
+          "sec_major_upgrades": 0.3403,
+          "sec_major_downgrades": 0.1072,
+          "nlp_mgmt_hedging": 1.171,
+          "nlp_mgmt_deflection": -0.8262,
+          "nlp_mgmt_specificity": 1.4435,
+          "nlp_mgmt_confidence_shift": 0.6942,
+          "nlp_analyst_skepticism": -0.5401,
+          "nlp_analyst_surprise": 0.5606,
+          "nlp_analyst_focus_cluster": 0.2672,
+          "nlp_guidance_revision_dir": 1.9493,
+          "nlp_guidance_qualifiers": 0.6323,
+          "nlp_new_risk_mention": -1.0591,
+          "nlp_macro_blame": 0.1035,
+          "nlp_capex_language": -0.6604,
+          "nlp_hiring_language": -0.0822,
+          "nlp_competitive_mentions": 0.1794,
+          "nlp_customer_language": -1.1162,
+          "nlp_pricing_power": 0.3186
         },
         "top_features": [
           {
             "feature": "sec_pe_ratio",
-            "weight": -4.045
+            "weight": -4.0862
           },
           {
             "feature": "sec_forward_pe",
-            "weight": 3.6718
+            "weight": 3.6439
+          },
+          {
+            "feature": "sec_current_price",
+            "weight": -2.9041
+          },
+          {
+            "feature": "sec_fifty_two_week_high",
+            "weight": 2.0162
           },
           {
             "feature": "nlp_guidance_revision_dir",
-            "weight": 1.9661
-          },
-          {
-            "feature": "sec_analyst_coverage",
-            "weight": 1.385
-          },
-          {
-            "feature": "nlp_mgmt_specificity",
-            "weight": 1.3065
-          },
-          {
-            "feature": "nlp_customer_language",
-            "weight": -1.0356
+            "weight": 1.9493
           },
           {
             "feature": "sec_analyst_consensus_score",
-            "weight": -0.9762
+            "weight": -1.7783
           },
           {
-            "feature": "sec_analyst_upside_potential",
-            "weight": -0.9387
+            "feature": "sec_fifty_two_week_low",
+            "weight": 1.5314
+          },
+          {
+            "feature": "nlp_mgmt_specificity",
+            "weight": 1.4435
           }
         ]
       },
       "ridge": {
         "best_alpha": 100.0,
-        "r2_cv_mean": -0.1015,
-        "r2_cv_std": 0.191,
+        "r2_cv_mean": -0.1037,
+        "r2_cv_std": 0.2197,
         "coefficients": {
-          "sec_risk_score": -0.1613,
+          "sec_risk_score": -0.1243,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": -0.0121,
-          "sec_pe_ratio": -0.1271,
-          "sec_forward_pe": 0.5192,
-          "sec_price_to_high": -0.0953,
-          "sec_price_to_low": 0.1708,
-          "sec_analyst_upside_potential": -0.1429,
-          "sec_analyst_consensus_score": -0.0616,
-          "sec_analyst_coverage": 0.576,
-          "sec_net_upgrades": -0.0597,
-          "nlp_mgmt_hedging": 0.3626,
-          "nlp_mgmt_deflection": -0.1155,
-          "nlp_mgmt_specificity": 0.3851,
-          "nlp_mgmt_confidence_shift": 0.1425,
-          "nlp_analyst_skepticism": -0.1793,
-          "nlp_analyst_surprise": 0.0423,
-          "nlp_analyst_focus_cluster": -0.1837,
-          "nlp_guidance_revision_dir": 0.6962,
-          "nlp_guidance_qualifiers": 0.2805,
-          "nlp_new_risk_mention": -0.112,
-          "nlp_macro_blame": 0.0324,
-          "nlp_capex_language": -0.254,
-          "nlp_hiring_language": -0.0379,
-          "nlp_competitive_mentions": 0.0475,
-          "nlp_customer_language": -0.0937,
-          "nlp_pricing_power": 0.1555
+          "sec_concern_level": 0.0467,
+          "sec_market_cap": 0.1618,
+          "sec_current_price": 0.2017,
+          "sec_pe_ratio": -0.1316,
+          "sec_forward_pe": 0.4289,
+          "sec_fifty_two_week_high": 0.221,
+          "sec_fifty_two_week_low": 0.1005,
+          "sec_price_to_high": -0.0392,
+          "sec_price_to_low": 0.2011,
+          "sec_analyst_upside_potential": -0.1159,
+          "sec_analyst_consensus_score": -0.1817,
+          "sec_analyst_coverage": 0.5035,
+          "sec_upgrades_last_30d": -0.3551,
+          "sec_downgrades_last_30d": -0.2184,
+          "sec_net_upgrades": -0.0413,
+          "sec_major_upgrades": 0.0811,
+          "sec_major_downgrades": 0.0912,
+          "nlp_mgmt_hedging": 0.3734,
+          "nlp_mgmt_deflection": -0.1403,
+          "nlp_mgmt_specificity": 0.4026,
+          "nlp_mgmt_confidence_shift": 0.1298,
+          "nlp_analyst_skepticism": -0.1629,
+          "nlp_analyst_surprise": 0.0723,
+          "nlp_analyst_focus_cluster": -0.1583,
+          "nlp_guidance_revision_dir": 0.7181,
+          "nlp_guidance_qualifiers": 0.2832,
+          "nlp_new_risk_mention": -0.171,
+          "nlp_macro_blame": 0.0653,
+          "nlp_capex_language": -0.3406,
+          "nlp_hiring_language": -0.0796,
+          "nlp_competitive_mentions": 0.0519,
+          "nlp_customer_language": -0.1197,
+          "nlp_pricing_power": 0.1434
         },
         "top_features": [
           {
             "feature": "nlp_guidance_revision_dir",
-            "weight": 0.6962
+            "weight": 0.7181
           },
           {
             "feature": "sec_analyst_coverage",
-            "weight": 0.576
+            "weight": 0.5035
           },
           {
             "feature": "sec_forward_pe",
-            "weight": 0.5192
+            "weight": 0.4289
           },
           {
             "feature": "nlp_mgmt_specificity",
-            "weight": 0.3851
+            "weight": 0.4026
           },
           {
             "feature": "nlp_mgmt_hedging",
-            "weight": 0.3626
+            "weight": 0.3734
           },
           {
-            "feature": "nlp_guidance_qualifiers",
-            "weight": 0.2805
+            "feature": "sec_upgrades_last_30d",
+            "weight": -0.3551
           },
           {
             "feature": "nlp_capex_language",
-            "weight": -0.254
+            "weight": -0.3406
           },
           {
-            "feature": "nlp_analyst_focus_cluster",
-            "weight": -0.1837
+            "feature": "nlp_guidance_qualifiers",
+            "weight": 0.2832
           }
         ]
       },
       "lasso": {
         "best_alpha": 1.0,
-        "r2_cv_mean": -0.0079,
-        "r2_cv_std": 0.0889,
+        "r2_cv_mean": -0.0093,
+        "r2_cv_std": 0.11,
         "n_features_selected": 3,
-        "n_features_eliminated": 24,
+        "n_features_eliminated": 32,
         "selected_features": {
           "sec_forward_pe": 0.054,
           "sec_analyst_coverage": 0.1426,
@@ -2840,7 +3966,7 @@
       "elasticnet": {
         "best_alpha": 1.0,
         "best_l1_ratio": 0.9,
-        "r2_cv_mean": -0.0146,
+        "r2_cv_mean": -0.0126,
         "selected_features": {
           "sec_forward_pe": 0.1183,
           "sec_analyst_coverage": 0.1883,
@@ -2849,25 +3975,25 @@
       },
       "stepwise": {
         "n_selected": 8,
-        "r2_cv_mean": 0.02,
-        "r2_cv_std": 0.0694,
+        "r2_cv_mean": 0.0307,
+        "r2_cv_std": 0.0838,
         "selected_features": {
-          "sec_sentiment_score": 0.0,
-          "sec_analyst_coverage": 0.6669,
-          "nlp_mgmt_specificity": 0.3175,
-          "nlp_mgmt_confidence_shift": 0.2143,
-          "nlp_analyst_skepticism": -0.2003,
-          "nlp_analyst_surprise": -0.0117,
-          "nlp_guidance_revision_dir": 0.7204,
-          "nlp_guidance_qualifiers": 0.3571
+          "sec_current_price": 0.2823,
+          "sec_fifty_two_week_high": 0.2847,
+          "sec_analyst_coverage": 0.574,
+          "sec_upgrades_last_30d": -0.3141,
+          "nlp_mgmt_specificity": 0.3362,
+          "nlp_mgmt_confidence_shift": 0.1724,
+          "nlp_guidance_revision_dir": 0.752,
+          "nlp_guidance_qualifiers": 0.3358
         },
         "selection_order": [
-          "sec_sentiment_score",
+          "sec_current_price",
+          "sec_fifty_two_week_high",
           "sec_analyst_coverage",
+          "sec_upgrades_last_30d",
           "nlp_mgmt_specificity",
           "nlp_mgmt_confidence_shift",
-          "nlp_analyst_skepticism",
-          "nlp_analyst_surprise",
           "nlp_guidance_revision_dir",
           "nlp_guidance_qualifiers"
         ]
@@ -2927,254 +4053,278 @@
         }
       },
       "random_forest": {
-        "r2_cv_mean": -0.0594,
-        "r2_cv_std": 0.1378,
+        "r2_cv_mean": -0.049,
+        "r2_cv_std": 0.1305,
         "feature_importances": {
-          "sec_risk_score": 0.0009,
+          "sec_risk_score": 0.0007,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": 0.0006,
-          "sec_pe_ratio": 0.0429,
-          "sec_forward_pe": 0.2345,
-          "sec_price_to_high": 0.0211,
-          "sec_price_to_low": 0.06,
-          "sec_analyst_upside_potential": 0.0283,
-          "sec_analyst_consensus_score": 0.0786,
-          "sec_analyst_coverage": 0.0434,
-          "sec_net_upgrades": 0.0007,
-          "nlp_mgmt_hedging": 0.0061,
-          "nlp_mgmt_deflection": 0.0167,
-          "nlp_mgmt_specificity": 0.0233,
-          "nlp_mgmt_confidence_shift": 0.0063,
-          "nlp_analyst_skepticism": 0.0277,
-          "nlp_analyst_surprise": 0.0182,
-          "nlp_analyst_focus_cluster": 0.0571,
-          "nlp_guidance_revision_dir": 0.0815,
-          "nlp_guidance_qualifiers": 0.0422,
-          "nlp_new_risk_mention": 0.0329,
-          "nlp_macro_blame": 0.0257,
-          "nlp_capex_language": 0.0394,
-          "nlp_hiring_language": 0.0181,
-          "nlp_competitive_mentions": 0.0288,
-          "nlp_customer_language": 0.0313,
-          "nlp_pricing_power": 0.0338
+          "sec_concern_level": 0.0,
+          "sec_market_cap": 0.0642,
+          "sec_current_price": 0.0041,
+          "sec_pe_ratio": 0.0378,
+          "sec_forward_pe": 0.1944,
+          "sec_fifty_two_week_high": 0.0244,
+          "sec_fifty_two_week_low": 0.0247,
+          "sec_price_to_high": 0.0138,
+          "sec_price_to_low": 0.0587,
+          "sec_analyst_upside_potential": 0.0252,
+          "sec_analyst_consensus_score": 0.0698,
+          "sec_analyst_coverage": 0.0321,
+          "sec_upgrades_last_30d": 0.0,
+          "sec_downgrades_last_30d": 0.0007,
+          "sec_net_upgrades": 0.0,
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0,
+          "nlp_mgmt_hedging": 0.0086,
+          "nlp_mgmt_deflection": 0.0133,
+          "nlp_mgmt_specificity": 0.0204,
+          "nlp_mgmt_confidence_shift": 0.0054,
+          "nlp_analyst_skepticism": 0.0249,
+          "nlp_analyst_surprise": 0.0154,
+          "nlp_analyst_focus_cluster": 0.0452,
+          "nlp_guidance_revision_dir": 0.0904,
+          "nlp_guidance_qualifiers": 0.0354,
+          "nlp_new_risk_mention": 0.0322,
+          "nlp_macro_blame": 0.0229,
+          "nlp_capex_language": 0.0362,
+          "nlp_hiring_language": 0.0122,
+          "nlp_competitive_mentions": 0.0302,
+          "nlp_customer_language": 0.0223,
+          "nlp_pricing_power": 0.0345
         },
         "top_features": [
           {
             "feature": "sec_forward_pe",
-            "importance": 0.2345
+            "importance": 0.1944
           },
           {
             "feature": "nlp_guidance_revision_dir",
-            "importance": 0.0815
+            "importance": 0.0904
           },
           {
             "feature": "sec_analyst_consensus_score",
-            "importance": 0.0786
+            "importance": 0.0698
+          },
+          {
+            "feature": "sec_market_cap",
+            "importance": 0.0642
           },
           {
             "feature": "sec_price_to_low",
-            "importance": 0.06
+            "importance": 0.0587
           },
           {
             "feature": "nlp_analyst_focus_cluster",
-            "importance": 0.0571
-          },
-          {
-            "feature": "sec_analyst_coverage",
-            "importance": 0.0434
+            "importance": 0.0452
           },
           {
             "feature": "sec_pe_ratio",
-            "importance": 0.0429
-          },
-          {
-            "feature": "nlp_guidance_qualifiers",
-            "importance": 0.0422
+            "importance": 0.0378
           },
           {
             "feature": "nlp_capex_language",
-            "importance": 0.0394
+            "importance": 0.0362
+          },
+          {
+            "feature": "nlp_guidance_qualifiers",
+            "importance": 0.0354
           },
           {
             "feature": "nlp_pricing_power",
-            "importance": 0.0338
+            "importance": 0.0345
           }
         ]
       },
       "gradient_boosting": {
         "best_learning_rate": 0.01,
         "best_max_depth": 3,
-        "r2_cv_mean": -0.0333,
-        "r2_cv_std": 0.1152,
+        "r2_cv_mean": -0.0298,
+        "r2_cv_std": 0.1179,
         "feature_importances": {
           "sec_risk_score": 0.0,
           "sec_sentiment_score": 0.0,
           "sec_concern_level": 0.0,
-          "sec_pe_ratio": 0.0326,
-          "sec_forward_pe": 0.2393,
-          "sec_price_to_high": 0.0303,
-          "sec_price_to_low": 0.0339,
-          "sec_analyst_upside_potential": 0.0339,
-          "sec_analyst_consensus_score": 0.0482,
-          "sec_analyst_coverage": 0.0173,
+          "sec_market_cap": 0.0732,
+          "sec_current_price": 0.0067,
+          "sec_pe_ratio": 0.0172,
+          "sec_forward_pe": 0.1929,
+          "sec_fifty_two_week_high": 0.0233,
+          "sec_fifty_two_week_low": 0.0072,
+          "sec_price_to_high": 0.0309,
+          "sec_price_to_low": 0.0292,
+          "sec_analyst_upside_potential": 0.0227,
+          "sec_analyst_consensus_score": 0.045,
+          "sec_analyst_coverage": 0.0185,
+          "sec_upgrades_last_30d": 0.0,
+          "sec_downgrades_last_30d": 0.0,
           "sec_net_upgrades": 0.0,
-          "nlp_mgmt_hedging": 0.0032,
-          "nlp_mgmt_deflection": 0.0223,
-          "nlp_mgmt_specificity": 0.0099,
-          "nlp_mgmt_confidence_shift": 0.0123,
-          "nlp_analyst_skepticism": 0.0187,
-          "nlp_analyst_surprise": 0.0171,
-          "nlp_analyst_focus_cluster": 0.0813,
-          "nlp_guidance_revision_dir": 0.0956,
-          "nlp_guidance_qualifiers": 0.0655,
-          "nlp_new_risk_mention": 0.0538,
-          "nlp_macro_blame": 0.0385,
-          "nlp_capex_language": 0.0329,
-          "nlp_hiring_language": 0.0297,
-          "nlp_competitive_mentions": 0.0328,
-          "nlp_customer_language": 0.0203,
-          "nlp_pricing_power": 0.0307
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0,
+          "nlp_mgmt_hedging": 0.0014,
+          "nlp_mgmt_deflection": 0.0211,
+          "nlp_mgmt_specificity": 0.008,
+          "nlp_mgmt_confidence_shift": 0.0086,
+          "nlp_analyst_skepticism": 0.0192,
+          "nlp_analyst_surprise": 0.0072,
+          "nlp_analyst_focus_cluster": 0.0729,
+          "nlp_guidance_revision_dir": 0.1044,
+          "nlp_guidance_qualifiers": 0.0519,
+          "nlp_new_risk_mention": 0.0544,
+          "nlp_macro_blame": 0.0347,
+          "nlp_capex_language": 0.0378,
+          "nlp_hiring_language": 0.0233,
+          "nlp_competitive_mentions": 0.0246,
+          "nlp_customer_language": 0.0192,
+          "nlp_pricing_power": 0.0444
         },
         "top_features": [
           {
             "feature": "sec_forward_pe",
-            "importance": 0.2393
+            "importance": 0.1929
           },
           {
             "feature": "nlp_guidance_revision_dir",
-            "importance": 0.0956
+            "importance": 0.1044
+          },
+          {
+            "feature": "sec_market_cap",
+            "importance": 0.0732
           },
           {
             "feature": "nlp_analyst_focus_cluster",
-            "importance": 0.0813
-          },
-          {
-            "feature": "nlp_guidance_qualifiers",
-            "importance": 0.0655
+            "importance": 0.0729
           },
           {
             "feature": "nlp_new_risk_mention",
-            "importance": 0.0538
+            "importance": 0.0544
+          },
+          {
+            "feature": "nlp_guidance_qualifiers",
+            "importance": 0.0519
           },
           {
             "feature": "sec_analyst_consensus_score",
-            "importance": 0.0482
+            "importance": 0.045
           },
           {
-            "feature": "nlp_macro_blame",
-            "importance": 0.0385
-          },
-          {
-            "feature": "sec_price_to_low",
-            "importance": 0.0339
-          },
-          {
-            "feature": "sec_analyst_upside_potential",
-            "importance": 0.0339
+            "feature": "nlp_pricing_power",
+            "importance": 0.0444
           },
           {
             "feature": "nlp_capex_language",
-            "importance": 0.0329
+            "importance": 0.0378
+          },
+          {
+            "feature": "nlp_macro_blame",
+            "importance": 0.0347
           }
         ]
       },
       "mutual_information": {
         "scores": {
-          "sec_risk_score": 0.0038,
+          "sec_risk_score": 0.0,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": 0.0296,
+          "sec_concern_level": 0.0219,
+          "sec_market_cap": 0.0906,
+          "sec_current_price": 0.0403,
           "sec_pe_ratio": 0.0,
-          "sec_forward_pe": 0.0061,
+          "sec_forward_pe": 0.0,
+          "sec_fifty_two_week_high": 0.0217,
+          "sec_fifty_two_week_low": 0.0044,
           "sec_price_to_high": 0.0,
-          "sec_price_to_low": 0.0778,
-          "sec_analyst_upside_potential": 0.0628,
-          "sec_analyst_consensus_score": 0.0165,
+          "sec_price_to_low": 0.075,
+          "sec_analyst_upside_potential": 0.0626,
+          "sec_analyst_consensus_score": 0.0117,
           "sec_analyst_coverage": 0.0,
+          "sec_upgrades_last_30d": 0.0,
+          "sec_downgrades_last_30d": 0.03,
           "sec_net_upgrades": 0.0283,
-          "nlp_mgmt_hedging": 0.0735,
-          "nlp_mgmt_deflection": 0.0184,
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0124,
+          "nlp_mgmt_hedging": 0.0588,
+          "nlp_mgmt_deflection": 0.0254,
           "nlp_mgmt_specificity": 0.0,
-          "nlp_mgmt_confidence_shift": 0.0239,
-          "nlp_analyst_skepticism": 0.0015,
-          "nlp_analyst_surprise": 0.0524,
+          "nlp_mgmt_confidence_shift": 0.0133,
+          "nlp_analyst_skepticism": 0.0119,
+          "nlp_analyst_surprise": 0.0436,
           "nlp_analyst_focus_cluster": 0.0,
-          "nlp_guidance_revision_dir": 0.0251,
-          "nlp_guidance_qualifiers": 0.0428,
-          "nlp_new_risk_mention": 0.0064,
-          "nlp_macro_blame": 0.0018,
-          "nlp_capex_language": 0.0472,
+          "nlp_guidance_revision_dir": 0.0193,
+          "nlp_guidance_qualifiers": 0.0283,
+          "nlp_new_risk_mention": 0.0132,
+          "nlp_macro_blame": 0.0082,
+          "nlp_capex_language": 0.0406,
           "nlp_hiring_language": 0.0,
-          "nlp_competitive_mentions": 0.1217,
+          "nlp_competitive_mentions": 0.1276,
           "nlp_customer_language": 0.0,
           "nlp_pricing_power": 0.0
         },
         "top_features": [
           {
             "feature": "nlp_competitive_mentions",
-            "mi_score": 0.1217
+            "mi_score": 0.1276
+          },
+          {
+            "feature": "sec_market_cap",
+            "mi_score": 0.0906
           },
           {
             "feature": "sec_price_to_low",
-            "mi_score": 0.0778
-          },
-          {
-            "feature": "nlp_mgmt_hedging",
-            "mi_score": 0.0735
+            "mi_score": 0.075
           },
           {
             "feature": "sec_analyst_upside_potential",
-            "mi_score": 0.0628
+            "mi_score": 0.0626
+          },
+          {
+            "feature": "nlp_mgmt_hedging",
+            "mi_score": 0.0588
           },
           {
             "feature": "nlp_analyst_surprise",
-            "mi_score": 0.0524
+            "mi_score": 0.0436
           },
           {
             "feature": "nlp_capex_language",
-            "mi_score": 0.0472
+            "mi_score": 0.0406
           },
           {
-            "feature": "nlp_guidance_qualifiers",
-            "mi_score": 0.0428
+            "feature": "sec_current_price",
+            "mi_score": 0.0403
           },
           {
-            "feature": "sec_concern_level",
-            "mi_score": 0.0296
+            "feature": "sec_downgrades_last_30d",
+            "mi_score": 0.03
           },
           {
             "feature": "sec_net_upgrades",
             "mi_score": 0.0283
-          },
-          {
-            "feature": "nlp_guidance_revision_dir",
-            "mi_score": 0.0251
           }
         ]
       },
       "model_comparison": [
         {
           "model": "Stepwise+Ridge",
-          "cv_r2": 0.02
+          "cv_r2": 0.0307
         },
         {
           "model": "Lasso",
-          "cv_r2": -0.0079
+          "cv_r2": -0.0093
         },
         {
           "model": "ElasticNet",
-          "cv_r2": -0.0146
+          "cv_r2": -0.0126
         },
         {
           "model": "Gradient Boost",
-          "cv_r2": -0.0333
+          "cv_r2": -0.0298
         },
         {
           "model": "Random Forest",
-          "cv_r2": -0.0594
+          "cv_r2": -0.049
         },
         {
           "model": "Ridge",
-          "cv_r2": -0.1015
+          "cv_r2": -0.1037
         },
         {
           "model": "Polynomial",
@@ -3182,38 +4332,46 @@
         },
         {
           "model": "OLS",
-          "cv_r2": -2.6209
+          "cv_r2": -3.5461
         }
       ],
       "recommended_weights": {
         "method": "Ridge-Lasso blend (combined SEC+NLP features)",
         "weights": {
-          "nlp_guidance_revision_dir": 0.4108,
-          "sec_analyst_coverage": 0.3593,
-          "sec_forward_pe": 0.2866,
-          "nlp_mgmt_specificity": 0.077,
-          "nlp_mgmt_hedging": 0.0725,
-          "nlp_guidance_qualifiers": 0.0561,
-          "nlp_capex_language": -0.0508,
-          "nlp_analyst_focus_cluster": -0.0367,
-          "nlp_analyst_skepticism": -0.0359,
-          "sec_price_to_low": 0.0342,
-          "sec_risk_score": -0.0323,
-          "nlp_pricing_power": 0.0311,
-          "sec_analyst_upside_potential": -0.0286,
-          "nlp_mgmt_confidence_shift": 0.0285,
-          "sec_pe_ratio": -0.0254,
-          "nlp_mgmt_deflection": -0.0231,
-          "nlp_new_risk_mention": -0.0224,
-          "sec_price_to_high": -0.0191,
-          "nlp_customer_language": -0.0187,
-          "sec_analyst_consensus_score": -0.0123,
-          "sec_net_upgrades": -0.0119,
-          "nlp_competitive_mentions": 0.0095,
-          "nlp_analyst_surprise": 0.0085,
-          "nlp_hiring_language": -0.0076,
-          "nlp_macro_blame": 0.0065,
-          "sec_concern_level": -0.0024
+          "nlp_guidance_revision_dir": 0.4217,
+          "sec_analyst_coverage": 0.323,
+          "sec_forward_pe": 0.2414,
+          "nlp_mgmt_specificity": 0.0805,
+          "nlp_mgmt_hedging": 0.0747,
+          "sec_upgrades_last_30d": -0.071,
+          "nlp_capex_language": -0.0681,
+          "nlp_guidance_qualifiers": 0.0566,
+          "sec_fifty_two_week_high": 0.0442,
+          "sec_downgrades_last_30d": -0.0437,
+          "sec_current_price": 0.0403,
+          "sec_price_to_low": 0.0402,
+          "sec_analyst_consensus_score": -0.0363,
+          "nlp_new_risk_mention": -0.0342,
+          "nlp_analyst_skepticism": -0.0326,
+          "sec_market_cap": 0.0324,
+          "nlp_analyst_focus_cluster": -0.0317,
+          "nlp_pricing_power": 0.0287,
+          "nlp_mgmt_deflection": -0.0281,
+          "sec_pe_ratio": -0.0263,
+          "nlp_mgmt_confidence_shift": 0.026,
+          "sec_risk_score": -0.0249,
+          "nlp_customer_language": -0.0239,
+          "sec_analyst_upside_potential": -0.0232,
+          "sec_fifty_two_week_low": 0.0201,
+          "sec_major_downgrades": 0.0182,
+          "sec_major_upgrades": 0.0162,
+          "nlp_hiring_language": -0.0159,
+          "nlp_analyst_surprise": 0.0145,
+          "nlp_macro_blame": 0.0131,
+          "nlp_competitive_mentions": 0.0104,
+          "sec_concern_level": 0.0093,
+          "sec_net_upgrades": -0.0083,
+          "sec_price_to_high": -0.0078
         },
         "intercept": 1.2531
       }
@@ -3223,147 +4381,163 @@
       "y_mean": 3.549,
       "y_std": 9.6593,
       "ols": {
-        "r2_insample": 0.1982,
-        "r2_cv_mean": -1.8465,
-        "r2_cv_std": 2.5606,
+        "r2_insample": 0.2319,
+        "r2_cv_mean": -4.1262,
+        "r2_cv_std": 6.7039,
         "coefficients": {
-          "sec_risk_score": -0.4719,
+          "sec_risk_score": -0.6709,
           "sec_sentiment_score": -0.0,
-          "sec_concern_level": 0.6139,
-          "sec_pe_ratio": -3.2715,
-          "sec_forward_pe": 3.8327,
-          "sec_price_to_high": 0.2823,
-          "sec_price_to_low": 0.4629,
-          "sec_analyst_upside_potential": -1.2429,
-          "sec_analyst_consensus_score": -1.8842,
-          "sec_analyst_coverage": 2.9024,
-          "sec_net_upgrades": 0.8004,
-          "nlp_mgmt_hedging": 1.6344,
-          "nlp_mgmt_deflection": -0.7564,
-          "nlp_mgmt_specificity": 1.2516,
-          "nlp_mgmt_confidence_shift": -0.1117,
-          "nlp_analyst_skepticism": -1.0432,
-          "nlp_analyst_surprise": 0.7384,
-          "nlp_analyst_focus_cluster": 0.7159,
-          "nlp_guidance_revision_dir": 1.7152,
-          "nlp_guidance_qualifiers": 0.4383,
-          "nlp_new_risk_mention": -1.6757,
-          "nlp_macro_blame": 0.9152,
-          "nlp_capex_language": -0.6765,
-          "nlp_hiring_language": -0.019,
-          "nlp_competitive_mentions": -0.1194,
-          "nlp_customer_language": -1.1879,
-          "nlp_pricing_power": 1.2223
+          "sec_concern_level": 0.8965,
+          "sec_market_cap": 0.3123,
+          "sec_current_price": 5.0393,
+          "sec_pe_ratio": -3.0007,
+          "sec_forward_pe": 3.2798,
+          "sec_fifty_two_week_high": -1.5914,
+          "sec_fifty_two_week_low": -2.4616,
+          "sec_price_to_high": 0.7069,
+          "sec_price_to_low": 0.3732,
+          "sec_analyst_upside_potential": -1.0137,
+          "sec_analyst_consensus_score": -2.5769,
+          "sec_analyst_coverage": 2.9753,
+          "sec_upgrades_last_30d": -1.356,
+          "sec_downgrades_last_30d": -0.9559,
+          "sec_net_upgrades": -0.0526,
+          "sec_major_upgrades": 1.1644,
+          "sec_major_downgrades": -0.9295,
+          "nlp_mgmt_hedging": 2.2594,
+          "nlp_mgmt_deflection": -1.3962,
+          "nlp_mgmt_specificity": 1.5049,
+          "nlp_mgmt_confidence_shift": -0.5419,
+          "nlp_analyst_skepticism": -0.8865,
+          "nlp_analyst_surprise": 1.3254,
+          "nlp_analyst_focus_cluster": 1.079,
+          "nlp_guidance_revision_dir": 1.555,
+          "nlp_guidance_qualifiers": 0.6083,
+          "nlp_new_risk_mention": -2.2273,
+          "nlp_macro_blame": 1.4104,
+          "nlp_capex_language": -0.8846,
+          "nlp_hiring_language": -0.1912,
+          "nlp_competitive_mentions": -0.1854,
+          "nlp_customer_language": -1.2754,
+          "nlp_pricing_power": 1.3233
         },
         "top_features": [
           {
+            "feature": "sec_current_price",
+            "weight": 5.0393
+          },
+          {
             "feature": "sec_forward_pe",
-            "weight": 3.8327
+            "weight": 3.2798
           },
           {
             "feature": "sec_pe_ratio",
-            "weight": -3.2715
+            "weight": -3.0007
           },
           {
             "feature": "sec_analyst_coverage",
-            "weight": 2.9024
+            "weight": 2.9753
           },
           {
             "feature": "sec_analyst_consensus_score",
-            "weight": -1.8842
+            "weight": -2.5769
           },
           {
-            "feature": "nlp_guidance_revision_dir",
-            "weight": 1.7152
-          },
-          {
-            "feature": "nlp_new_risk_mention",
-            "weight": -1.6757
+            "feature": "sec_fifty_two_week_low",
+            "weight": -2.4616
           },
           {
             "feature": "nlp_mgmt_hedging",
-            "weight": 1.6344
+            "weight": 2.2594
           },
           {
-            "feature": "nlp_mgmt_specificity",
-            "weight": 1.2516
+            "feature": "nlp_new_risk_mention",
+            "weight": -2.2273
           }
         ]
       },
       "ridge": {
         "best_alpha": 100.0,
-        "r2_cv_mean": -0.2059,
-        "r2_cv_std": 0.2223,
+        "r2_cv_mean": -0.2186,
+        "r2_cv_std": 0.2265,
         "coefficients": {
-          "sec_risk_score": -0.3057,
+          "sec_risk_score": -0.2609,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": 0.3062,
-          "sec_pe_ratio": 0.253,
-          "sec_forward_pe": 0.884,
-          "sec_price_to_high": 0.2428,
-          "sec_price_to_low": 0.4168,
-          "sec_analyst_upside_potential": -0.3034,
-          "sec_analyst_consensus_score": -0.2683,
-          "sec_analyst_coverage": 1.2428,
-          "sec_net_upgrades": 0.4179,
-          "nlp_mgmt_hedging": 0.5403,
-          "nlp_mgmt_deflection": -0.1146,
-          "nlp_mgmt_specificity": 0.3574,
-          "nlp_mgmt_confidence_shift": -0.1581,
-          "nlp_analyst_skepticism": -0.429,
-          "nlp_analyst_surprise": 0.0681,
-          "nlp_analyst_focus_cluster": 0.0802,
-          "nlp_guidance_revision_dir": 0.6216,
-          "nlp_guidance_qualifiers": 0.3792,
-          "nlp_new_risk_mention": -0.5373,
-          "nlp_macro_blame": 0.357,
-          "nlp_capex_language": -0.3758,
-          "nlp_hiring_language": -0.0056,
-          "nlp_competitive_mentions": -0.2075,
-          "nlp_customer_language": -0.0825,
-          "nlp_pricing_power": 0.61
+          "sec_concern_level": 0.3754,
+          "sec_market_cap": 0.3714,
+          "sec_current_price": 0.3164,
+          "sec_pe_ratio": 0.2675,
+          "sec_forward_pe": 0.7646,
+          "sec_fifty_two_week_high": 0.2519,
+          "sec_fifty_two_week_low": -0.003,
+          "sec_price_to_high": 0.2817,
+          "sec_price_to_low": 0.4334,
+          "sec_analyst_upside_potential": -0.2821,
+          "sec_analyst_consensus_score": -0.3684,
+          "sec_analyst_coverage": 1.1017,
+          "sec_upgrades_last_30d": -0.1411,
+          "sec_downgrades_last_30d": -0.3157,
+          "sec_net_upgrades": 0.1806,
+          "sec_major_upgrades": 0.5258,
+          "sec_major_downgrades": -0.1432,
+          "nlp_mgmt_hedging": 0.5865,
+          "nlp_mgmt_deflection": -0.175,
+          "nlp_mgmt_specificity": 0.3861,
+          "nlp_mgmt_confidence_shift": -0.197,
+          "nlp_analyst_skepticism": -0.4037,
+          "nlp_analyst_surprise": 0.1246,
+          "nlp_analyst_focus_cluster": 0.1081,
+          "nlp_guidance_revision_dir": 0.6678,
+          "nlp_guidance_qualifiers": 0.4031,
+          "nlp_new_risk_mention": -0.5875,
+          "nlp_macro_blame": 0.4422,
+          "nlp_capex_language": -0.4714,
+          "nlp_hiring_language": -0.0437,
+          "nlp_competitive_mentions": -0.1976,
+          "nlp_customer_language": -0.1464,
+          "nlp_pricing_power": 0.5525
         },
         "top_features": [
           {
             "feature": "sec_analyst_coverage",
-            "weight": 1.2428
+            "weight": 1.1017
           },
           {
             "feature": "sec_forward_pe",
-            "weight": 0.884
+            "weight": 0.7646
           },
           {
             "feature": "nlp_guidance_revision_dir",
-            "weight": 0.6216
-          },
-          {
-            "feature": "nlp_pricing_power",
-            "weight": 0.61
-          },
-          {
-            "feature": "nlp_mgmt_hedging",
-            "weight": 0.5403
+            "weight": 0.6678
           },
           {
             "feature": "nlp_new_risk_mention",
-            "weight": -0.5373
+            "weight": -0.5875
           },
           {
-            "feature": "nlp_analyst_skepticism",
-            "weight": -0.429
+            "feature": "nlp_mgmt_hedging",
+            "weight": 0.5865
           },
           {
-            "feature": "sec_net_upgrades",
-            "weight": 0.4179
+            "feature": "nlp_pricing_power",
+            "weight": 0.5525
+          },
+          {
+            "feature": "sec_major_upgrades",
+            "weight": 0.5258
+          },
+          {
+            "feature": "nlp_capex_language",
+            "weight": -0.4714
           }
         ]
       },
       "lasso": {
         "best_alpha": 1.0,
-        "r2_cv_mean": -0.2135,
-        "r2_cv_std": 0.1969,
+        "r2_cv_mean": -0.2206,
+        "r2_cv_std": 0.2062,
         "n_features_selected": 3,
-        "n_features_eliminated": 24,
+        "n_features_eliminated": 32,
         "selected_features": {
           "sec_forward_pe": 0.8432,
           "sec_analyst_coverage": 1.2339,
@@ -3387,55 +4561,61 @@
       "elasticnet": {
         "best_alpha": 1.0,
         "best_l1_ratio": 0.1,
-        "r2_cv_mean": -0.1992,
+        "r2_cv_mean": -0.2212,
         "selected_features": {
-          "sec_risk_score": -0.2276,
-          "sec_concern_level": 0.1973,
-          "sec_pe_ratio": 0.2821,
-          "sec_forward_pe": 0.7258,
-          "sec_price_to_high": 0.1577,
-          "sec_price_to_low": 0.3767,
-          "sec_analyst_upside_potential": -0.2201,
-          "sec_analyst_consensus_score": -0.0349,
-          "sec_analyst_coverage": 0.9715,
-          "sec_net_upgrades": 0.2721,
-          "nlp_mgmt_hedging": 0.3434,
-          "nlp_mgmt_deflection": -0.0011,
-          "nlp_mgmt_specificity": 0.2421,
-          "nlp_mgmt_confidence_shift": -0.0825,
-          "nlp_analyst_skepticism": -0.31,
-          "nlp_guidance_revision_dir": 0.4512,
-          "nlp_guidance_qualifiers": 0.2214,
-          "nlp_new_risk_mention": -0.3432,
-          "nlp_macro_blame": 0.1875,
-          "nlp_capex_language": -0.2191,
-          "nlp_competitive_mentions": -0.1159,
-          "nlp_pricing_power": 0.4017
+          "sec_risk_score": -0.1835,
+          "sec_concern_level": 0.2365,
+          "sec_market_cap": 0.2719,
+          "sec_current_price": 0.245,
+          "sec_pe_ratio": 0.2804,
+          "sec_forward_pe": 0.6447,
+          "sec_fifty_two_week_high": 0.1895,
+          "sec_price_to_high": 0.1607,
+          "sec_price_to_low": 0.3704,
+          "sec_analyst_upside_potential": -0.2051,
+          "sec_analyst_consensus_score": -0.0877,
+          "sec_analyst_coverage": 0.8642,
+          "sec_downgrades_last_30d": -0.1783,
+          "sec_net_upgrades": 0.1395,
+          "sec_major_upgrades": 0.358,
+          "sec_major_downgrades": -0.0353,
+          "nlp_mgmt_hedging": 0.3628,
+          "nlp_mgmt_deflection": -0.0252,
+          "nlp_mgmt_specificity": 0.2446,
+          "nlp_mgmt_confidence_shift": -0.0892,
+          "nlp_analyst_skepticism": -0.2877,
+          "nlp_guidance_revision_dir": 0.4802,
+          "nlp_guidance_qualifiers": 0.2293,
+          "nlp_new_risk_mention": -0.3555,
+          "nlp_macro_blame": 0.2465,
+          "nlp_capex_language": -0.2809,
+          "nlp_competitive_mentions": -0.1094,
+          "nlp_pricing_power": 0.3463
         }
       },
       "stepwise": {
         "n_selected": 8,
-        "r2_cv_mean": -0.0684,
-        "r2_cv_std": 0.1465,
+        "r2_cv_mean": -0.0626,
+        "r2_cv_std": 0.1456,
         "selected_features": {
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": 0.425,
-          "sec_price_to_high": 0.3596,
-          "sec_analyst_coverage": 1.5698,
-          "nlp_mgmt_deflection": 0.08,
-          "nlp_mgmt_specificity": 0.2367,
-          "nlp_guidance_revision_dir": 0.6531,
-          "nlp_pricing_power": 0.2994
+          "sec_concern_level": 0.4341,
+          "sec_current_price": 0.6141,
+          "sec_price_to_high": 0.3522,
+          "sec_analyst_coverage": 1.4409,
+          "sec_major_upgrades": 0.4428,
+          "nlp_mgmt_specificity": 0.2668,
+          "nlp_guidance_revision_dir": 0.6883
         },
         "selection_order": [
           "sec_sentiment_score",
           "sec_concern_level",
+          "sec_current_price",
           "sec_price_to_high",
           "sec_analyst_coverage",
-          "nlp_mgmt_deflection",
+          "sec_major_upgrades",
           "nlp_mgmt_specificity",
-          "nlp_guidance_revision_dir",
-          "nlp_pricing_power"
+          "nlp_guidance_revision_dir"
         ]
       },
       "polynomial": {
@@ -3493,254 +4673,278 @@
         }
       },
       "random_forest": {
-        "r2_cv_mean": -0.1714,
-        "r2_cv_std": 0.1591,
+        "r2_cv_mean": -0.1875,
+        "r2_cv_std": 0.1479,
         "feature_importances": {
           "sec_risk_score": 0.0007,
           "sec_sentiment_score": 0.0,
           "sec_concern_level": 0.0046,
-          "sec_pe_ratio": 0.0212,
-          "sec_forward_pe": 0.2593,
-          "sec_price_to_high": 0.0094,
-          "sec_price_to_low": 0.0507,
-          "sec_analyst_upside_potential": 0.0177,
-          "sec_analyst_consensus_score": 0.038,
-          "sec_analyst_coverage": 0.1894,
+          "sec_market_cap": 0.0302,
+          "sec_current_price": 0.005,
+          "sec_pe_ratio": 0.0181,
+          "sec_forward_pe": 0.2496,
+          "sec_fifty_two_week_high": 0.0079,
+          "sec_fifty_two_week_low": 0.0084,
+          "sec_price_to_high": 0.0064,
+          "sec_price_to_low": 0.0478,
+          "sec_analyst_upside_potential": 0.0149,
+          "sec_analyst_consensus_score": 0.0333,
+          "sec_analyst_coverage": 0.1794,
+          "sec_upgrades_last_30d": 0.0,
+          "sec_downgrades_last_30d": 0.0,
           "sec_net_upgrades": 0.0022,
-          "nlp_mgmt_hedging": 0.0126,
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0,
+          "nlp_mgmt_hedging": 0.0113,
           "nlp_mgmt_deflection": 0.0026,
-          "nlp_mgmt_specificity": 0.0216,
-          "nlp_mgmt_confidence_shift": 0.0181,
-          "nlp_analyst_skepticism": 0.0365,
-          "nlp_analyst_surprise": 0.0178,
-          "nlp_analyst_focus_cluster": 0.0442,
-          "nlp_guidance_revision_dir": 0.0224,
-          "nlp_guidance_qualifiers": 0.0337,
-          "nlp_new_risk_mention": 0.0283,
-          "nlp_macro_blame": 0.0269,
-          "nlp_capex_language": 0.0282,
-          "nlp_hiring_language": 0.0213,
-          "nlp_competitive_mentions": 0.029,
-          "nlp_customer_language": 0.0319,
-          "nlp_pricing_power": 0.0316
+          "nlp_mgmt_specificity": 0.0193,
+          "nlp_mgmt_confidence_shift": 0.0162,
+          "nlp_analyst_skepticism": 0.0332,
+          "nlp_analyst_surprise": 0.016,
+          "nlp_analyst_focus_cluster": 0.0429,
+          "nlp_guidance_revision_dir": 0.0243,
+          "nlp_guidance_qualifiers": 0.0339,
+          "nlp_new_risk_mention": 0.0287,
+          "nlp_macro_blame": 0.0227,
+          "nlp_capex_language": 0.0286,
+          "nlp_hiring_language": 0.0197,
+          "nlp_competitive_mentions": 0.0296,
+          "nlp_customer_language": 0.03,
+          "nlp_pricing_power": 0.0323
         },
         "top_features": [
           {
             "feature": "sec_forward_pe",
-            "importance": 0.2593
+            "importance": 0.2496
           },
           {
             "feature": "sec_analyst_coverage",
-            "importance": 0.1894
+            "importance": 0.1794
           },
           {
             "feature": "sec_price_to_low",
-            "importance": 0.0507
+            "importance": 0.0478
           },
           {
             "feature": "nlp_analyst_focus_cluster",
-            "importance": 0.0442
-          },
-          {
-            "feature": "sec_analyst_consensus_score",
-            "importance": 0.038
-          },
-          {
-            "feature": "nlp_analyst_skepticism",
-            "importance": 0.0365
+            "importance": 0.0429
           },
           {
             "feature": "nlp_guidance_qualifiers",
-            "importance": 0.0337
+            "importance": 0.0339
           },
           {
-            "feature": "nlp_customer_language",
-            "importance": 0.0319
+            "feature": "sec_analyst_consensus_score",
+            "importance": 0.0333
+          },
+          {
+            "feature": "nlp_analyst_skepticism",
+            "importance": 0.0332
           },
           {
             "feature": "nlp_pricing_power",
-            "importance": 0.0316
+            "importance": 0.0323
           },
           {
-            "feature": "nlp_competitive_mentions",
-            "importance": 0.029
+            "feature": "sec_market_cap",
+            "importance": 0.0302
+          },
+          {
+            "feature": "nlp_customer_language",
+            "importance": 0.03
           }
         ]
       },
       "gradient_boosting": {
         "best_learning_rate": 0.01,
         "best_max_depth": 3,
-        "r2_cv_mean": -0.1593,
-        "r2_cv_std": 0.1494,
+        "r2_cv_mean": -0.1747,
+        "r2_cv_std": 0.1528,
         "feature_importances": {
           "sec_risk_score": 0.0,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": 0.0116,
-          "sec_pe_ratio": 0.0072,
-          "sec_forward_pe": 0.2415,
-          "sec_price_to_high": 0.0066,
-          "sec_price_to_low": 0.0186,
-          "sec_analyst_upside_potential": 0.0222,
-          "sec_analyst_consensus_score": 0.0238,
-          "sec_analyst_coverage": 0.1187,
+          "sec_concern_level": 0.0117,
+          "sec_market_cap": 0.0214,
+          "sec_current_price": 0.0,
+          "sec_pe_ratio": 0.0056,
+          "sec_forward_pe": 0.2456,
+          "sec_fifty_two_week_high": 0.0027,
+          "sec_fifty_two_week_low": 0.0023,
+          "sec_price_to_high": 0.005,
+          "sec_price_to_low": 0.027,
+          "sec_analyst_upside_potential": 0.0176,
+          "sec_analyst_consensus_score": 0.0211,
+          "sec_analyst_coverage": 0.1114,
+          "sec_upgrades_last_30d": 0.0,
+          "sec_downgrades_last_30d": 0.0,
           "sec_net_upgrades": 0.0,
-          "nlp_mgmt_hedging": 0.0132,
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0,
+          "nlp_mgmt_hedging": 0.0108,
           "nlp_mgmt_deflection": 0.0,
-          "nlp_mgmt_specificity": 0.0207,
-          "nlp_mgmt_confidence_shift": 0.0169,
-          "nlp_analyst_skepticism": 0.0775,
-          "nlp_analyst_surprise": 0.0146,
-          "nlp_analyst_focus_cluster": 0.0417,
-          "nlp_guidance_revision_dir": 0.0229,
-          "nlp_guidance_qualifiers": 0.0531,
-          "nlp_new_risk_mention": 0.114,
-          "nlp_macro_blame": 0.0254,
-          "nlp_capex_language": 0.0363,
-          "nlp_hiring_language": 0.0226,
-          "nlp_competitive_mentions": 0.0164,
-          "nlp_customer_language": 0.0388,
-          "nlp_pricing_power": 0.036
+          "nlp_mgmt_specificity": 0.0225,
+          "nlp_mgmt_confidence_shift": 0.0145,
+          "nlp_analyst_skepticism": 0.0761,
+          "nlp_analyst_surprise": 0.015,
+          "nlp_analyst_focus_cluster": 0.0435,
+          "nlp_guidance_revision_dir": 0.0189,
+          "nlp_guidance_qualifiers": 0.0547,
+          "nlp_new_risk_mention": 0.0972,
+          "nlp_macro_blame": 0.0267,
+          "nlp_capex_language": 0.0418,
+          "nlp_hiring_language": 0.021,
+          "nlp_competitive_mentions": 0.0163,
+          "nlp_customer_language": 0.0414,
+          "nlp_pricing_power": 0.0282
         },
         "top_features": [
           {
             "feature": "sec_forward_pe",
-            "importance": 0.2415
+            "importance": 0.2456
           },
           {
             "feature": "sec_analyst_coverage",
-            "importance": 0.1187
+            "importance": 0.1114
           },
           {
             "feature": "nlp_new_risk_mention",
-            "importance": 0.114
+            "importance": 0.0972
           },
           {
             "feature": "nlp_analyst_skepticism",
-            "importance": 0.0775
+            "importance": 0.0761
           },
           {
             "feature": "nlp_guidance_qualifiers",
-            "importance": 0.0531
+            "importance": 0.0547
           },
           {
             "feature": "nlp_analyst_focus_cluster",
-            "importance": 0.0417
-          },
-          {
-            "feature": "nlp_customer_language",
-            "importance": 0.0388
+            "importance": 0.0435
           },
           {
             "feature": "nlp_capex_language",
-            "importance": 0.0363
+            "importance": 0.0418
+          },
+          {
+            "feature": "nlp_customer_language",
+            "importance": 0.0414
           },
           {
             "feature": "nlp_pricing_power",
-            "importance": 0.036
+            "importance": 0.0282
           },
           {
-            "feature": "nlp_macro_blame",
-            "importance": 0.0254
+            "feature": "sec_price_to_low",
+            "importance": 0.027
           }
         ]
       },
       "mutual_information": {
         "scores": {
-          "sec_risk_score": 0.0092,
+          "sec_risk_score": 0.0114,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": 0.0222,
+          "sec_concern_level": 0.0213,
+          "sec_market_cap": 0.0,
+          "sec_current_price": 0.0,
           "sec_pe_ratio": 0.0,
           "sec_forward_pe": 0.0,
+          "sec_fifty_two_week_high": 0.0003,
+          "sec_fifty_two_week_low": 0.0,
           "sec_price_to_high": 0.0,
-          "sec_price_to_low": 0.0511,
-          "sec_analyst_upside_potential": 0.0088,
-          "sec_analyst_consensus_score": 0.0141,
-          "sec_analyst_coverage": 0.0703,
-          "sec_net_upgrades": 0.0303,
+          "sec_price_to_low": 0.0568,
+          "sec_analyst_upside_potential": 0.0047,
+          "sec_analyst_consensus_score": 0.0114,
+          "sec_analyst_coverage": 0.0734,
+          "sec_upgrades_last_30d": 0.0257,
+          "sec_downgrades_last_30d": 0.0157,
+          "sec_net_upgrades": 0.0244,
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0,
           "nlp_mgmt_hedging": 0.0,
-          "nlp_mgmt_deflection": 0.02,
-          "nlp_mgmt_specificity": 0.0176,
+          "nlp_mgmt_deflection": 0.0178,
+          "nlp_mgmt_specificity": 0.0162,
           "nlp_mgmt_confidence_shift": 0.0,
           "nlp_analyst_skepticism": 0.0,
-          "nlp_analyst_surprise": 0.0208,
+          "nlp_analyst_surprise": 0.0187,
           "nlp_analyst_focus_cluster": 0.0,
-          "nlp_guidance_revision_dir": 0.0026,
+          "nlp_guidance_revision_dir": 0.0145,
           "nlp_guidance_qualifiers": 0.0,
-          "nlp_new_risk_mention": 0.0157,
-          "nlp_macro_blame": 0.0183,
+          "nlp_new_risk_mention": 0.0146,
+          "nlp_macro_blame": 0.0373,
           "nlp_capex_language": 0.0,
-          "nlp_hiring_language": 0.0058,
+          "nlp_hiring_language": 0.0055,
           "nlp_competitive_mentions": 0.0,
-          "nlp_customer_language": 0.0119,
+          "nlp_customer_language": 0.0099,
           "nlp_pricing_power": 0.0
         },
         "top_features": [
           {
             "feature": "sec_analyst_coverage",
-            "mi_score": 0.0703
+            "mi_score": 0.0734
           },
           {
             "feature": "sec_price_to_low",
-            "mi_score": 0.0511
-          },
-          {
-            "feature": "sec_net_upgrades",
-            "mi_score": 0.0303
-          },
-          {
-            "feature": "sec_concern_level",
-            "mi_score": 0.0222
-          },
-          {
-            "feature": "nlp_analyst_surprise",
-            "mi_score": 0.0208
-          },
-          {
-            "feature": "nlp_mgmt_deflection",
-            "mi_score": 0.02
+            "mi_score": 0.0568
           },
           {
             "feature": "nlp_macro_blame",
-            "mi_score": 0.0183
+            "mi_score": 0.0373
+          },
+          {
+            "feature": "sec_upgrades_last_30d",
+            "mi_score": 0.0257
+          },
+          {
+            "feature": "sec_net_upgrades",
+            "mi_score": 0.0244
+          },
+          {
+            "feature": "sec_concern_level",
+            "mi_score": 0.0213
+          },
+          {
+            "feature": "nlp_analyst_surprise",
+            "mi_score": 0.0187
+          },
+          {
+            "feature": "nlp_mgmt_deflection",
+            "mi_score": 0.0178
           },
           {
             "feature": "nlp_mgmt_specificity",
-            "mi_score": 0.0176
+            "mi_score": 0.0162
           },
           {
-            "feature": "nlp_new_risk_mention",
+            "feature": "sec_downgrades_last_30d",
             "mi_score": 0.0157
-          },
-          {
-            "feature": "sec_analyst_consensus_score",
-            "mi_score": 0.0141
           }
         ]
       },
       "model_comparison": [
         {
           "model": "Stepwise+Ridge",
-          "cv_r2": -0.0684
+          "cv_r2": -0.0626
         },
         {
           "model": "Gradient Boost",
-          "cv_r2": -0.1593
+          "cv_r2": -0.1747
         },
         {
           "model": "Random Forest",
-          "cv_r2": -0.1714
-        },
-        {
-          "model": "ElasticNet",
-          "cv_r2": -0.1992
+          "cv_r2": -0.1875
         },
         {
           "model": "Ridge",
-          "cv_r2": -0.2059
+          "cv_r2": -0.2186
         },
         {
           "model": "Lasso",
-          "cv_r2": -0.2135
+          "cv_r2": -0.2206
+        },
+        {
+          "model": "ElasticNet",
+          "cv_r2": -0.2212
         },
         {
           "model": "Polynomial",
@@ -3748,38 +4952,45 @@
         },
         {
           "model": "OLS",
-          "cv_r2": -1.8465
+          "cv_r2": -4.1262
         }
       ],
       "recommended_weights": {
         "method": "Ridge-Lasso blend (combined SEC+NLP features)",
         "weights": {
-          "sec_analyst_coverage": 1.2384,
-          "sec_forward_pe": 0.8636,
-          "nlp_guidance_revision_dir": 0.4128,
-          "nlp_pricing_power": 0.122,
-          "nlp_mgmt_hedging": 0.1081,
-          "nlp_new_risk_mention": -0.1075,
-          "nlp_analyst_skepticism": -0.0858,
-          "sec_net_upgrades": 0.0836,
-          "sec_price_to_low": 0.0834,
-          "nlp_guidance_qualifiers": 0.0758,
-          "nlp_capex_language": -0.0752,
-          "nlp_mgmt_specificity": 0.0715,
-          "nlp_macro_blame": 0.0714,
-          "sec_concern_level": 0.0612,
-          "sec_risk_score": -0.0611,
-          "sec_analyst_upside_potential": -0.0607,
-          "sec_analyst_consensus_score": -0.0537,
-          "sec_pe_ratio": 0.0506,
-          "sec_price_to_high": 0.0486,
-          "nlp_competitive_mentions": -0.0415,
-          "nlp_mgmt_confidence_shift": -0.0316,
-          "nlp_mgmt_deflection": -0.0229,
-          "nlp_customer_language": -0.0165,
-          "nlp_analyst_focus_cluster": 0.016,
-          "nlp_analyst_surprise": 0.0136,
-          "nlp_hiring_language": -0.0011
+          "sec_analyst_coverage": 1.1678,
+          "sec_forward_pe": 0.8039,
+          "nlp_guidance_revision_dir": 0.4359,
+          "nlp_new_risk_mention": -0.1175,
+          "nlp_mgmt_hedging": 0.1173,
+          "nlp_pricing_power": 0.1105,
+          "sec_major_upgrades": 0.1052,
+          "nlp_capex_language": -0.0943,
+          "nlp_macro_blame": 0.0884,
+          "sec_price_to_low": 0.0867,
+          "nlp_analyst_skepticism": -0.0807,
+          "nlp_guidance_qualifiers": 0.0806,
+          "nlp_mgmt_specificity": 0.0772,
+          "sec_concern_level": 0.0751,
+          "sec_market_cap": 0.0743,
+          "sec_analyst_consensus_score": -0.0737,
+          "sec_current_price": 0.0633,
+          "sec_downgrades_last_30d": -0.0631,
+          "sec_analyst_upside_potential": -0.0564,
+          "sec_price_to_high": 0.0563,
+          "sec_pe_ratio": 0.0535,
+          "sec_risk_score": -0.0522,
+          "sec_fifty_two_week_high": 0.0504,
+          "nlp_competitive_mentions": -0.0395,
+          "nlp_mgmt_confidence_shift": -0.0394,
+          "sec_net_upgrades": 0.0361,
+          "nlp_mgmt_deflection": -0.035,
+          "nlp_customer_language": -0.0293,
+          "sec_major_downgrades": -0.0286,
+          "sec_upgrades_last_30d": -0.0282,
+          "nlp_analyst_surprise": 0.0249,
+          "nlp_analyst_focus_cluster": 0.0216,
+          "nlp_hiring_language": -0.0087
         },
         "intercept": 3.549
       }
@@ -3789,147 +5000,163 @@
       "y_mean": 0.4147,
       "y_std": 6.368,
       "ols": {
-        "r2_insample": 0.1949,
-        "r2_cv_mean": -2.2735,
-        "r2_cv_std": 3.7565,
+        "r2_insample": 0.2155,
+        "r2_cv_mean": -3.1212,
+        "r2_cv_std": 4.9083,
         "coefficients": {
-          "sec_risk_score": 0.0383,
-          "sec_sentiment_score": -0.0,
-          "sec_concern_level": -0.2369,
-          "sec_pe_ratio": -4.0574,
-          "sec_forward_pe": 4.4868,
-          "sec_price_to_high": -0.3718,
-          "sec_price_to_low": 0.3813,
-          "sec_analyst_upside_potential": -0.7662,
-          "sec_analyst_consensus_score": -0.6202,
-          "sec_analyst_coverage": 1.063,
-          "sec_net_upgrades": -0.1474,
-          "nlp_mgmt_hedging": 0.6718,
-          "nlp_mgmt_deflection": -0.6834,
-          "nlp_mgmt_specificity": 1.2803,
-          "nlp_mgmt_confidence_shift": 0.4104,
-          "nlp_analyst_skepticism": -0.3806,
-          "nlp_analyst_surprise": 0.2735,
-          "nlp_analyst_focus_cluster": 0.1401,
-          "nlp_guidance_revision_dir": 1.7837,
-          "nlp_guidance_qualifiers": 0.5466,
-          "nlp_new_risk_mention": -0.5791,
-          "nlp_macro_blame": -0.1298,
-          "nlp_capex_language": -0.3228,
-          "nlp_hiring_language": 0.17,
-          "nlp_competitive_mentions": 0.008,
-          "nlp_customer_language": -1.2474,
-          "nlp_pricing_power": 0.3899
+          "sec_risk_score": 0.0366,
+          "sec_sentiment_score": 0.0,
+          "sec_concern_level": -0.1995,
+          "sec_market_cap": -0.1351,
+          "sec_current_price": -2.5794,
+          "sec_pe_ratio": -4.0506,
+          "sec_forward_pe": 4.3707,
+          "sec_fifty_two_week_high": 3.2009,
+          "sec_fifty_two_week_low": 0.0078,
+          "sec_price_to_high": 0.6466,
+          "sec_price_to_low": 0.731,
+          "sec_analyst_upside_potential": -0.4332,
+          "sec_analyst_consensus_score": -1.2335,
+          "sec_analyst_coverage": 1.197,
+          "sec_upgrades_last_30d": -0.9571,
+          "sec_downgrades_last_30d": -0.549,
+          "sec_net_upgrades": -0.1453,
+          "sec_major_upgrades": 0.3518,
+          "sec_major_downgrades": 0.0338,
+          "nlp_mgmt_hedging": 0.8851,
+          "nlp_mgmt_deflection": -0.8747,
+          "nlp_mgmt_specificity": 1.4029,
+          "nlp_mgmt_confidence_shift": 0.2593,
+          "nlp_analyst_skepticism": -0.4027,
+          "nlp_analyst_surprise": 0.3913,
+          "nlp_analyst_focus_cluster": 0.3997,
+          "nlp_guidance_revision_dir": 1.6915,
+          "nlp_guidance_qualifiers": 0.6291,
+          "nlp_new_risk_mention": -0.8392,
+          "nlp_macro_blame": 0.1167,
+          "nlp_capex_language": -0.509,
+          "nlp_hiring_language": -0.0358,
+          "nlp_competitive_mentions": -0.0579,
+          "nlp_customer_language": -1.228,
+          "nlp_pricing_power": 0.5017
         },
         "top_features": [
           {
             "feature": "sec_forward_pe",
-            "weight": 4.4868
+            "weight": 4.3707
           },
           {
             "feature": "sec_pe_ratio",
-            "weight": -4.0574
+            "weight": -4.0506
+          },
+          {
+            "feature": "sec_fifty_two_week_high",
+            "weight": 3.2009
+          },
+          {
+            "feature": "sec_current_price",
+            "weight": -2.5794
           },
           {
             "feature": "nlp_guidance_revision_dir",
-            "weight": 1.7837
+            "weight": 1.6915
           },
           {
             "feature": "nlp_mgmt_specificity",
-            "weight": 1.2803
+            "weight": 1.4029
+          },
+          {
+            "feature": "sec_analyst_consensus_score",
+            "weight": -1.2335
           },
           {
             "feature": "nlp_customer_language",
-            "weight": -1.2474
-          },
-          {
-            "feature": "sec_analyst_coverage",
-            "weight": 1.063
-          },
-          {
-            "feature": "sec_analyst_upside_potential",
-            "weight": -0.7662
-          },
-          {
-            "feature": "nlp_mgmt_deflection",
-            "weight": -0.6834
+            "weight": -1.228
           }
         ]
       },
       "ridge": {
         "best_alpha": 100.0,
-        "r2_cv_mean": -0.0529,
-        "r2_cv_std": 0.1841,
+        "r2_cv_mean": -0.056,
+        "r2_cv_std": 0.204,
         "coefficients": {
-          "sec_risk_score": -0.0822,
+          "sec_risk_score": -0.032,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": -0.1923,
-          "sec_pe_ratio": -0.032,
-          "sec_forward_pe": 0.7495,
-          "sec_price_to_high": -0.0661,
-          "sec_price_to_low": 0.1513,
-          "sec_analyst_upside_potential": -0.1187,
-          "sec_analyst_consensus_score": 0.0989,
-          "sec_analyst_coverage": 0.563,
-          "sec_net_upgrades": -0.0721,
-          "nlp_mgmt_hedging": 0.2641,
-          "nlp_mgmt_deflection": -0.1884,
-          "nlp_mgmt_specificity": 0.3723,
-          "nlp_mgmt_confidence_shift": -0.0126,
-          "nlp_analyst_skepticism": -0.1808,
-          "nlp_analyst_surprise": 0.0141,
-          "nlp_analyst_focus_cluster": -0.1496,
-          "nlp_guidance_revision_dir": 0.6371,
-          "nlp_guidance_qualifiers": 0.2206,
-          "nlp_new_risk_mention": -0.0489,
-          "nlp_macro_blame": 0.0477,
-          "nlp_capex_language": -0.1723,
-          "nlp_hiring_language": -0.044,
-          "nlp_competitive_mentions": -0.12,
-          "nlp_customer_language": -0.1664,
-          "nlp_pricing_power": 0.3149
+          "sec_concern_level": -0.1284,
+          "sec_market_cap": 0.138,
+          "sec_current_price": 0.2542,
+          "sec_pe_ratio": -0.0409,
+          "sec_forward_pe": 0.6376,
+          "sec_fifty_two_week_high": 0.2687,
+          "sec_fifty_two_week_low": 0.1,
+          "sec_price_to_high": -0.0073,
+          "sec_price_to_low": 0.182,
+          "sec_analyst_upside_potential": -0.0861,
+          "sec_analyst_consensus_score": -0.0162,
+          "sec_analyst_coverage": 0.4782,
+          "sec_upgrades_last_30d": -0.3258,
+          "sec_downgrades_last_30d": -0.1809,
+          "sec_net_upgrades": -0.0546,
+          "sec_major_upgrades": 0.1224,
+          "sec_major_downgrades": 0.1124,
+          "nlp_mgmt_hedging": 0.2626,
+          "nlp_mgmt_deflection": -0.2099,
+          "nlp_mgmt_specificity": 0.3932,
+          "nlp_mgmt_confidence_shift": -0.0243,
+          "nlp_analyst_skepticism": -0.1607,
+          "nlp_analyst_surprise": 0.0375,
+          "nlp_analyst_focus_cluster": -0.1296,
+          "nlp_guidance_revision_dir": 0.6718,
+          "nlp_guidance_qualifiers": 0.2213,
+          "nlp_new_risk_mention": -0.1069,
+          "nlp_macro_blame": 0.096,
+          "nlp_capex_language": -0.2546,
+          "nlp_hiring_language": -0.0911,
+          "nlp_competitive_mentions": -0.1224,
+          "nlp_customer_language": -0.191,
+          "nlp_pricing_power": 0.2868
         },
         "top_features": [
           {
-            "feature": "sec_forward_pe",
-            "weight": 0.7495
+            "feature": "nlp_guidance_revision_dir",
+            "weight": 0.6718
           },
           {
-            "feature": "nlp_guidance_revision_dir",
-            "weight": 0.6371
+            "feature": "sec_forward_pe",
+            "weight": 0.6376
           },
           {
             "feature": "sec_analyst_coverage",
-            "weight": 0.563
+            "weight": 0.4782
           },
           {
             "feature": "nlp_mgmt_specificity",
-            "weight": 0.3723
+            "weight": 0.3932
+          },
+          {
+            "feature": "sec_upgrades_last_30d",
+            "weight": -0.3258
           },
           {
             "feature": "nlp_pricing_power",
-            "weight": 0.3149
+            "weight": 0.2868
+          },
+          {
+            "feature": "sec_fifty_two_week_high",
+            "weight": 0.2687
           },
           {
             "feature": "nlp_mgmt_hedging",
-            "weight": 0.2641
-          },
-          {
-            "feature": "nlp_guidance_qualifiers",
-            "weight": 0.2206
-          },
-          {
-            "feature": "sec_concern_level",
-            "weight": -0.1923
+            "weight": 0.2626
           }
         ]
       },
       "lasso": {
         "best_alpha": 1.0,
-        "r2_cv_mean": 0.0357,
-        "r2_cv_std": 0.1442,
+        "r2_cv_mean": 0.0362,
+        "r2_cv_std": 0.1628,
         "n_features_selected": 3,
-        "n_features_eliminated": 24,
+        "n_features_eliminated": 32,
         "selected_features": {
           "sec_forward_pe": 0.3416,
           "sec_analyst_coverage": 0.2909,
@@ -3953,36 +5180,37 @@
       "elasticnet": {
         "best_alpha": 1.0,
         "best_l1_ratio": 0.9,
-        "r2_cv_mean": 0.029,
+        "r2_cv_mean": 0.0339,
         "selected_features": {
-          "sec_forward_pe": 0.3812,
-          "sec_analyst_coverage": 0.3334,
-          "nlp_guidance_revision_dir": 0.2576
+          "sec_current_price": 0.0074,
+          "sec_forward_pe": 0.3793,
+          "sec_analyst_coverage": 0.3315,
+          "nlp_guidance_revision_dir": 0.2578
         }
       },
       "stepwise": {
         "n_selected": 8,
-        "r2_cv_mean": 0.0406,
-        "r2_cv_std": 0.0652,
+        "r2_cv_mean": 0.0574,
+        "r2_cv_std": 0.0751,
         "selected_features": {
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": -0.2152,
-          "sec_analyst_coverage": 0.799,
-          "nlp_mgmt_specificity": 0.2916,
-          "nlp_mgmt_confidence_shift": 0.0214,
-          "nlp_analyst_skepticism": -0.2716,
-          "nlp_guidance_revision_dir": 0.6614,
-          "nlp_guidance_qualifiers": 0.2663
+          "sec_concern_level": -0.1086,
+          "sec_current_price": 0.3879,
+          "sec_fifty_two_week_high": 0.3693,
+          "sec_analyst_coverage": 0.6619,
+          "sec_upgrades_last_30d": -0.3085,
+          "nlp_mgmt_specificity": 0.3005,
+          "nlp_guidance_revision_dir": 0.6545
         },
         "selection_order": [
           "sec_sentiment_score",
           "sec_concern_level",
+          "sec_current_price",
+          "sec_fifty_two_week_high",
           "sec_analyst_coverage",
+          "sec_upgrades_last_30d",
           "nlp_mgmt_specificity",
-          "nlp_mgmt_confidence_shift",
-          "nlp_analyst_skepticism",
-          "nlp_guidance_revision_dir",
-          "nlp_guidance_qualifiers"
+          "nlp_guidance_revision_dir"
         ]
       },
       "polynomial": {
@@ -4040,254 +5268,278 @@
         }
       },
       "random_forest": {
-        "r2_cv_mean": -0.0182,
-        "r2_cv_std": 0.1184,
+        "r2_cv_mean": -0.0173,
+        "r2_cv_std": 0.109,
         "feature_importances": {
           "sec_risk_score": 0.0011,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": 0.0011,
-          "sec_pe_ratio": 0.0341,
-          "sec_forward_pe": 0.2225,
-          "sec_price_to_high": 0.0199,
-          "sec_price_to_low": 0.029,
-          "sec_analyst_upside_potential": 0.026,
-          "sec_analyst_consensus_score": 0.0592,
-          "sec_analyst_coverage": 0.0705,
+          "sec_concern_level": 0.0004,
+          "sec_market_cap": 0.0726,
+          "sec_current_price": 0.0027,
+          "sec_pe_ratio": 0.0239,
+          "sec_forward_pe": 0.1876,
+          "sec_fifty_two_week_high": 0.017,
+          "sec_fifty_two_week_low": 0.021,
+          "sec_price_to_high": 0.0221,
+          "sec_price_to_low": 0.0284,
+          "sec_analyst_upside_potential": 0.0204,
+          "sec_analyst_consensus_score": 0.051,
+          "sec_analyst_coverage": 0.0547,
+          "sec_upgrades_last_30d": 0.0,
+          "sec_downgrades_last_30d": 0.0,
           "sec_net_upgrades": 0.0,
-          "nlp_mgmt_hedging": 0.008,
-          "nlp_mgmt_deflection": 0.0165,
-          "nlp_mgmt_specificity": 0.046,
-          "nlp_mgmt_confidence_shift": 0.0056,
-          "nlp_analyst_skepticism": 0.0358,
-          "nlp_analyst_surprise": 0.017,
-          "nlp_analyst_focus_cluster": 0.0733,
-          "nlp_guidance_revision_dir": 0.0657,
-          "nlp_guidance_qualifiers": 0.0137,
-          "nlp_new_risk_mention": 0.0458,
-          "nlp_macro_blame": 0.0237,
-          "nlp_capex_language": 0.0245,
-          "nlp_hiring_language": 0.0202,
-          "nlp_competitive_mentions": 0.0644,
-          "nlp_customer_language": 0.0175,
-          "nlp_pricing_power": 0.059
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0,
+          "nlp_mgmt_hedging": 0.0078,
+          "nlp_mgmt_deflection": 0.0139,
+          "nlp_mgmt_specificity": 0.038,
+          "nlp_mgmt_confidence_shift": 0.0089,
+          "nlp_analyst_skepticism": 0.0279,
+          "nlp_analyst_surprise": 0.0156,
+          "nlp_analyst_focus_cluster": 0.0586,
+          "nlp_guidance_revision_dir": 0.0738,
+          "nlp_guidance_qualifiers": 0.0162,
+          "nlp_new_risk_mention": 0.0413,
+          "nlp_macro_blame": 0.0194,
+          "nlp_capex_language": 0.0222,
+          "nlp_hiring_language": 0.0136,
+          "nlp_competitive_mentions": 0.0654,
+          "nlp_customer_language": 0.0131,
+          "nlp_pricing_power": 0.0612
         },
         "top_features": [
           {
             "feature": "sec_forward_pe",
-            "importance": 0.2225
-          },
-          {
-            "feature": "nlp_analyst_focus_cluster",
-            "importance": 0.0733
-          },
-          {
-            "feature": "sec_analyst_coverage",
-            "importance": 0.0705
+            "importance": 0.1876
           },
           {
             "feature": "nlp_guidance_revision_dir",
-            "importance": 0.0657
+            "importance": 0.0738
+          },
+          {
+            "feature": "sec_market_cap",
+            "importance": 0.0726
           },
           {
             "feature": "nlp_competitive_mentions",
-            "importance": 0.0644
-          },
-          {
-            "feature": "sec_analyst_consensus_score",
-            "importance": 0.0592
+            "importance": 0.0654
           },
           {
             "feature": "nlp_pricing_power",
-            "importance": 0.059
+            "importance": 0.0612
           },
           {
-            "feature": "nlp_mgmt_specificity",
-            "importance": 0.046
+            "feature": "nlp_analyst_focus_cluster",
+            "importance": 0.0586
+          },
+          {
+            "feature": "sec_analyst_coverage",
+            "importance": 0.0547
+          },
+          {
+            "feature": "sec_analyst_consensus_score",
+            "importance": 0.051
           },
           {
             "feature": "nlp_new_risk_mention",
-            "importance": 0.0458
+            "importance": 0.0413
           },
           {
-            "feature": "nlp_analyst_skepticism",
-            "importance": 0.0358
+            "feature": "nlp_mgmt_specificity",
+            "importance": 0.038
           }
         ]
       },
       "gradient_boosting": {
         "best_learning_rate": 0.01,
         "best_max_depth": 2,
-        "r2_cv_mean": -0.0051,
-        "r2_cv_std": 0.1062,
+        "r2_cv_mean": -0.0049,
+        "r2_cv_std": 0.1044,
         "feature_importances": {
           "sec_risk_score": 0.0,
           "sec_sentiment_score": 0.0,
           "sec_concern_level": 0.0017,
-          "sec_pe_ratio": 0.01,
-          "sec_forward_pe": 0.3484,
-          "sec_price_to_high": 0.027,
-          "sec_price_to_low": 0.0166,
-          "sec_analyst_upside_potential": 0.0154,
-          "sec_analyst_consensus_score": 0.0175,
-          "sec_analyst_coverage": 0.043,
+          "sec_market_cap": 0.0526,
+          "sec_current_price": 0.0,
+          "sec_pe_ratio": 0.0073,
+          "sec_forward_pe": 0.3013,
+          "sec_fifty_two_week_high": 0.0302,
+          "sec_fifty_two_week_low": 0.0118,
+          "sec_price_to_high": 0.037,
+          "sec_price_to_low": 0.01,
+          "sec_analyst_upside_potential": 0.0083,
+          "sec_analyst_consensus_score": 0.0173,
+          "sec_analyst_coverage": 0.0404,
+          "sec_upgrades_last_30d": 0.0,
+          "sec_downgrades_last_30d": 0.0,
           "sec_net_upgrades": 0.0,
-          "nlp_mgmt_hedging": 0.0048,
-          "nlp_mgmt_deflection": 0.0532,
-          "nlp_mgmt_specificity": 0.0139,
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0,
+          "nlp_mgmt_hedging": 0.0046,
+          "nlp_mgmt_deflection": 0.0506,
+          "nlp_mgmt_specificity": 0.0098,
           "nlp_mgmt_confidence_shift": 0.0,
-          "nlp_analyst_skepticism": 0.0264,
-          "nlp_analyst_surprise": 0.004,
-          "nlp_analyst_focus_cluster": 0.1154,
-          "nlp_guidance_revision_dir": 0.0852,
-          "nlp_guidance_qualifiers": 0.0296,
-          "nlp_new_risk_mention": 0.0437,
-          "nlp_macro_blame": 0.0148,
-          "nlp_capex_language": 0.0071,
-          "nlp_hiring_language": 0.0008,
-          "nlp_competitive_mentions": 0.0565,
+          "nlp_analyst_skepticism": 0.0299,
+          "nlp_analyst_surprise": 0.0039,
+          "nlp_analyst_focus_cluster": 0.0893,
+          "nlp_guidance_revision_dir": 0.0973,
+          "nlp_guidance_qualifiers": 0.0218,
+          "nlp_new_risk_mention": 0.0434,
+          "nlp_macro_blame": 0.0151,
+          "nlp_capex_language": 0.0051,
+          "nlp_hiring_language": 0.0009,
+          "nlp_competitive_mentions": 0.0566,
           "nlp_customer_language": 0.0,
-          "nlp_pricing_power": 0.065
+          "nlp_pricing_power": 0.0538
         },
         "top_features": [
           {
             "feature": "sec_forward_pe",
-            "importance": 0.3484
-          },
-          {
-            "feature": "nlp_analyst_focus_cluster",
-            "importance": 0.1154
+            "importance": 0.3013
           },
           {
             "feature": "nlp_guidance_revision_dir",
-            "importance": 0.0852
+            "importance": 0.0973
           },
           {
-            "feature": "nlp_pricing_power",
-            "importance": 0.065
+            "feature": "nlp_analyst_focus_cluster",
+            "importance": 0.0893
           },
           {
             "feature": "nlp_competitive_mentions",
-            "importance": 0.0565
+            "importance": 0.0566
+          },
+          {
+            "feature": "nlp_pricing_power",
+            "importance": 0.0538
+          },
+          {
+            "feature": "sec_market_cap",
+            "importance": 0.0526
           },
           {
             "feature": "nlp_mgmt_deflection",
-            "importance": 0.0532
+            "importance": 0.0506
           },
           {
             "feature": "nlp_new_risk_mention",
-            "importance": 0.0437
+            "importance": 0.0434
           },
           {
             "feature": "sec_analyst_coverage",
-            "importance": 0.043
-          },
-          {
-            "feature": "nlp_guidance_qualifiers",
-            "importance": 0.0296
+            "importance": 0.0404
           },
           {
             "feature": "sec_price_to_high",
-            "importance": 0.027
+            "importance": 0.037
           }
         ]
       },
       "mutual_information": {
         "scores": {
-          "sec_risk_score": 0.0363,
+          "sec_risk_score": 0.0229,
           "sec_sentiment_score": 0.0,
           "sec_concern_level": 0.0,
-          "sec_pe_ratio": 0.0633,
-          "sec_forward_pe": 0.1546,
-          "sec_price_to_high": 0.0467,
-          "sec_price_to_low": 0.1099,
-          "sec_analyst_upside_potential": 0.1065,
-          "sec_analyst_consensus_score": 0.1488,
-          "sec_analyst_coverage": 0.0989,
-          "sec_net_upgrades": 0.0878,
-          "nlp_mgmt_hedging": 0.0278,
-          "nlp_mgmt_deflection": 0.0928,
-          "nlp_mgmt_specificity": 0.0257,
+          "sec_market_cap": 0.1776,
+          "sec_current_price": 0.1196,
+          "sec_pe_ratio": 0.0668,
+          "sec_forward_pe": 0.1637,
+          "sec_fifty_two_week_high": 0.1254,
+          "sec_fifty_two_week_low": 0.1218,
+          "sec_price_to_high": 0.0287,
+          "sec_price_to_low": 0.108,
+          "sec_analyst_upside_potential": 0.1131,
+          "sec_analyst_consensus_score": 0.1505,
+          "sec_analyst_coverage": 0.0658,
+          "sec_upgrades_last_30d": 0.0558,
+          "sec_downgrades_last_30d": 0.0323,
+          "sec_net_upgrades": 0.0881,
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0236,
+          "nlp_mgmt_hedging": 0.0232,
+          "nlp_mgmt_deflection": 0.082,
+          "nlp_mgmt_specificity": 0.0185,
           "nlp_mgmt_confidence_shift": 0.0,
           "nlp_analyst_skepticism": 0.0,
           "nlp_analyst_surprise": 0.0,
-          "nlp_analyst_focus_cluster": 0.0795,
-          "nlp_guidance_revision_dir": 0.0628,
-          "nlp_guidance_qualifiers": 0.0081,
-          "nlp_new_risk_mention": 0.0061,
-          "nlp_macro_blame": 0.0181,
+          "nlp_analyst_focus_cluster": 0.0784,
+          "nlp_guidance_revision_dir": 0.0397,
+          "nlp_guidance_qualifiers": 0.0,
+          "nlp_new_risk_mention": 0.0,
+          "nlp_macro_blame": 0.0005,
           "nlp_capex_language": 0.0,
-          "nlp_hiring_language": 0.0077,
-          "nlp_competitive_mentions": 0.0,
-          "nlp_customer_language": 0.1398,
-          "nlp_pricing_power": 0.0242
+          "nlp_hiring_language": 0.0041,
+          "nlp_competitive_mentions": 0.0125,
+          "nlp_customer_language": 0.1364,
+          "nlp_pricing_power": 0.046
         },
         "top_features": [
           {
+            "feature": "sec_market_cap",
+            "mi_score": 0.1776
+          },
+          {
             "feature": "sec_forward_pe",
-            "mi_score": 0.1546
+            "mi_score": 0.1637
           },
           {
             "feature": "sec_analyst_consensus_score",
-            "mi_score": 0.1488
+            "mi_score": 0.1505
           },
           {
             "feature": "nlp_customer_language",
-            "mi_score": 0.1398
+            "mi_score": 0.1364
           },
           {
-            "feature": "sec_price_to_low",
-            "mi_score": 0.1099
+            "feature": "sec_fifty_two_week_high",
+            "mi_score": 0.1254
+          },
+          {
+            "feature": "sec_fifty_two_week_low",
+            "mi_score": 0.1218
+          },
+          {
+            "feature": "sec_current_price",
+            "mi_score": 0.1196
           },
           {
             "feature": "sec_analyst_upside_potential",
-            "mi_score": 0.1065
+            "mi_score": 0.1131
           },
           {
-            "feature": "sec_analyst_coverage",
-            "mi_score": 0.0989
-          },
-          {
-            "feature": "nlp_mgmt_deflection",
-            "mi_score": 0.0928
+            "feature": "sec_price_to_low",
+            "mi_score": 0.108
           },
           {
             "feature": "sec_net_upgrades",
-            "mi_score": 0.0878
-          },
-          {
-            "feature": "nlp_analyst_focus_cluster",
-            "mi_score": 0.0795
-          },
-          {
-            "feature": "sec_pe_ratio",
-            "mi_score": 0.0633
+            "mi_score": 0.0881
           }
         ]
       },
       "model_comparison": [
         {
           "model": "Stepwise+Ridge",
-          "cv_r2": 0.0406
+          "cv_r2": 0.0574
         },
         {
           "model": "Lasso",
-          "cv_r2": 0.0357
+          "cv_r2": 0.0362
         },
         {
           "model": "ElasticNet",
-          "cv_r2": 0.029
+          "cv_r2": 0.0339
         },
         {
           "model": "Gradient Boost",
-          "cv_r2": -0.0051
+          "cv_r2": -0.0049
         },
         {
           "model": "Random Forest",
-          "cv_r2": -0.0182
+          "cv_r2": -0.0173
         },
         {
           "model": "Ridge",
-          "cv_r2": -0.0529
+          "cv_r2": -0.056
         },
         {
           "model": "Polynomial",
@@ -4295,38 +5547,46 @@
         },
         {
           "model": "OLS",
-          "cv_r2": -2.2735
+          "cv_r2": -3.1212
         }
       ],
       "recommended_weights": {
         "method": "Ridge-Lasso blend (combined SEC+NLP features)",
         "weights": {
-          "sec_forward_pe": 0.5455,
-          "sec_analyst_coverage": 0.4269,
-          "nlp_guidance_revision_dir": 0.4133,
-          "nlp_mgmt_specificity": 0.0745,
-          "nlp_pricing_power": 0.063,
-          "nlp_mgmt_hedging": 0.0528,
-          "nlp_guidance_qualifiers": 0.0441,
-          "sec_concern_level": -0.0385,
-          "nlp_mgmt_deflection": -0.0377,
-          "nlp_analyst_skepticism": -0.0362,
-          "nlp_capex_language": -0.0345,
-          "nlp_customer_language": -0.0333,
-          "sec_price_to_low": 0.0303,
-          "nlp_analyst_focus_cluster": -0.0299,
-          "nlp_competitive_mentions": -0.024,
-          "sec_analyst_upside_potential": -0.0237,
-          "sec_analyst_consensus_score": 0.0198,
-          "sec_risk_score": -0.0164,
-          "sec_net_upgrades": -0.0144,
-          "sec_price_to_high": -0.0132,
-          "nlp_new_risk_mention": -0.0098,
-          "nlp_macro_blame": 0.0095,
-          "nlp_hiring_language": -0.0088,
-          "sec_pe_ratio": -0.0064,
-          "nlp_analyst_surprise": 0.0028,
-          "nlp_mgmt_confidence_shift": -0.0025
+          "sec_forward_pe": 0.4896,
+          "nlp_guidance_revision_dir": 0.4307,
+          "sec_analyst_coverage": 0.3846,
+          "nlp_mgmt_specificity": 0.0786,
+          "sec_upgrades_last_30d": -0.0652,
+          "nlp_pricing_power": 0.0574,
+          "sec_fifty_two_week_high": 0.0537,
+          "nlp_mgmt_hedging": 0.0525,
+          "nlp_capex_language": -0.0509,
+          "sec_current_price": 0.0508,
+          "nlp_guidance_qualifiers": 0.0443,
+          "nlp_mgmt_deflection": -0.042,
+          "nlp_customer_language": -0.0382,
+          "sec_price_to_low": 0.0364,
+          "sec_downgrades_last_30d": -0.0362,
+          "nlp_analyst_skepticism": -0.0321,
+          "sec_market_cap": 0.0276,
+          "nlp_analyst_focus_cluster": -0.0259,
+          "sec_concern_level": -0.0257,
+          "sec_major_upgrades": 0.0245,
+          "nlp_competitive_mentions": -0.0245,
+          "sec_major_downgrades": 0.0225,
+          "nlp_new_risk_mention": -0.0214,
+          "sec_fifty_two_week_low": 0.02,
+          "nlp_macro_blame": 0.0192,
+          "nlp_hiring_language": -0.0182,
+          "sec_analyst_upside_potential": -0.0172,
+          "sec_net_upgrades": -0.0109,
+          "sec_pe_ratio": -0.0082,
+          "nlp_analyst_surprise": 0.0075,
+          "sec_risk_score": -0.0064,
+          "nlp_mgmt_confidence_shift": -0.0049,
+          "sec_analyst_consensus_score": -0.0032,
+          "sec_price_to_high": -0.0015
         },
         "intercept": 0.4147
       }
@@ -4336,147 +5596,163 @@
       "y_mean": 0.2072,
       "y_std": 9.7178,
       "ols": {
-        "r2_insample": 0.1809,
-        "r2_cv_mean": -1.22,
-        "r2_cv_std": 1.4975,
+        "r2_insample": 0.2177,
+        "r2_cv_mean": -2.1057,
+        "r2_cv_std": 2.8598,
         "coefficients": {
-          "sec_risk_score": -0.7894,
-          "sec_sentiment_score": -0.0,
-          "sec_concern_level": -0.1664,
-          "sec_pe_ratio": -3.0663,
-          "sec_forward_pe": 3.6288,
-          "sec_price_to_high": 0.2229,
-          "sec_price_to_low": 0.8727,
-          "sec_analyst_upside_potential": -0.9231,
-          "sec_analyst_consensus_score": -2.0775,
-          "sec_analyst_coverage": 2.3635,
-          "sec_net_upgrades": 0.3718,
-          "nlp_mgmt_hedging": 1.3681,
-          "nlp_mgmt_deflection": -0.4819,
-          "nlp_mgmt_specificity": 1.3601,
-          "nlp_mgmt_confidence_shift": -0.1978,
-          "nlp_analyst_skepticism": -1.2344,
-          "nlp_analyst_surprise": 1.0826,
-          "nlp_analyst_focus_cluster": 0.3443,
-          "nlp_guidance_revision_dir": 1.3185,
-          "nlp_guidance_qualifiers": 0.6503,
-          "nlp_new_risk_mention": -1.6358,
-          "nlp_macro_blame": 1.1994,
-          "nlp_capex_language": -0.4428,
-          "nlp_hiring_language": -0.2235,
-          "nlp_competitive_mentions": -0.2474,
-          "nlp_customer_language": -0.6364,
-          "nlp_pricing_power": 0.8782
+          "sec_risk_score": -0.8148,
+          "sec_sentiment_score": 0.0,
+          "sec_concern_level": -0.115,
+          "sec_market_cap": -0.8086,
+          "sec_current_price": -1.9146,
+          "sec_pe_ratio": -3.0667,
+          "sec_forward_pe": 3.314,
+          "sec_fifty_two_week_high": 6.261,
+          "sec_fifty_two_week_low": -3.1583,
+          "sec_price_to_high": 2.2718,
+          "sec_price_to_low": 0.7279,
+          "sec_analyst_upside_potential": -0.5042,
+          "sec_analyst_consensus_score": -2.9178,
+          "sec_analyst_coverage": 2.9428,
+          "sec_upgrades_last_30d": -1.531,
+          "sec_downgrades_last_30d": -0.8887,
+          "sec_net_upgrades": -0.2234,
+          "sec_major_upgrades": 0.9165,
+          "sec_major_downgrades": -0.7561,
+          "nlp_mgmt_hedging": 1.7176,
+          "nlp_mgmt_deflection": -0.908,
+          "nlp_mgmt_specificity": 1.6413,
+          "nlp_mgmt_confidence_shift": -0.5794,
+          "nlp_analyst_skepticism": -1.0895,
+          "nlp_analyst_surprise": 1.4113,
+          "nlp_analyst_focus_cluster": 0.8135,
+          "nlp_guidance_revision_dir": 0.9963,
+          "nlp_guidance_qualifiers": 0.8501,
+          "nlp_new_risk_mention": -2.1652,
+          "nlp_macro_blame": 1.7965,
+          "nlp_capex_language": -0.6132,
+          "nlp_hiring_language": -0.5848,
+          "nlp_competitive_mentions": -0.4071,
+          "nlp_customer_language": -0.4645,
+          "nlp_pricing_power": 0.9928
         },
         "top_features": [
           {
+            "feature": "sec_fifty_two_week_high",
+            "weight": 6.261
+          },
+          {
             "feature": "sec_forward_pe",
-            "weight": 3.6288
+            "weight": 3.314
+          },
+          {
+            "feature": "sec_fifty_two_week_low",
+            "weight": -3.1583
           },
           {
             "feature": "sec_pe_ratio",
-            "weight": -3.0663
+            "weight": -3.0667
           },
           {
             "feature": "sec_analyst_coverage",
-            "weight": 2.3635
+            "weight": 2.9428
           },
           {
             "feature": "sec_analyst_consensus_score",
-            "weight": -2.0775
+            "weight": -2.9178
+          },
+          {
+            "feature": "sec_price_to_high",
+            "weight": 2.2718
           },
           {
             "feature": "nlp_new_risk_mention",
-            "weight": -1.6358
-          },
-          {
-            "feature": "nlp_mgmt_hedging",
-            "weight": 1.3681
-          },
-          {
-            "feature": "nlp_mgmt_specificity",
-            "weight": 1.3601
-          },
-          {
-            "feature": "nlp_guidance_revision_dir",
-            "weight": 1.3185
+            "weight": -2.1652
           }
         ]
       },
       "ridge": {
         "best_alpha": 100.0,
-        "r2_cv_mean": -0.123,
-        "r2_cv_std": 0.1923,
+        "r2_cv_mean": -0.1302,
+        "r2_cv_std": 0.1838,
         "coefficients": {
-          "sec_risk_score": -0.4659,
+          "sec_risk_score": -0.4151,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": -0.1437,
-          "sec_pe_ratio": 0.2982,
-          "sec_forward_pe": 0.8585,
-          "sec_price_to_high": 0.1434,
-          "sec_price_to_low": 0.4697,
-          "sec_analyst_upside_potential": -0.372,
-          "sec_analyst_consensus_score": -0.3425,
-          "sec_analyst_coverage": 1.0828,
-          "sec_net_upgrades": 0.1473,
-          "nlp_mgmt_hedging": 0.4629,
-          "nlp_mgmt_deflection": -0.0493,
-          "nlp_mgmt_specificity": 0.4845,
-          "nlp_mgmt_confidence_shift": -0.21,
-          "nlp_analyst_skepticism": -0.4582,
-          "nlp_analyst_surprise": 0.2063,
-          "nlp_analyst_focus_cluster": -0.0516,
-          "nlp_guidance_revision_dir": 0.4561,
-          "nlp_guidance_qualifiers": 0.4222,
-          "nlp_new_risk_mention": -0.5135,
-          "nlp_macro_blame": 0.4255,
-          "nlp_capex_language": -0.2774,
-          "nlp_hiring_language": -0.1185,
-          "nlp_competitive_mentions": -0.2934,
-          "nlp_customer_language": 0.0444,
-          "nlp_pricing_power": 0.503
+          "sec_concern_level": -0.0837,
+          "sec_market_cap": 0.0967,
+          "sec_current_price": 0.3262,
+          "sec_pe_ratio": 0.2938,
+          "sec_forward_pe": 0.7454,
+          "sec_fifty_two_week_high": 0.3166,
+          "sec_fifty_two_week_low": 0.0079,
+          "sec_price_to_high": 0.232,
+          "sec_price_to_low": 0.502,
+          "sec_analyst_upside_potential": -0.3617,
+          "sec_analyst_consensus_score": -0.4364,
+          "sec_analyst_coverage": 1.0078,
+          "sec_upgrades_last_30d": -0.2873,
+          "sec_downgrades_last_30d": -0.2368,
+          "sec_net_upgrades": 0.0183,
+          "sec_major_upgrades": 0.4084,
+          "sec_major_downgrades": -0.0694,
+          "nlp_mgmt_hedging": 0.4718,
+          "nlp_mgmt_deflection": -0.0876,
+          "nlp_mgmt_specificity": 0.5217,
+          "nlp_mgmt_confidence_shift": -0.2425,
+          "nlp_analyst_skepticism": -0.431,
+          "nlp_analyst_surprise": 0.2432,
+          "nlp_analyst_focus_cluster": -0.0151,
+          "nlp_guidance_revision_dir": 0.4878,
+          "nlp_guidance_qualifiers": 0.4441,
+          "nlp_new_risk_mention": -0.5748,
+          "nlp_macro_blame": 0.5113,
+          "nlp_capex_language": -0.3512,
+          "nlp_hiring_language": -0.1731,
+          "nlp_competitive_mentions": -0.3095,
+          "nlp_customer_language": 0.0165,
+          "nlp_pricing_power": 0.462
         },
         "top_features": [
           {
             "feature": "sec_analyst_coverage",
-            "weight": 1.0828
+            "weight": 1.0078
           },
           {
             "feature": "sec_forward_pe",
-            "weight": 0.8585
+            "weight": 0.7454
           },
           {
             "feature": "nlp_new_risk_mention",
-            "weight": -0.5135
-          },
-          {
-            "feature": "nlp_pricing_power",
-            "weight": 0.503
+            "weight": -0.5748
           },
           {
             "feature": "nlp_mgmt_specificity",
-            "weight": 0.4845
+            "weight": 0.5217
+          },
+          {
+            "feature": "nlp_macro_blame",
+            "weight": 0.5113
           },
           {
             "feature": "sec_price_to_low",
-            "weight": 0.4697
+            "weight": 0.502
           },
           {
-            "feature": "sec_risk_score",
-            "weight": -0.4659
+            "feature": "nlp_guidance_revision_dir",
+            "weight": 0.4878
           },
           {
             "feature": "nlp_mgmt_hedging",
-            "weight": 0.4629
+            "weight": 0.4718
           }
         ]
       },
       "lasso": {
         "best_alpha": 1.0,
-        "r2_cv_mean": -0.1179,
-        "r2_cv_std": 0.1906,
+        "r2_cv_mean": -0.1272,
+        "r2_cv_std": 0.1866,
         "n_features_selected": 4,
-        "n_features_eliminated": 23,
+        "n_features_eliminated": 31,
         "selected_features": {
           "sec_forward_pe": 1.0147,
           "sec_price_to_low": 0.065,
@@ -4505,42 +5781,44 @@
       "elasticnet": {
         "best_alpha": 1.0,
         "best_l1_ratio": 0.5,
-        "r2_cv_mean": -0.1111,
+        "r2_cv_mean": -0.1245,
         "selected_features": {
-          "sec_risk_score": -0.2102,
-          "sec_pe_ratio": 0.1319,
-          "sec_forward_pe": 0.8116,
-          "sec_price_to_low": 0.2998,
-          "sec_analyst_upside_potential": -0.1584,
-          "sec_analyst_coverage": 0.8622,
-          "nlp_mgmt_specificity": 0.2311,
-          "nlp_analyst_skepticism": -0.1455,
-          "nlp_guidance_revision_dir": 0.1583,
-          "nlp_new_risk_mention": -0.0331,
-          "nlp_pricing_power": 0.1104
+          "sec_risk_score": -0.1726,
+          "sec_current_price": 0.1648,
+          "sec_pe_ratio": 0.1303,
+          "sec_forward_pe": 0.7617,
+          "sec_fifty_two_week_high": 0.1102,
+          "sec_price_to_low": 0.299,
+          "sec_analyst_upside_potential": -0.1501,
+          "sec_analyst_coverage": 0.8159,
+          "nlp_mgmt_specificity": 0.231,
+          "nlp_analyst_skepticism": -0.1342,
+          "nlp_guidance_revision_dir": 0.1717,
+          "nlp_new_risk_mention": -0.0479,
+          "nlp_pricing_power": 0.0831
         }
       },
       "stepwise": {
         "n_selected": 8,
-        "r2_cv_mean": -0.0156,
-        "r2_cv_std": 0.0946,
+        "r2_cv_mean": -0.0111,
+        "r2_cv_std": 0.1003,
         "selected_features": {
           "sec_sentiment_score": 0.0,
-          "sec_price_to_high": 0.2355,
-          "sec_price_to_low": 0.8657,
-          "sec_analyst_coverage": 1.2199,
-          "sec_net_upgrades": -0.0757,
-          "nlp_mgmt_deflection": 0.0849,
-          "nlp_mgmt_specificity": 0.4371,
-          "nlp_guidance_revision_dir": 0.3868
+          "sec_current_price": 0.657,
+          "sec_price_to_high": 0.211,
+          "sec_price_to_low": 0.8096,
+          "sec_analyst_coverage": 1.0721,
+          "sec_net_upgrades": -0.1076,
+          "nlp_mgmt_specificity": 0.412,
+          "nlp_guidance_revision_dir": 0.4014
         },
         "selection_order": [
           "sec_sentiment_score",
+          "sec_current_price",
           "sec_price_to_high",
           "sec_price_to_low",
           "sec_analyst_coverage",
           "sec_net_upgrades",
-          "nlp_mgmt_deflection",
           "nlp_mgmt_specificity",
           "nlp_guidance_revision_dir"
         ]
@@ -4616,154 +5894,170 @@
         }
       },
       "random_forest": {
-        "r2_cv_mean": -0.1249,
-        "r2_cv_std": 0.1771,
+        "r2_cv_mean": -0.1304,
+        "r2_cv_std": 0.1711,
         "feature_importances": {
-          "sec_risk_score": 0.0015,
+          "sec_risk_score": 0.0002,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": 0.0022,
-          "sec_pe_ratio": 0.0478,
-          "sec_forward_pe": 0.2452,
-          "sec_price_to_high": 0.0084,
-          "sec_price_to_low": 0.0533,
-          "sec_analyst_upside_potential": 0.016,
-          "sec_analyst_consensus_score": 0.0361,
-          "sec_analyst_coverage": 0.1137,
+          "sec_concern_level": 0.0018,
+          "sec_market_cap": 0.0372,
+          "sec_current_price": 0.0056,
+          "sec_pe_ratio": 0.0413,
+          "sec_forward_pe": 0.235,
+          "sec_fifty_two_week_high": 0.0077,
+          "sec_fifty_two_week_low": 0.0157,
+          "sec_price_to_high": 0.0103,
+          "sec_price_to_low": 0.0485,
+          "sec_analyst_upside_potential": 0.0158,
+          "sec_analyst_consensus_score": 0.0327,
+          "sec_analyst_coverage": 0.1054,
+          "sec_upgrades_last_30d": 0.001,
+          "sec_downgrades_last_30d": 0.0,
           "sec_net_upgrades": 0.0,
-          "nlp_mgmt_hedging": 0.0071,
-          "nlp_mgmt_deflection": 0.0036,
-          "nlp_mgmt_specificity": 0.0562,
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0,
+          "nlp_mgmt_hedging": 0.0043,
+          "nlp_mgmt_deflection": 0.0031,
+          "nlp_mgmt_specificity": 0.0549,
           "nlp_mgmt_confidence_shift": 0.0069,
-          "nlp_analyst_skepticism": 0.0287,
-          "nlp_analyst_surprise": 0.0113,
-          "nlp_analyst_focus_cluster": 0.0404,
+          "nlp_analyst_skepticism": 0.0263,
+          "nlp_analyst_surprise": 0.012,
+          "nlp_analyst_focus_cluster": 0.0344,
           "nlp_guidance_revision_dir": 0.0278,
-          "nlp_guidance_qualifiers": 0.0437,
-          "nlp_new_risk_mention": 0.0433,
-          "nlp_macro_blame": 0.0267,
-          "nlp_capex_language": 0.0237,
-          "nlp_hiring_language": 0.0254,
-          "nlp_competitive_mentions": 0.0476,
-          "nlp_customer_language": 0.0555,
-          "nlp_pricing_power": 0.0277
+          "nlp_guidance_qualifiers": 0.039,
+          "nlp_new_risk_mention": 0.0416,
+          "nlp_macro_blame": 0.0231,
+          "nlp_capex_language": 0.0206,
+          "nlp_hiring_language": 0.0237,
+          "nlp_competitive_mentions": 0.044,
+          "nlp_customer_language": 0.0552,
+          "nlp_pricing_power": 0.0248
         },
         "top_features": [
           {
             "feature": "sec_forward_pe",
-            "importance": 0.2452
+            "importance": 0.235
           },
           {
             "feature": "sec_analyst_coverage",
-            "importance": 0.1137
-          },
-          {
-            "feature": "nlp_mgmt_specificity",
-            "importance": 0.0562
+            "importance": 0.1054
           },
           {
             "feature": "nlp_customer_language",
-            "importance": 0.0555
+            "importance": 0.0552
+          },
+          {
+            "feature": "nlp_mgmt_specificity",
+            "importance": 0.0549
           },
           {
             "feature": "sec_price_to_low",
-            "importance": 0.0533
-          },
-          {
-            "feature": "sec_pe_ratio",
-            "importance": 0.0478
+            "importance": 0.0485
           },
           {
             "feature": "nlp_competitive_mentions",
-            "importance": 0.0476
-          },
-          {
-            "feature": "nlp_guidance_qualifiers",
-            "importance": 0.0437
+            "importance": 0.044
           },
           {
             "feature": "nlp_new_risk_mention",
-            "importance": 0.0433
+            "importance": 0.0416
           },
           {
-            "feature": "nlp_analyst_focus_cluster",
-            "importance": 0.0404
+            "feature": "sec_pe_ratio",
+            "importance": 0.0413
+          },
+          {
+            "feature": "nlp_guidance_qualifiers",
+            "importance": 0.039
+          },
+          {
+            "feature": "sec_market_cap",
+            "importance": 0.0372
           }
         ]
       },
       "gradient_boosting": {
         "best_learning_rate": 0.01,
         "best_max_depth": 2,
-        "r2_cv_mean": -0.0994,
-        "r2_cv_std": 0.1028,
+        "r2_cv_mean": -0.1096,
+        "r2_cv_std": 0.0994,
         "feature_importances": {
           "sec_risk_score": 0.0,
           "sec_sentiment_score": 0.0,
           "sec_concern_level": 0.0,
-          "sec_pe_ratio": 0.0047,
-          "sec_forward_pe": 0.3196,
-          "sec_price_to_high": 0.007,
-          "sec_price_to_low": 0.0481,
-          "sec_analyst_upside_potential": 0.0077,
-          "sec_analyst_consensus_score": 0.0229,
-          "sec_analyst_coverage": 0.0877,
+          "sec_market_cap": 0.0346,
+          "sec_current_price": 0.0,
+          "sec_pe_ratio": 0.0026,
+          "sec_forward_pe": 0.3215,
+          "sec_fifty_two_week_high": 0.003,
+          "sec_fifty_two_week_low": 0.0028,
+          "sec_price_to_high": 0.0068,
+          "sec_price_to_low": 0.0478,
+          "sec_analyst_upside_potential": 0.0016,
+          "sec_analyst_consensus_score": 0.0201,
+          "sec_analyst_coverage": 0.0805,
+          "sec_upgrades_last_30d": 0.0,
+          "sec_downgrades_last_30d": 0.0,
           "sec_net_upgrades": 0.0,
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0,
           "nlp_mgmt_hedging": 0.0053,
-          "nlp_mgmt_deflection": 0.0019,
-          "nlp_mgmt_specificity": 0.0695,
-          "nlp_mgmt_confidence_shift": 0.0147,
-          "nlp_analyst_skepticism": 0.095,
+          "nlp_mgmt_deflection": 0.0,
+          "nlp_mgmt_specificity": 0.067,
+          "nlp_mgmt_confidence_shift": 0.0123,
+          "nlp_analyst_skepticism": 0.0957,
           "nlp_analyst_surprise": 0.0062,
-          "nlp_analyst_focus_cluster": 0.0379,
+          "nlp_analyst_focus_cluster": 0.0317,
           "nlp_guidance_revision_dir": 0.0069,
-          "nlp_guidance_qualifiers": 0.0424,
-          "nlp_new_risk_mention": 0.0928,
-          "nlp_macro_blame": 0.0189,
-          "nlp_capex_language": 0.008,
-          "nlp_hiring_language": 0.0366,
-          "nlp_competitive_mentions": 0.0148,
-          "nlp_customer_language": 0.0355,
-          "nlp_pricing_power": 0.0159
+          "nlp_guidance_qualifiers": 0.042,
+          "nlp_new_risk_mention": 0.0906,
+          "nlp_macro_blame": 0.0172,
+          "nlp_capex_language": 0.0042,
+          "nlp_hiring_language": 0.034,
+          "nlp_competitive_mentions": 0.0149,
+          "nlp_customer_language": 0.0365,
+          "nlp_pricing_power": 0.0144
         },
         "top_features": [
           {
             "feature": "sec_forward_pe",
-            "importance": 0.3196
+            "importance": 0.3215
           },
           {
             "feature": "nlp_analyst_skepticism",
-            "importance": 0.095
+            "importance": 0.0957
           },
           {
             "feature": "nlp_new_risk_mention",
-            "importance": 0.0928
+            "importance": 0.0906
           },
           {
             "feature": "sec_analyst_coverage",
-            "importance": 0.0877
+            "importance": 0.0805
           },
           {
             "feature": "nlp_mgmt_specificity",
-            "importance": 0.0695
+            "importance": 0.067
           },
           {
             "feature": "sec_price_to_low",
-            "importance": 0.0481
+            "importance": 0.0478
           },
           {
             "feature": "nlp_guidance_qualifiers",
-            "importance": 0.0424
-          },
-          {
-            "feature": "nlp_analyst_focus_cluster",
-            "importance": 0.0379
-          },
-          {
-            "feature": "nlp_hiring_language",
-            "importance": 0.0366
+            "importance": 0.042
           },
           {
             "feature": "nlp_customer_language",
-            "importance": 0.0355
+            "importance": 0.0365
+          },
+          {
+            "feature": "sec_market_cap",
+            "importance": 0.0346
+          },
+          {
+            "feature": "nlp_hiring_language",
+            "importance": 0.034
           }
         ]
       },
@@ -4771,99 +6065,107 @@
         "scores": {
           "sec_risk_score": 0.0,
           "sec_sentiment_score": 0.0,
-          "sec_concern_level": 0.0225,
-          "sec_pe_ratio": 0.0037,
-          "sec_forward_pe": 0.0099,
-          "sec_price_to_high": 0.0474,
+          "sec_concern_level": 0.0253,
+          "sec_market_cap": 0.0509,
+          "sec_current_price": 0.0073,
+          "sec_pe_ratio": 0.0035,
+          "sec_forward_pe": 0.0125,
+          "sec_fifty_two_week_high": 0.0096,
+          "sec_fifty_two_week_low": 0.0,
+          "sec_price_to_high": 0.0501,
           "sec_price_to_low": 0.0,
-          "sec_analyst_upside_potential": 0.0276,
-          "sec_analyst_consensus_score": 0.0418,
-          "sec_analyst_coverage": 0.0577,
-          "sec_net_upgrades": 0.0403,
+          "sec_analyst_upside_potential": 0.0157,
+          "sec_analyst_consensus_score": 0.0439,
+          "sec_analyst_coverage": 0.052,
+          "sec_upgrades_last_30d": 0.0,
+          "sec_downgrades_last_30d": 0.0538,
+          "sec_net_upgrades": 0.0301,
+          "sec_major_upgrades": 0.0,
+          "sec_major_downgrades": 0.0,
           "nlp_mgmt_hedging": 0.0,
           "nlp_mgmt_deflection": 0.0,
           "nlp_mgmt_specificity": 0.0,
-          "nlp_mgmt_confidence_shift": 0.0,
+          "nlp_mgmt_confidence_shift": 0.0005,
           "nlp_analyst_skepticism": 0.0,
-          "nlp_analyst_surprise": 0.0399,
+          "nlp_analyst_surprise": 0.0411,
           "nlp_analyst_focus_cluster": 0.0,
-          "nlp_guidance_revision_dir": 0.0,
-          "nlp_guidance_qualifiers": 0.0285,
+          "nlp_guidance_revision_dir": 0.0044,
+          "nlp_guidance_qualifiers": 0.0022,
           "nlp_new_risk_mention": 0.0,
           "nlp_macro_blame": 0.0,
           "nlp_capex_language": 0.0,
-          "nlp_hiring_language": 0.0462,
-          "nlp_competitive_mentions": 0.0355,
-          "nlp_customer_language": 0.0219,
-          "nlp_pricing_power": 0.0654
+          "nlp_hiring_language": 0.0322,
+          "nlp_competitive_mentions": 0.0332,
+          "nlp_customer_language": 0.0092,
+          "nlp_pricing_power": 0.0533
         },
         "top_features": [
           {
+            "feature": "sec_downgrades_last_30d",
+            "mi_score": 0.0538
+          },
+          {
             "feature": "nlp_pricing_power",
-            "mi_score": 0.0654
+            "mi_score": 0.0533
           },
           {
             "feature": "sec_analyst_coverage",
-            "mi_score": 0.0577
+            "mi_score": 0.052
+          },
+          {
+            "feature": "sec_market_cap",
+            "mi_score": 0.0509
           },
           {
             "feature": "sec_price_to_high",
-            "mi_score": 0.0474
-          },
-          {
-            "feature": "nlp_hiring_language",
-            "mi_score": 0.0462
+            "mi_score": 0.0501
           },
           {
             "feature": "sec_analyst_consensus_score",
-            "mi_score": 0.0418
-          },
-          {
-            "feature": "sec_net_upgrades",
-            "mi_score": 0.0403
+            "mi_score": 0.0439
           },
           {
             "feature": "nlp_analyst_surprise",
-            "mi_score": 0.0399
+            "mi_score": 0.0411
           },
           {
             "feature": "nlp_competitive_mentions",
-            "mi_score": 0.0355
+            "mi_score": 0.0332
           },
           {
-            "feature": "nlp_guidance_qualifiers",
-            "mi_score": 0.0285
+            "feature": "nlp_hiring_language",
+            "mi_score": 0.0322
           },
           {
-            "feature": "sec_analyst_upside_potential",
-            "mi_score": 0.0276
+            "feature": "sec_net_upgrades",
+            "mi_score": 0.0301
           }
         ]
       },
       "model_comparison": [
         {
           "model": "Stepwise+Ridge",
-          "cv_r2": -0.0156
+          "cv_r2": -0.0111
         },
         {
           "model": "Gradient Boost",
-          "cv_r2": -0.0994
+          "cv_r2": -0.1096
         },
         {
           "model": "ElasticNet",
-          "cv_r2": -0.1111
+          "cv_r2": -0.1245
         },
         {
           "model": "Lasso",
-          "cv_r2": -0.1179
+          "cv_r2": -0.1272
         },
         {
           "model": "Ridge",
-          "cv_r2": -0.123
+          "cv_r2": -0.1302
         },
         {
           "model": "Random Forest",
-          "cv_r2": -0.1249
+          "cv_r2": -0.1304
         },
         {
           "model": "Polynomial",
@@ -4871,45 +6173,53 @@
         },
         {
           "model": "OLS",
-          "cv_r2": -1.22
+          "cv_r2": -2.1057
         }
       ],
       "recommended_weights": {
         "method": "Ridge-Lasso blend (combined SEC+NLP features)",
         "weights": {
-          "sec_analyst_coverage": 1.0353,
-          "sec_forward_pe": 0.9366,
-          "sec_price_to_low": 0.2673,
-          "nlp_mgmt_specificity": 0.2545,
-          "nlp_new_risk_mention": -0.1027,
-          "nlp_pricing_power": 0.1006,
-          "sec_risk_score": -0.0932,
-          "nlp_mgmt_hedging": 0.0926,
-          "nlp_analyst_skepticism": -0.0916,
-          "nlp_guidance_revision_dir": 0.0912,
-          "nlp_macro_blame": 0.0851,
-          "nlp_guidance_qualifiers": 0.0844,
-          "sec_analyst_upside_potential": -0.0744,
-          "sec_analyst_consensus_score": -0.0685,
-          "sec_pe_ratio": 0.0596,
-          "nlp_competitive_mentions": -0.0587,
-          "nlp_capex_language": -0.0555,
-          "nlp_mgmt_confidence_shift": -0.042,
-          "nlp_analyst_surprise": 0.0413,
-          "sec_net_upgrades": 0.0295,
-          "sec_concern_level": -0.0287,
-          "sec_price_to_high": 0.0287,
-          "nlp_hiring_language": -0.0237,
-          "nlp_analyst_focus_cluster": -0.0103,
-          "nlp_mgmt_deflection": -0.0099,
-          "nlp_customer_language": 0.0089
+          "sec_analyst_coverage": 0.9978,
+          "sec_forward_pe": 0.88,
+          "sec_price_to_low": 0.2835,
+          "nlp_mgmt_specificity": 0.2731,
+          "nlp_new_risk_mention": -0.115,
+          "nlp_macro_blame": 0.1023,
+          "nlp_guidance_revision_dir": 0.0976,
+          "nlp_mgmt_hedging": 0.0944,
+          "nlp_pricing_power": 0.0924,
+          "nlp_guidance_qualifiers": 0.0888,
+          "sec_analyst_consensus_score": -0.0873,
+          "nlp_analyst_skepticism": -0.0862,
+          "sec_risk_score": -0.083,
+          "sec_major_upgrades": 0.0817,
+          "sec_analyst_upside_potential": -0.0723,
+          "nlp_capex_language": -0.0702,
+          "sec_current_price": 0.0652,
+          "sec_fifty_two_week_high": 0.0633,
+          "nlp_competitive_mentions": -0.0619,
+          "sec_pe_ratio": 0.0588,
+          "sec_upgrades_last_30d": -0.0575,
+          "nlp_analyst_surprise": 0.0486,
+          "nlp_mgmt_confidence_shift": -0.0485,
+          "sec_downgrades_last_30d": -0.0474,
+          "sec_price_to_high": 0.0464,
+          "nlp_hiring_language": -0.0346,
+          "sec_market_cap": 0.0193,
+          "nlp_mgmt_deflection": -0.0175,
+          "sec_concern_level": -0.0167,
+          "sec_major_downgrades": -0.0139,
+          "sec_net_upgrades": 0.0037,
+          "nlp_customer_language": 0.0033,
+          "nlp_analyst_focus_cluster": -0.003,
+          "sec_fifty_two_week_low": 0.0016
         },
         "intercept": 0.2072
       }
     }
   },
   "summary": {
-    "markdown": "# SEC Filing Signal Lab \u2014 Results Summary\n\nDataset: 166 SEC filings, 40 companies\n, 2023-12-15 to 2025-09-15\n\n\n## Strongest Individual Features\n\n- **sec_sentiment_score**: IC=nan, accuracy=42.2%, p=nan\n- **sec_forward_pe**: IC=0.252, accuracy=41.0%, p=0.001\n- **sec_analyst_coverage**: IC=0.244, accuracy=59.0%, p=0.002\n- **sec_pe_ratio**: IC=0.208, accuracy=43.4%, p=0.007\n- **nlp_guidance_revision_dir**: IC=0.208, accuracy=61.5%, p=0.007\n- **sec_analyst_consensus_score**: IC=0.176, accuracy=56.0%, p=0.023\n- **nlp_mgmt_specificity**: IC=0.173, accuracy=56.0%, p=0.025\n- **sec_price_to_low**: IC=0.171, accuracy=57.8%, p=0.027\n\n## Best Model by Horizon\n\n- **7D**: Stepwise+Ridge (CV R\u00b2=0.0200)\n- **30D**: Stepwise+Ridge (CV R\u00b2=-0.0684)\n- **7D_alpha**: Stepwise+Ridge (CV R\u00b2=0.0406)\n- **30D_alpha**: Stepwise+Ridge (CV R\u00b2=-0.0156)\n",
-    "generated_at": "2026-02-15T17:58:37.653488"
+    "markdown": "# SEC Filing Signal Lab \u2014 Results Summary\n\nDataset: 166 SEC filings, 40 companies\n, 2023-12-15 to 2025-09-15\n\n\n## Strongest Individual Features\n\n- **sec_sentiment_score**: IC=nan, accuracy=42.2%, p=nan\n- **sec_forward_pe**: IC=0.252, accuracy=41.0%, p=0.001\n- **sec_analyst_coverage**: IC=0.244, accuracy=59.0%, p=0.002\n- **sec_market_cap**: IC=0.216, accuracy=56.6%, p=0.005\n- **sec_pe_ratio**: IC=0.208, accuracy=43.4%, p=0.007\n- **nlp_guidance_revision_dir**: IC=0.208, accuracy=61.5%, p=0.007\n- **sec_analyst_consensus_score**: IC=0.176, accuracy=56.0%, p=0.023\n- **nlp_mgmt_specificity**: IC=0.173, accuracy=56.0%, p=0.025\n\n## Best Model by Horizon\n\n- **7D**: Stepwise+Ridge (CV R\u00b2=0.0307)\n- **30D**: Stepwise+Ridge (CV R\u00b2=-0.0626)\n- **7D_alpha**: Stepwise+Ridge (CV R\u00b2=0.0574)\n- **30D_alpha**: Stepwise+Ridge (CV R\u00b2=-0.0111)\n",
+    "generated_at": "2026-02-15T19:02:39.791284"
   }
 }
