@@ -2,33 +2,47 @@
 
 ## Context
 
-The sec-filing-analyzer at `kyliemckinleydemo/sec-filing-analyzer` is a Next.js 14 + Prisma + PostgreSQL app that analyzes SEC filings and predicts 7-day and 30-day stock returns. Its current production model (Logistic Regression on 6 EPS-surprise features) has zero discriminative power — it predicts every stock as positive and achieves "67.5% accuracy" which is just the base rate of positive returns in a bull market. The confusion matrix shows 0 true negatives and 0 false negatives.
+The sec-filing-analyzer at `kyliemckinleydemo/sec-filing-analyzer` is a Next.js 14 + Prisma + PostgreSQL app that analyzes SEC filings and predicts stock returns. It has **three prediction models** across two API endpoints, all broken:
 
-We ran a systematic model zoo (OLS, Ridge, Lasso, ElasticNet, Stepwise Forward Selection, Polynomial, Random Forest, Gradient Boosting, Mutual Information) on the `data/ml_dataset_with_concern.csv` dataset (352 filings, 29 features) using TimeSeriesSplit cross-validation. The best model is **Stepwise+Ridge on 30-day market-relative alpha** (CV R² = 0.043). When backtested, it achieves:
+**Path 1 — Analyze endpoint** (user-triggered, primary path):
+- `GET /api/analyze/[accession]` → `generateMLPrediction()` in `lib/ml-prediction.ts` → `scripts/predict_single_filing.py`
+- Model: **RandomForestRegressor** (200 trees, max_depth=10) that **retrains from `data/ml_dataset.csv` on every single API call**
+- `extractMLFeatures()` in `lib/ml-prediction.ts` hardcodes `riskScore = 5` and `sentimentScore = 0` — only `concernLevel` from Claude AI is actually variable
+- Confidence is fake (starts at 0.65, bumps for upgrades/coverage/prediction magnitude), not from the model
+- Predicts raw 7-day return
 
-- **56.3% directional accuracy** on 30-day alpha (vs 50% for the current model's alpha predictions)
-- **62.5% accuracy on high-confidence signals** with a **+7.64 percentage point LONG-SHORT spread**
-- SHORT signals are especially strong: 62.7% accuracy identifying losers
+**Path 2a — Predict endpoint, baseline branch** (when EPS data available):
+- `GET /api/predict/[accession]` → `predictionEngine.predictBaseline(actualEPS, estimatedEPS)` (TypeScript method in `lib/predictions.ts`, NOT the Python `scripts/predict_baseline.py` which is a separate standalone CLI tool)
+- Model: **Logistic Regression** on 6 EPS-surprise features
+- Predicts every stock as positive. Confusion matrix: TN=0, FP=344, FN=0, TP=713. The "67.5% accuracy" is just the base rate. Zero discriminative power.
 
-The goal is to replace the broken production model with this proven one, update the database pipeline to populate the required features, and fix the inaccurate accuracy claims in the documentation.
+**Path 2b — Predict endpoint, rules fallback** (when no EPS data):
+- Same endpoint falls back to `predictionEngine.predict(features)` in `lib/predictions.ts`
+- Model: Hand-tuned **~15-factor rule engine** with hardcoded weights and sophisticated interaction effects (concern-adjusted sentiment inversion, P/E multipliers, market cap multipliers, market regime adjustments, macro indicators from `marketMomentumClient` and `macroIndicatorsClient`)
+- Unlike Path 1, this path reads ACTUAL `sentimentScore` and `concernLevel` from the DB — the hardcoding problem is only in `ml-prediction.ts`
+- The weights are arbitrary (never validated against out-of-sample data)
+
+**Critical: The predict endpoint caches predictions.** If `filing.predicted7dReturn` is already set, it skips prediction entirely and returns the cached value + accuracy check. This means migrating to the new model requires clearing or ignoring existing `predicted7dReturn` values.
+
+**Both should be replaced.** We ran a systematic model zoo (OLS, Ridge, Lasso, ElasticNet, Stepwise Forward Selection, Polynomial, Random Forest, Gradient Boosting, Mutual Information) on the `data/ml_dataset_with_concern.csv` dataset (352 filings, 29 features) using 5-fold TimeSeriesSplit cross-validation. Key findings:
+
+- **RandomForest (their current live model) performed poorly**: CV R² = -0.067 on 30D alpha. Negative R² means worse than predicting the mean. With max_depth=10 and n=352, it overfits massively.
+- **Stepwise+Ridge was the best**: CV R² = 0.043 on 30-day market-relative alpha, selecting 8 features from 29.
+- **Backtested directional accuracy**: 56.3% overall, **62.5% on high-confidence signals**, with a **+7.64pp LONG-SHORT spread**
+- **SHORT signals are the strongest**: 62.7% accuracy identifying relative losers
+- **Targeting alpha (stock return minus S&P 500) instead of raw returns** is critical — it removes market noise
+
+The goal: replace all three prediction models with a single TypeScript-native model (no Python bridge), target 30-day alpha instead of 7-day raw returns, fix the database pipeline gaps, and update the documentation.
+
+**WARNING — Feature Scale Mismatch:** The existing `ml-prediction.ts` computes `priceToHigh` and `priceToLow` as **percentages** (`(price/high - 1) * 100`, e.g., -12.0). But the model was trained on **ratios** from the CSV (`price/high`, e.g., 0.88). The `extractAlphaFeatures()` function in Task 1 uses the correct ratio scale. Do NOT copy the computation from `ml-prediction.ts` — it will completely break the model.
 
 ---
 
-## Task 1: Replace the Production Prediction Model
+## Task 1: Create the New Model — `lib/alpha-model.ts`
 
-### Current flow (to be replaced)
+This replaces BOTH `lib/ml-prediction.ts` (RandomForest) and `lib/baseline-features.ts` (Logistic Regression). It's pure TypeScript — no Python bridge, no scikit-learn, no retraining on every call.
 
-The predict endpoint at `app/api/predict/[accession]/route.ts` currently:
-1. Tries Path A (baseline): extracts 6 EPS features via `lib/baseline-features.ts`, calls `python3 scripts/predict_baseline.py` which loads `models/baseline_model.pkl` (Logistic Regression)
-2. Falls back to Path B (legacy): rule-based 12-factor model in `lib/predictions.ts`
-
-### New flow
-
-Replace both paths with a single TypeScript-native scoring function. No Python bridge needed — the model is a simple linear formula.
-
-### Create `lib/alpha-model.ts`
-
-This is the new production model. It uses 8 features, all of which already exist in the database schema (Company, TechnicalIndicators, AnalystActivity tables).
+The model uses 8 features selected by forward stepwise selection from 29 candidates, with Ridge regression weights.
 
 ```typescript
 /**
@@ -37,6 +51,17 @@ This is the new production model. It uses 8 features, all of which already exist
  * Predicts 30-day market-relative alpha (stock return minus S&P 500 return).
  * Trained on 340 SEC filings with 5-fold TimeSeriesSplit cross-validation.
  * CV R² = 0.043 ± 0.056
+ *
+ * Replaces:
+ *   - lib/ml-prediction.ts (RandomForest via predict_single_filing.py)
+ *   - lib/baseline-features.ts (Logistic Regression via predict_baseline.py)
+ *   - The rule-based engine in lib/predictions.ts
+ *
+ * Why this model wins over the existing RandomForest:
+ *   - RF had CV R² = -0.067 (worse than predicting the mean)
+ *   - RF overfits with max_depth=10 on n=352 samples
+ *   - RF retrained from CSV on every call (no stability)
+ *   - This model is a fixed formula — deterministic, fast, no Python needed
  *
  * Backtested directional accuracy:
  *   All signals: 56.3% (80/142)
@@ -101,19 +126,14 @@ export interface AlphaPrediction {
   confidence: 'high' | 'medium' | 'low';
   percentile: string;             // where this score falls in training distribution
   featureContributions: Record<string, number>;  // per-feature contribution to score
-  predicted7dReturn?: number;     // rough 7D estimate (alpha * 7/30 + market baseline)
-  predicted30dReturn?: number;    // rough 30D estimate (alpha + market baseline)
+  predicted30dReturn: number;     // alpha + market baseline (~0.8%/mo)
 }
 
 /**
  * Score a filing using the Stepwise+Ridge alpha model.
- *
- * @param features - The 8 input features (all required)
- * @returns AlphaPrediction with signal, confidence, and expected alpha
  */
 export function predictAlpha(features: AlphaFeatures): AlphaPrediction {
   // Standardize features: z = (x - mean) / std
-  const z: Record<string, number> = {};
   const contributions: Record<string, number> = {};
   let score = 0;
 
@@ -121,7 +141,6 @@ export function predictAlpha(features: AlphaFeatures): AlphaPrediction {
     const stat = FEATURE_STATS[name as keyof typeof FEATURE_STATS];
     const raw = features[name as keyof AlphaFeatures] as number;
     const zVal = (raw - stat.mean) / stat.std;
-    z[name] = zVal;
     const contribution = weight * zVal;
     contributions[name] = Math.round(contribution * 10000) / 10000;
     score += contribution;
@@ -144,13 +163,9 @@ export function predictAlpha(features: AlphaFeatures): AlphaPrediction {
     signal = 'NEUTRAL'; confidence = 'low'; percentile = '25th-75th';
   }
 
-  // Expected alpha ≈ raw score (the model is trained to predict alpha in pct points)
   const expectedAlpha = score;
-
-  // Rough return estimates (alpha + assumed market baseline of ~0.8%/month)
   const marketBaseline30d = 0.8;  // long-run monthly S&P 500 return
   const predicted30dReturn = expectedAlpha + marketBaseline30d;
-  const predicted7dReturn = predicted30dReturn * (7 / 30);
 
   return {
     rawScore: Math.round(score * 10000) / 10000,
@@ -159,14 +174,30 @@ export function predictAlpha(features: AlphaFeatures): AlphaPrediction {
     confidence,
     percentile,
     featureContributions: contributions,
-    predicted7dReturn: Math.round(predicted7dReturn * 100) / 100,
     predicted30dReturn: Math.round(predicted30dReturn * 100) / 100,
   };
 }
 
 /**
  * Extract AlphaFeatures from database records.
- * Call this when assembling features for a prediction.
+ *
+ * This replaces the feature extraction in lib/ml-prediction.ts (extractMLFeatures)
+ * which built ~33 features including hardcoded riskScore=5 and sentimentScore=0.
+ * We only need 8 features, and we use the ACTUAL sentimentScore from Claude.
+ */
+/**
+ * CRITICAL: priceToHigh and priceToLow must be RATIOS, not percentages.
+ *
+ * The existing ml-prediction.ts computes these as PERCENTAGES:
+ *   priceToHigh = (currentPrice / fiftyTwoWeekHigh - 1) * 100  // e.g., -12.0
+ *   priceToLow  = (currentPrice / fiftyTwoWeekLow - 1) * 100   // e.g., +27.0
+ *
+ * But the model was trained on RATIOS from the CSV export:
+ *   priceToHigh = currentPrice / fiftyTwoWeekHigh               // e.g., 0.88
+ *   priceToLow  = currentPrice / fiftyTwoWeekLow                // e.g., 1.27
+ *
+ * Using the wrong scale will completely break the model. The FEATURE_STATS
+ * confirm the ratio scale: priceToHigh mean=0.8588, priceToLow mean=1.3978.
  */
 export function extractAlphaFeatures(
   company: {
@@ -185,10 +216,12 @@ export function extractAlphaFeatures(
     majorDowngradesLast30d: number;
   },
 ): AlphaFeatures {
+  // RATIO (not percentage!) — see warning above
   const priceToLow = company.fiftyTwoWeekLow > 0
     ? company.currentPrice / company.fiftyTwoWeekLow
     : FEATURE_STATS.priceToLow.mean;
 
+  // RATIO (not percentage!) — see warning above
   const priceToHigh = company.fiftyTwoWeekHigh > 0
     ? company.currentPrice / company.fiftyTwoWeekHigh
     : FEATURE_STATS.priceToHigh.mean;
@@ -210,92 +243,233 @@ export function extractAlphaFeatures(
 }
 ```
 
+### Why this replaces the RandomForest
+
+The current live model (`predict_single_filing.py`) does this on every API call:
+```python
+df = pd.read_csv('data/ml_dataset.csv')  # Load 352 rows
+# ... build X, y ...
+model = RandomForestRegressor(n_estimators=200, max_depth=10, random_state=42)
+model.fit(X_train, y_train)  # Retrain every time
+prediction = model.predict(X_new)[0]
+```
+
+Problems:
+1. **Retraining on every call** — non-deterministic if the CSV changes, wasteful, ~2-3 seconds per prediction
+2. **max_depth=10 on n=352** — massive overfitting. Our CV R² for RF was -0.067 (worse than mean)
+3. **Predicts raw 7-day return** — dominated by market direction, not filing-specific signal
+4. **33 features, many hardcoded** — riskScore always 5, sentimentScore always 0
+5. **No confidence calibration** — confidence is rule-based (starts at 0.65, bumps up), not derived from model
+
+The replacement:
+1. **Pure TypeScript formula** — instant, deterministic, no Python subprocess
+2. **8 features, all meaningful** — selected by forward stepwise from 29 candidates
+3. **Predicts 30-day alpha** — removes market noise, isolates filing-specific signal
+4. **Confidence from training distribution** — percentile-based, calibrated to backtest accuracy
+
 ---
 
-## Task 2: Update the Prediction Endpoint
+## Task 2: Update the Analyze Endpoint (User-Triggered Predictions)
 
-Modify `app/api/predict/[accession]/route.ts` to use the new model:
+This is the **primary change**. The analyze endpoint at `app/api/analyze/[accession]/route.ts` is the path users actually trigger.
+
+### Current flow (lines ~935-951 of the route):
+
+1. Claude AI analyzes the filing (risk, sentiment, financials, concern assessment) — 4 parallel calls
+2. XBRL + Yahoo Finance data enriches the analysis
+3. Sentiment adjusted based on earnings surprises
+4. `generateMLPrediction()` called → spawns Python → RandomForest prediction
+5. Results stored in DB
+
+### New flow:
+
+Replace step 4. After Claude analysis and Yahoo Finance enrichment:
 
 1. Import `predictAlpha`, `extractAlphaFeatures` from `lib/alpha-model.ts`
-2. Fetch the required data:
-   - `Company` record (already fetched) — provides `currentPrice`, `fiftyTwoWeekHigh`, `fiftyTwoWeekLow`, `marketCap`, `analystTargetPrice`
-   - `Filing` record (already fetched) — provides `concernLevel`, `sentimentScore`
-   - Query `AnalystActivity` for upgrades/downgrades in the 30 days before `filing.filingDate`:
-     ```typescript
-     const thirtyDaysAgo = new Date(filing.filingDate);
-     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+2. The Company record is already available (Yahoo Finance enrichment provides `currentPrice`, `fiftyTwoWeekHigh`, `fiftyTwoWeekLow`, `marketCap`)
+3. The Filing record now has `concernLevel` and `sentimentScore` from Claude's analysis (step 1)
+4. Query `AnalystActivity` for the 30 days before `filing.filingDate`.
 
-     const analystActivity = await prisma.analystActivity.groupBy({
-       by: ['actionType'],
-       where: {
-         companyId: company.id,
-         activityDate: { gte: thirtyDaysAgo, lte: filing.filingDate },
-       },
-       _count: true,
-     });
+   **Note:** The predict endpoint (`app/api/predict/[accession]/route.ts`) already has this exact query pattern — look for the `analystActivities` block around line 170+. It queries `AnalystActivity`, filters by companyId and date range, and classifies by major firm. Adapt that existing code rather than writing from scratch.
 
-     const MAJOR_FIRMS = ['Goldman Sachs', 'JPMorgan', 'Morgan Stanley', 'Bank of America',
-                          'Citigroup', 'Wells Fargo', 'Barclays', 'Deutsche Bank', 'UBS',
-                          'Credit Suisse', 'HSBC', 'BNP Paribas'];
+   Use their existing major firms list for consistency:
+   ```typescript
+   const MAJOR_FIRMS = ['Goldman Sachs', 'Morgan Stanley', 'JP Morgan', 'Bank of America',
+                        'Citi', 'Wells Fargo', 'Barclays', 'UBS'];
+   ```
 
-     const majorDowngrades = await prisma.analystActivity.count({
-       where: {
-         companyId: company.id,
-         activityDate: { gte: thirtyDaysAgo, lte: filing.filingDate },
-         actionType: 'downgrade',
-         firm: { in: MAJOR_FIRMS },
-       },
-     });
+   Query for upgrade count and major-firm downgrade count:
 
-     const upgradesLast30d = analystActivity
-       .filter(a => a.actionType === 'upgrade')
-       .reduce((sum, a) => sum + a._count, 0);
-     ```
-3. Call `extractAlphaFeatures(company, filing, { upgradesLast30d, majorDowngradesLast30d: majorDowngrades })`
-4. Call `predictAlpha(features)` to get the prediction
-5. Store: update `filing.predicted7dReturn`, `filing.predicted30dReturn`, `filing.predictionConfidence`
-6. Create `Prediction` record with `modelVersion: 'alpha-v1.0'`
+```typescript
+const thirtyDaysAgo = new Date(filing.filingDate);
+thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-**Remove or deprecate:**
-- The Python bridge call to `predict_baseline.py`
-- The `predictBaseline()` method in `lib/predictions.ts`
-- The fallback to the rule-based engine (keep it as a last-resort fallback if `concernLevel` is null AND `fiftyTwoWeekLow` is null, but this should be rare)
+const analystActivities = await prisma.analystActivity.findMany({
+  where: {
+    companyId: company.id,
+    activityDate: { gte: thirtyDaysAgo, lt: filing.filingDate },
+  },
+  select: { actionType: true, firm: true },
+});
+
+const upgradeCount = analystActivities.filter(a => a.actionType === 'upgrade').length;
+const majorDowngradeCount = analystActivities.filter(a =>
+  a.actionType === 'downgrade' && MAJOR_FIRMS.some(f => a.firm.includes(f))
+).length;
+```
+
+5. Build features and predict:
+
+```typescript
+const alphaFeatures = extractAlphaFeatures(
+  company,
+  { concernLevel: analysis.concernLevel, sentimentScore: analysis.sentimentScore },
+  { upgradesLast30d: upgradeCount, majorDowngradesLast30d: majorDowngradeCount },
+);
+
+const prediction = predictAlpha(alphaFeatures);
+```
+
+6. Store results:
+
+```typescript
+await prisma.filing.update({
+  where: { id: filing.id },
+  data: {
+    predicted30dReturn: prediction.predicted30dReturn,
+    predicted30dAlpha: prediction.expectedAlpha,
+    predictionConfidence: prediction.confidence === 'high' ? 0.85
+      : prediction.confidence === 'medium' ? 0.65 : 0.5,
+    // Keep predicted7dReturn for backward compat — rough estimate
+    predicted7dReturn: prediction.predicted30dReturn * (7 / 30),
+  },
+});
+
+await prisma.prediction.create({
+  data: {
+    filingId: filing.id,
+    predictedReturn: prediction.predicted30dReturn,
+    confidence: prediction.confidence === 'high' ? 0.85
+      : prediction.confidence === 'medium' ? 0.65 : 0.5,
+    features: prediction.featureContributions as any,
+    modelVersion: 'alpha-v1.0',
+  },
+});
+```
+
+7. Return to frontend — include the new fields in the response:
+
+```typescript
+return {
+  // ... existing fields ...
+  prediction: {
+    signal: prediction.signal,           // 'LONG' | 'SHORT' | 'NEUTRAL'
+    confidence: prediction.confidence,   // 'high' | 'medium' | 'low'
+    expectedAlpha: prediction.expectedAlpha,
+    predicted30dReturn: prediction.predicted30dReturn,
+    featureContributions: prediction.featureContributions,
+    percentile: prediction.percentile,
+    modelVersion: 'alpha-v1.0',
+  },
+};
+```
+
+### Remove the Python bridge
+
+- Delete the call to `generateMLPrediction()` in the analyze route
+- The function `generateMLPrediction()` in `lib/ml-prediction.ts` can be deprecated (keep the file but add a deprecation notice at the top)
+- `scripts/predict_single_filing.py` is no longer called — archive it
+
+### Important: Keep the Claude AI analysis
+
+The Claude analysis steps (risk assessment, sentiment analysis, financial analysis, concern assessment) must stay — they produce `concernLevel` and `sentimentScore` which are inputs to our model. The change is only in what happens AFTER Claude analyzes the filing.
 
 ---
 
-## Task 3: Ensure the Database Pipeline Populates Required Features
+## Task 3: Update the Predict Endpoint (Batch/Cron Path)
 
-The model needs 8 features. Check that each is reliably populated:
+The predict endpoint at `app/api/predict/[accession]/route.ts` currently has three layers:
+- **Cache check**: If `filing.predicted7dReturn` is already set → returns cached prediction immediately (never re-predicts)
+- **Path A**: `predictionEngine.predictBaseline(actualEPS, estimatedEPS)` — a TypeScript method in `lib/predictions.ts` (NOT the Python `scripts/predict_baseline.py`)
+- **Path B**: `predictionEngine.predict(features)` — the ~15-factor hand-tuned rules engine in `lib/predictions.ts`
 
-| Feature | Source Table | Column | Currently Populated? | Action Needed |
-|---------|-------------|--------|---------------------|---------------|
-| `priceToLow` | Computed | `currentPrice / fiftyTwoWeekLow` | Yes (Company table has both) | None |
-| `priceToHigh` | Computed | `currentPrice / fiftyTwoWeekHigh` | Yes (Company table has both) | None |
-| `majorDowngrades` | `AnalystActivity` | count where `actionType='downgrade'` and `firm` in major list | **Check coverage** | Ensure `scripts/fetch-analyst-activity.ts` or the cron that populates `AnalystActivity` is running and includes the `firm` column |
-| `analystUpsidePotential` | Computed | `((analystTargetPrice / currentPrice) - 1) * 100` | Depends on `analystTargetPrice` in Company | **Check if `analystTargetPrice` is populated** — it was 0/352 in the CSV. Ensure `yahoo-finance-client.ts` fetches and stores this field. If unavailable, the model falls back to the training mean (13.5%) |
-| `concernLevel` | `Filing` | `concernLevel` | Yes (Claude AI analysis) | None |
-| `marketCap` | `Company` | `marketCap` | Yes | None |
-| `sentimentScore` | `Filing` | `sentimentScore` | Yes (Claude AI analysis) | None |
-| `upgradesLast30d` | `AnalystActivity` | count where `actionType='upgrade'` | Same as majorDowngrades | Same as above |
+The endpoint also already queries AnalystActivity, fetches market momentum, and has paper trading integration — all of which can be reused or adapted.
 
-### Critical: Verify `AnalystActivity` table is populated
+Replace the prediction logic with the alpha model:
 
-The `AnalystActivity` table exists in the schema but may not be consistently populated. Check:
-1. `SELECT COUNT(*) FROM "AnalystActivity";` — how many rows?
-2. `SELECT DISTINCT "firm" FROM "AnalystActivity" LIMIT 20;` — are major firms present?
-3. `SELECT "actionType", COUNT(*) FROM "AnalystActivity" GROUP BY "actionType";` — are upgrade/downgrade entries present?
+1. Import `predictAlpha`, `extractAlphaFeatures` from `lib/alpha-model.ts`
+2. **Update the cache check**: The route currently skips prediction if `filing.predicted7dReturn !== null` (around line 60). Change this to check `filing.predicted30dAlpha !== null` instead, so existing 7-day predictions don't prevent the new model from running.
+3. **Reuse the existing AnalystActivity query**: The route already queries this table (around line 170). Adapt it to extract `upgradeCount` and `majorDowngradeCount` as needed by `extractAlphaFeatures()`.
+4. Same `extractAlphaFeatures()` + `predictAlpha()` pattern as Task 2
+5. Remove the calls to `predictBaseline()` and `predictionEngine.predict()`
+6. The existing market momentum (`marketMomentumClient`) and macro indicator (`macroIndicatorsClient`) fetches can be kept for display purposes but are NOT used by the alpha model
+7. Keep the rule-based engine in `lib/predictions.ts` as a last-resort fallback ONLY if both `fiftyTwoWeekLow` AND `concernLevel` are unavailable (this should be extremely rare since Yahoo Finance provides price data for all S&P 500 stocks)
 
-If the table is sparse, look at the cron jobs or scripts that populate it. The Yahoo Finance client (`lib/yahoo-finance-client.ts`) likely fetches analyst data — ensure it writes to `AnalystActivity`. If there's no cron for this, add one to `app/api/cron/` that runs daily and fetches recent analyst activity for all tracked companies.
+### Migration: Re-predict existing filings
 
-### Critical: Verify `analystTargetPrice` in Company table
+After deploying the new model, existing filings will have `predicted7dReturn` set but `predicted30dAlpha` null. To generate alpha predictions for all historical filings:
 
-Run `SELECT COUNT(*) FROM "Company" WHERE "analystTargetPrice" IS NOT NULL AND "analystTargetPrice" > 0;`. If this is 0 or very low, the Yahoo Finance client needs to be updated to fetch the `targetMeanPrice` field from `yahoo-finance2`'s `quoteSummary` module (under `financialData.targetMeanPrice`).
+```sql
+-- Find filings that need new predictions
+SELECT COUNT(*) FROM "Filing" WHERE "predicted7dReturn" IS NOT NULL AND "predicted30dAlpha" IS NULL;
+```
+
+Write a one-time migration script that iterates over these filings and runs `predictAlpha()` on each. This will populate the new column for the dashboard and accuracy tracking.
 
 ---
 
-## Task 4: Add `predicted30dAlpha` to the Filing Table
+## Task 4: Ensure the Database Pipeline Populates Required Features
 
-The model predicts **30-day alpha** (market-relative return), not raw return. Add a column to track this:
+The model needs 8 features. Most are already in the database. Verify each:
+
+| Feature | Source | DB Location | Status | Action |
+|---------|--------|-------------|--------|--------|
+| `priceToLow` | Computed | `Company.currentPrice / Company.fiftyTwoWeekLow` | Available | None needed |
+| `priceToHigh` | Computed | `Company.currentPrice / Company.fiftyTwoWeekHigh` | Available | None needed |
+| `concernLevel` | Claude AI | `Filing.concernLevel` | Available (from analyze step) | None needed |
+| `sentimentScore` | Claude AI | `Filing.sentimentScore` | **Hardcoded to 0 in `ml-prediction.ts` (analyze path only)**. The predict endpoint correctly reads `filing.sentimentScore \|\| 0` from DB. | The new `extractAlphaFeatures()` reads the actual value. Just ensure it's populated after Claude analysis. |
+| `marketCap` | Yahoo Finance | `Company.marketCap` | Available | None needed |
+| `upgradesLast30d` | Yahoo Finance | `AnalystActivity` table | **VERIFY COVERAGE** | See below |
+| `majorDowngrades` | Yahoo Finance | `AnalystActivity` table (filtered by firm) | **VERIFY COVERAGE** | See below |
+| `analystUpsidePotential` | Computed | `((Company.analystTargetPrice / Company.currentPrice) - 1) * 100` | **VERIFY** `analystTargetPrice` population | See below |
+
+### Critical Check 1: `AnalystActivity` table coverage
+
+The `AnalystActivity` table exists in the Prisma schema with columns: `companyId, activityDate, firm, actionType, previousRating, newRating, previousTarget, newTarget`. But it may not be consistently populated.
+
+Run these queries:
+```sql
+SELECT COUNT(*) FROM "AnalystActivity";
+SELECT DISTINCT "firm" FROM "AnalystActivity" LIMIT 20;
+SELECT "actionType", COUNT(*) FROM "AnalystActivity" GROUP BY "actionType";
+```
+
+If the table is sparse or empty:
+- Check which cron job or script populates it (look in `app/api/cron/` and `scripts/`)
+- The Yahoo Finance client (`lib/yahoo-finance-client.ts`) likely has a function to fetch analyst upgrades/downgrades — ensure it's being called by a daily cron
+- If no cron exists for this, create one at `app/api/cron/analyst-activity/route.ts` that:
+  1. Iterates over all tracked companies
+  2. Fetches recent analyst activity from `yahoo-finance2` (`recommendationTrend` or `upgradeDowngradeHistory` modules)
+  3. Upserts into the `AnalystActivity` table
+  4. Runs daily
+
+If the table IS empty but you can't immediately populate it, the model gracefully handles missing data — `majorDowngrades=0` and `upgradesLast30d=0` are valid values (they'll standardize to near their training means and contribute minimally to the score). The model still works with just the other 6 features.
+
+### Critical Check 2: `analystTargetPrice` in Company table
+
+```sql
+SELECT COUNT(*) FROM "Company" WHERE "analystTargetPrice" IS NOT NULL AND "analystTargetPrice" > 0;
+```
+
+If this returns 0 or very low:
+- The Yahoo Finance client needs to fetch `targetMeanPrice` from the `financialData` module of `yahoo-finance2`'s `quoteSummary`
+- If not available, the `extractAlphaFeatures` function falls back to the training mean (13.5% upside), which is acceptable
+
+---
+
+## Task 5: Add `predicted30dAlpha` to the Filing Table
+
+The model's primary output is 30-day alpha, not raw return. Add a column:
 
 ### Prisma schema change (`prisma/schema.prisma`):
 
@@ -304,77 +478,75 @@ Add to the `Filing` model:
 predicted30dAlpha     Float?
 ```
 
-Then run `npx prisma migrate dev --name add-predicted-alpha`.
+Run: `npx prisma migrate dev --name add-predicted-30d-alpha`
 
-Update the prediction endpoint to also store:
-```typescript
-await prisma.filing.update({
-  where: { id: filing.id },
-  data: {
-    predicted7dReturn: prediction.predicted7dReturn,
-    predicted30dReturn: prediction.predicted30dReturn,
-    predicted30dAlpha: prediction.expectedAlpha,
-    predictionConfidence: prediction.confidence === 'high' ? 0.85 : prediction.confidence === 'medium' ? 0.65 : 0.5,
-  },
-});
+---
+
+## Task 6: Update Accuracy Tracking
+
+The current `lib/accuracy-tracker.ts` compares `predicted7dReturn` vs `actual7dReturn` after 10+ calendar days. Update it for 30-day alpha:
+
+1. **Timing**: Check accuracy after **35+ calendar days** instead of 10 (need 30 trading days + buffer)
+2. **Alpha calculation**: When fetching actual returns, also fetch the S&P 500 return for the same period:
+   ```typescript
+   const actual30dAlpha = actual30dReturn - spxReturn30d;
+   ```
+   The `MacroIndicators` table has `spxReturn30d` — use it, or compute from `StockPrice` table using SPY
+3. **Directional accuracy**: Track whether the signal (LONG/SHORT) matched the actual alpha direction:
+   ```typescript
+   const signalCorrect =
+     (signal === 'LONG' && actual30dAlpha > 0) ||
+     (signal === 'SHORT' && actual30dAlpha < 0);
+   ```
+4. **New stats method**:
+   ```typescript
+   interface AlphaModelStats {
+     totalPredictions: number;
+     predictionsWithActuals: number;
+     directionalAccuracy: number;        // % of LONG/SHORT signals correct
+     highConfDirectionalAccuracy: number; // % of high-conf signals correct
+     longShortSpread: number;            // avg LONG alpha - avg SHORT alpha (pp)
+     avgLongAlpha: number;
+     avgShortAlpha: number;
+   }
+   ```
+
+---
+
+## Task 7: Update Paper Trading
+
+The paper trading system in `lib/paper-trading.ts` currently uses:
+```
+BUY:  confidence >= 0.60 AND predicted return >= +2.0%
+SELL: confidence >= 0.60 AND predicted return <= -2.0%
+HOLD: everything else
 ```
 
----
+Replace with signal-based logic:
 
-## Task 5: Update Accuracy Tracking
-
-The current `lib/accuracy-tracker.ts` compares `predicted7dReturn` vs `actual7dReturn`. Update it to also track alpha accuracy:
-
-1. When checking accuracy (10+ days after filing), also compute `actual30dAlpha = actual30dReturn - spxReturn30d`
-2. Store the alpha accuracy alongside return accuracy
-3. Track directional accuracy of the signal (LONG/SHORT) vs actual alpha direction
-4. The key metric to optimize is **high-confidence directional accuracy** — our model achieves 62.5% on this
-
-Add a method to compute model stats that includes:
-```typescript
-interface AlphaModelStats {
-  totalPredictions: number;
-  predictionsWithActuals: number;
-  directionalAccuracy: number;        // % of LONG/SHORT signals correct
-  highConfDirectionalAccuracy: number; // % of high-conf signals correct
-  longShortSpread: number;            // avg LONG alpha - avg SHORT alpha (pp)
-  avgLongAlpha: number;
-  avgShortAlpha: number;
-}
-```
+1. **Use signal directly**: `LONG` → BUY, `SHORT` → SELL, `NEUTRAL` → HOLD
+2. **Position sizing by confidence**:
+   - High confidence → full position size
+   - Medium confidence → half position size
+   - Low confidence (NEUTRAL) → no trade
+3. **Hold period**: Change from 7 days to **30 days** (the model targets 30-day alpha)
+4. **Stop-loss / take-profit** (adjust for 30-day horizon):
+   - High-confidence LONG: target +8%, stop -5%
+   - Medium-confidence LONG: target +5%, stop -3%
+   - High-confidence SHORT: target +8% gain (stock drops 8%), stop -5%
+   - Medium-confidence SHORT: target +5% gain, stop -3%
 
 ---
 
-## Task 6: Update Paper Trading
-
-The paper trading system in `lib/paper-trading.ts` currently uses `predicted7dReturn` and `predictionConfidence` to decide trades. Update it to:
-
-1. Use the `signal` field ('LONG'/'SHORT'/'NEUTRAL') instead of return sign
-2. Use the `confidence` field ('high'/'medium'/'low') instead of the numeric confidence
-3. Only trade on LONG or SHORT signals (skip NEUTRAL)
-4. For high-confidence signals, use full position size
-5. For medium-confidence, use half position size
-6. Set stop-loss and take-profit based on the score magnitude:
-   - High-confidence LONG: target +5%, stop -3%
-   - Medium-confidence LONG: target +3%, stop -2%
-   - High-confidence SHORT: target -5% (or +5% for short position), stop +3%
-
----
-
-## Task 7: Fix Documentation and Accuracy Claims
+## Task 8: Fix Documentation and Accuracy Claims
 
 ### README.md
 
-Replace the accuracy claims. The current claims are:
+The current claims are invalid:
+- "60.26% directional accuracy" — came from `backtest-v3-optimized.py` which **uses the actual return to simulate input features** (data leakage). The sentiment and risk scores are generated FROM the target variable.
+- "67.5% accuracy" — the Logistic Regression baseline predicts every single stock as positive. The 67.5% is the base rate of positive returns in a bull market.
 
-> "60.26% directional accuracy"
-> "60% accuracy"
-
-These are not valid:
-- The 60.26% came from `backtest-v3-optimized.py` which simulates features **using the actual return as input** (data leakage)
-- The 67.5% in `baseline_results.json` is the base rate (model predicts all positive)
-
-Replace with honest metrics from the new model:
+Replace with:
 
 ```markdown
 ## Model Performance
@@ -388,8 +560,6 @@ Replace with honest metrics from the new model:
 | **Directional accuracy (high confidence)** | **62.5%** |
 | LONG-SHORT spread (all) | +3.73 percentage points |
 | **LONG-SHORT spread (high confidence)** | **+7.64 percentage points** |
-| HIGH-conf LONG avg 30D alpha | +4.72% |
-| HIGH-conf SHORT avg 30D alpha | -2.92% |
 | Training set | 340 SEC filings (107 S&P 500 companies, Oct 2023 – Oct 2025) |
 | Features | 8 (selected from 29 candidates via forward stepwise selection) |
 
@@ -409,7 +579,7 @@ The model is strongest at **identifying relative losers** — SHORT signals have
 
 ### MODEL-DEVELOPMENT-JOURNEY.md
 
-Add a section at the end documenting this model iteration:
+Add a section at the end:
 
 ```markdown
 ## v4.0: Systematic Model Zoo (Earnings Signal Lab collaboration)
@@ -426,7 +596,13 @@ Switching to **30-day market-relative alpha** (stock return minus S&P 500 return
 dramatically improved signal quality. The market noise is removed, leaving only
 the stock-specific signal from the filing.
 
-### Key Discovery: The Production Model Had No Signal
+### Key Discovery: RandomForest Was Overfitting
+The production RandomForest (max_depth=10, n=352 samples) had CV R² = -0.067.
+Negative R² means it predicted worse than just guessing the average return.
+The model memorized the training data but couldn't generalize. Simpler linear
+models (Ridge, Lasso) significantly outperformed.
+
+### Key Discovery: The Baseline Model Had No Signal
 The v3.0 Logistic Regression on EPS surprise features predicted EVERY stock as
 positive. Its confusion matrix: TN=0, FP=344, FN=0, TP=713. The "67.5% accuracy"
 equaled the base rate of positive returns. The model had zero discriminative power.
@@ -437,63 +613,105 @@ This directly contradicts the v2.0 rule-based model which penalized downgrades.
 The market systematically overreacts to downgrades from Goldman Sachs, JPMorgan,
 and similar firms, creating a 30-day recovery opportunity.
 
-### Key Discovery: AI Features Are Weak
+### Key Discovery: AI Features Are Weak but Real
 The Claude-generated features (riskScore, sentimentScore, concernLevel) collectively
 contribute ~0.16 weight out of ~3.3 total. Market structure features (price ratios,
-analyst activity, market cap) dominate. The AI analysis adds marginal value but is
-not the primary signal source.
+analyst activity, market cap) dominate. However, concernLevel (-0.12) does add signal
+that survives stepwise selection — it's the 5th most important feature. The previous
+model hardcoded riskScore=5 and sentimentScore=0, throwing away the AI signal entirely.
+
+### Key Discovery: riskScore and sentimentScore Were Wasted (Analyze Path)
+The ml-prediction.ts feature extraction (used by the analyze endpoint) hardcoded
+riskScore=5 and sentimentScore=0 for every filing. These are the training set means,
+so they contributed zero signal. Note: the predict endpoint correctly read
+sentimentScore from the DB, but the primary user-facing analyze path did not.
+The new model uses the ACTUAL sentimentScore from Claude's analysis and replaces
+riskScore with concernLevel (which was the only Claude feature that varied per filing).
+
+### Key Discovery: The Predict Endpoint's Rules Engine Was Sophisticated But Unvalidated
+The v2.0 rules engine in lib/predictions.ts had ~15 interacting factors including
+concern-adjusted sentiment (inverts positive sentiment when concern > 7), P/E
+multipliers, market cap multipliers, market regime adjustments, and macro indicators
+(dollar strength, GDP proxy). These are reasonable heuristics, but the weights were
+hand-tuned and never validated against out-of-sample data. The systematic model zoo
+found that most of these factors don't survive cross-validation — only 8 features
+out of 29 candidates contribute real signal.
 ```
 
 ### `lib/confidence-scores.ts`
 
-The default confidence of 56.8% and the per-ticker hardcoded scores should be deprecated. The new model has its own confidence framework based on score percentiles. Either:
-- Remove the hardcoded per-ticker scores entirely, or
-- Keep them as informational metadata but don't use them for trade sizing
-
-### Remove from `scripts/`:
-- `predict_baseline.py` — no longer needed (model is pure TypeScript now)
-- The Python model files `models/baseline_model.pkl` and `models/baseline_scaler.pkl` can be archived
+The hardcoded per-ticker confidence scores (NVDA: 46.7%, HD: 80%, etc.) are based on ~15 samples each and are not statistically meaningful. Deprecate this system — the new model has its own confidence framework based on score percentiles calibrated to backtest accuracy.
 
 ---
 
-## Task 8: Update UI Components
+## Task 9: Update UI Components
 
-### Prediction display
+### Prediction display on filing analysis page
 
-The UI currently shows predictions as simple percentage returns. Update to also show:
-- The **signal** (LONG/SHORT/NEUTRAL) with color coding (green/red/gray)
-- The **confidence** level (high/medium/low)
-- The **expected alpha** (separate from raw return)
-- The **top feature contribution** — which feature drove the prediction most
-
-This information is in the `AlphaPrediction` response from `predictAlpha()`.
+The UI currently shows predictions as simple percentage returns. Update to show:
+- **Signal badge**: LONG (green), SHORT (red), NEUTRAL (gray)
+- **Confidence level**: high/medium/low with visual indicator
+- **Expected 30-day alpha**: "Expected to outperform S&P 500 by X.X%" or "Expected to underperform..."
+- **Top feature drivers**: Show the top 2-3 feature contributions from `featureContributions`
+- **Model version**: Small text showing "Alpha Model v1.0"
 
 ### Latest filings page
 
-If there's a dashboard or latest-filings view, add a column or badge showing the signal. High-confidence LONGs and SHORTs should be visually prominent since those are the most reliable predictions.
+If there's a table/list view of recent filings, add a signal column with color-coded badges. High-confidence LONGs and SHORTs should be visually prominent — those are the most reliable predictions.
+
+### Trading signal display
+
+Replace the current BUY/SELL/HOLD with the new signal format:
+- `LONG (high confidence)` → "Strong Buy — model expects significant outperformance"
+- `LONG (medium confidence)` → "Buy — model expects moderate outperformance"
+- `SHORT (high confidence)` → "Strong Sell — model expects significant underperformance"
+- `SHORT (medium confidence)` → "Sell — model expects moderate underperformance"
+- `NEUTRAL` → "Hold — no clear signal"
 
 ---
 
-## Summary of Changes
+## Task 10: Clean Up Deprecated Code
 
-| File | Action | Priority |
-|------|--------|----------|
-| `lib/alpha-model.ts` | **Create** — new model with exact weights | P0 |
-| `app/api/predict/[accession]/route.ts` | **Modify** — use new model | P0 |
-| `prisma/schema.prisma` | **Modify** — add `predicted30dAlpha` column | P0 |
-| `lib/accuracy-tracker.ts` | **Modify** — track alpha accuracy + directional accuracy | P1 |
-| `lib/paper-trading.ts` | **Modify** — use signal/confidence instead of raw returns | P1 |
-| `README.md` | **Modify** — fix accuracy claims | P1 |
-| `MODEL-DEVELOPMENT-JOURNEY.md` | **Modify** — add v4.0 section | P2 |
-| `lib/confidence-scores.ts` | **Deprecate** — remove hardcoded per-ticker scores | P2 |
-| `scripts/predict_baseline.py` | **Archive** — no longer used | P2 |
-| UI components | **Modify** — show signal/confidence/alpha | P2 |
+After the new model is working:
+
+| File | Action |
+|------|--------|
+| `scripts/predict_single_filing.py` | Archive — no longer called |
+| `scripts/predict_baseline.py` | Archive — no longer called |
+| `models/baseline_model.pkl` | Archive — no longer loaded |
+| `models/baseline_scaler.pkl` | Archive — no longer loaded |
+| `models/baseline_features.json` | Archive |
+| `models/baseline_results.json` | Archive (but save for historical reference) |
+| `lib/ml-prediction.ts` | Add deprecation notice; keep temporarily for reference |
+| `lib/baseline-features.ts` | Add deprecation notice |
+| `lib/predictions.ts` | Keep as last-resort fallback, but add deprecation notice and note that it's rarely used |
+| `lib/confidence-scores.ts` | Deprecate the hardcoded per-ticker scores |
+
+Do NOT delete `data/ml_dataset_with_concern.csv` — this is the training data the model was built on.
+
+---
+
+## Summary of Changes (Priority Order)
+
+| # | File | Action | Priority |
+|---|------|--------|----------|
+| 1 | `lib/alpha-model.ts` | **Create** — new model with exact weights | P0 |
+| 2 | `app/api/analyze/[accession]/route.ts` | **Modify** — replace `generateMLPrediction()` with `predictAlpha()` | P0 |
+| 3 | `app/api/predict/[accession]/route.ts` | **Modify** — replace baseline + rule-based with `predictAlpha()` | P0 |
+| 4 | `prisma/schema.prisma` | **Modify** — add `predicted30dAlpha` column | P0 |
+| 5 | `lib/accuracy-tracker.ts` | **Modify** — track 30-day alpha accuracy + directional accuracy | P1 |
+| 6 | `lib/paper-trading.ts` | **Modify** — use signal/confidence, 30-day hold period | P1 |
+| 7 | `README.md` | **Modify** — fix accuracy claims with real numbers | P1 |
+| 8 | `MODEL-DEVELOPMENT-JOURNEY.md` | **Modify** — add v4.0 section | P2 |
+| 9 | UI components | **Modify** — show signal/confidence/alpha/drivers | P2 |
+| 10 | Deprecated scripts/models | **Archive** — move or add deprecation notices | P2 |
 
 ## Verification Steps
 
 After making the changes:
-1. Run `npx prisma migrate dev` to apply schema changes
-2. Pick 5 recent filings with known actual returns and run the new model against them manually — verify the scores match the formula
-3. Compare the new predictions against `actual30dAlpha` for any filings where actuals exist
-4. Verify the paper trading system doesn't break with the new signal format
-5. Run the accuracy tracker on historical data to get the real-world performance numbers
+1. `npx prisma migrate dev` — apply schema changes
+2. Pick 3-5 recent filings that already have Claude analysis (`concernLevel` and `sentimentScore` populated). Run the new model against them and verify the scores match the formula manually.
+3. Check that `AnalystActivity` queries return reasonable data. If the table is empty, verify the model still produces valid predictions (it will — analyst features just won't contribute).
+4. Trigger a full analysis on a new filing through the UI — verify the new signal/confidence displays correctly.
+5. Verify paper trading doesn't break with the new signal format.
+6. Run the accuracy tracker on historical data where `actual30dReturn` exists to get real-world performance numbers.
